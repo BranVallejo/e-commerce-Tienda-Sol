@@ -18,6 +18,9 @@ app.get("/hello", (req: Request, res: Response) => {
 
 const PORT = process.env.SERVER_PORT || 8000;
 
-app.listen(PORT, () => {
+
+
+
+/*app.listen(PORT, () => {
   console.log(`Backend escuchando en puerto ${PORT}`);
-});
+});*/
