@@ -3,35 +3,15 @@ import {Getter, Setter} from 'tslombok'
 
 export class Producto {
 
-  @Getter
-  @Setter
   private id: number;
-  @Getter
-  @Setter
   private vendedor: string;
-  @Getter
-  @Setter
   private titulo: string;
-  @Getter
-  @Setter
   private descripcion: string;
-  @Getter
-  @Setter
   private categorias: Categoria[];
-  @Getter
-  @Setter
   private precio: number;
-  @Getter
-  @Setter
   private moneda: string;
-  @Getter
-  @Setter
   private stock: number;
-  @Getter
-  @Setter
   private fotos: string[];
-  @Getter
-  @Setter
   private activo: boolean;
 
   constructor(
@@ -58,16 +38,31 @@ export class Producto {
     this.activo = activo;
   }
 
+  getId(): number {
+    return this.id;
+  }
+
+  getStock(): number {
+    return this.stock;
+  }
+
+  getTitulo(): String{
+    return this.titulo;
+  }
+
   estaDisponible(cantidad: number): boolean{
 
     return false;
   }
 
   reducirStock(cantidad: number): void{
-
+    if (this.stock < cantidad) {
+        throw new Error(`Stock insuficiente para ${this.titulo}`);
+    }
+    this.stock -= cantidad;
   }
 
   aumentarStock(cantidad: number): void{
-
+    this.stock += cantidad;
   }
 }
