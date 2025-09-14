@@ -6,11 +6,12 @@ export class PedidoService {
   }
 
   crearPedido(pedido) {
-    pedido
-      .getItems()
-      .every((item) =>
-        this.productoRepo.hayStockProducto(item.producto, item.cantidad)
-      );
+    
+    if(!this.hayStockTodosProductos(pedido)){
+      return 
+    }
+
+    this.actualizarStockProductos(pedido);
 
     return this.pedidoRepo.create(pedido);
   }
@@ -19,4 +20,15 @@ export class PedidoService {
     return this.pedidoRepo.findAll();
   }
 
+  hayStockTodosProductos(pedido){
+    return pedido.getItems().every((item) =>
+        this.productoRepo.hayStockProducto(item.producto, item.cantidad)
+      );
+  }
+
+  actualizarStockProductos(pedido){
+
+    pedido.getItems().forEach( item => this.productoRepo.actualizarStock(item.producto,item.cantidad));
+  
+  }
 }

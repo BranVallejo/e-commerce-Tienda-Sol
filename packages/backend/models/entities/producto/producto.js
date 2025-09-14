@@ -37,6 +37,10 @@ export class Producto {
     return this.stock;
   }
 
+  setStock(nuevoStock){
+    this.stock = nuevoStock;
+  }
+
   getTitulo() {
     return this.titulo;
   }
