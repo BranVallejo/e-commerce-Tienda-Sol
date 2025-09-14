@@ -41,7 +41,7 @@ export class PedidoController {
     const result = pedidoSchema.safeParse(req.body);
     if (result.error) {
       return res.status(400).json(result.error.issues)
-    };
+    }
 
     const nuevoPedido = new Pedido(
       result.data.comprador,

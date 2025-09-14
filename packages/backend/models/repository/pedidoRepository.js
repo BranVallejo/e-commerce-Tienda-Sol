@@ -10,7 +10,7 @@ export class PedidoRepository{
   create(pedido) {
     pedido.setId(this.id);
     this.id++;
-    this.pedido.push(pedido);
+    this.pedidos.push(pedido);
     return pedido;
   }
 

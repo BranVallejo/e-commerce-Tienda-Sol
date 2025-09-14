@@ -27,4 +27,8 @@ export class Pedido {
     setEstado(unEstado) {
         this.estado = unEstado;
     }
+
+    setId(id){
+        this.id = id
+    }
 }
