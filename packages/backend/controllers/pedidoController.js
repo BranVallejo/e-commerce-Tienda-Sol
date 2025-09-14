@@ -30,6 +30,18 @@ const pedidoSchema = z.object({
   direccionEntrega: direccionEntregaSchema
 })
 
+const idTransform = z.string().transform((val, ctx) => {
+  const num = Number(val);
+  if (isNaN(num)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "id must be a number",
+    });
+    return z.NEVER;
+  }
+  return num;
+});
+
 
 export class PedidoController {
 
@@ -55,6 +67,7 @@ export class PedidoController {
     res.status(201).json(nuevoPedido);
   }
 
+  //Brandon, por qué aceptas req como parametro si no lo usas?
   listarPedidos(req, res) {
     try {
       const pedidos = this.pedidoService.listarPedidos(); // devuelve directamente un array o undefined
@@ -70,5 +83,20 @@ export class PedidoController {
     }
   }
 
+  obtenerPedido(req, res) {
+
+    const idResult = idTransform.safeParse(req.params.id);
+
+    if (idResult.error) return res.status(400).json(idResult.error.issues);
+
+    const pedido = this.pedidoService.obtenerPedido(idResult.data);
+    if (!pedido) {
+      return res.status(404).json({
+        error: `Pedido con id: ${idResult.data} no encontrado`
+      });
+    }
+    return res.status(201).json(pedido);
+
+  }
 
 }

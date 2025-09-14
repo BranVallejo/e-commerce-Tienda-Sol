@@ -35,4 +35,8 @@ export class Pedido {
     getItems(){
         return this.items;
     }
+
+    getId(){
+        return this.id;
+    }
 }

@@ -31,4 +31,9 @@ export class PedidoService {
     pedido.getItems().forEach( item => this.productoRepo.actualizarStock(item.producto,item.cantidad));
   
   }
+
+  obtenerPedido(idPedido){
+    const pedido = this.pedidoRepo.findById(idPedido);
+    return pedido;
+  }
 }

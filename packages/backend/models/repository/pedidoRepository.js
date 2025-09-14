@@ -18,4 +18,11 @@ export class PedidoRepository{
     return Array.from(this.pedidos.values());
   }
 
+  findById(id) {
+    const pedido = this.pedidos.find(
+      (unPedido) => unPedido.getId() == id
+    );
+    return pedido ?? null;
+  }
+
 }
