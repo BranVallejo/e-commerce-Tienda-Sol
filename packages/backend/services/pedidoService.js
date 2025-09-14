@@ -1,3 +1,4 @@
+import { EstadoPedido } from "../models/entities/pedido/estadoPedido.js"
 
 export class PedidoService {
   constructor(pedidoRepo, productoRepo) {
@@ -36,4 +37,14 @@ export class PedidoService {
     const pedido = this.pedidoRepo.findById(idPedido);
     return pedido;
   }
+
+  cancelarPedido(pedido){
+
+    if(!this.puedeCancelarPedido(pedido)) {
+      return false
+    }
+
+    pedido.cambiarEstado(EstadoPedido.CANCELADO);
+  }
+
 }

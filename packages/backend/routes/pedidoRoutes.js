@@ -27,5 +27,9 @@ export default function pedidoRoutes(getController) {
     getController(PedidoController).eliminarPedido(req, res);
   });
 
+  router.post(pathPedido + "/cancelar/:id", (req, res) => {
+    getController(PedidoController).cancelarPedido(req, res);
+  });
+
   return router;
 }

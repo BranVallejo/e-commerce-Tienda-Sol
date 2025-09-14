@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { Pedido } from "../models/entities/pedido/pedido.js"
+
 //import express from "express";
 
 const MonedaEnum = z.enum(["PESO_ARG", "DOLAR_USA", "REAL"]); // enum de monedas
@@ -97,6 +98,33 @@ export class PedidoController {
     }
     return res.status(201).json(pedido);
 
+  }
+
+  cancelarPedido(req, res){
+    const idResult = idTransform.safeParse(req.params.id);
+
+    if (idResult.error) return res.status(400).json(idResult.error.issues);
+
+    const pedido = this.pedidoService.obtenerPedido(idResult.data);
+    if (!pedido) {
+      return res.status(404).json({
+        error: `Pedido con id: ${idResult.data} no encontrado`
+      });
+    }
+
+    if(!this.puedeCancelarPedido(pedido)){
+      return res.status(404).json({
+        error: `Pedido con id: ${idResult.data} no puede ser cancelado. ya que fue enviado`
+      });
+    }
+
+    this.pedidoService.cancelarPedido(pedido)
+
+    return res.status(200).json({mensaje: "Pedido cancelado con éxito"});
+  }
+
+  puedeCancelarPedido(pedido){
+    return pedido.getEstado() < EstadoPedido.ENVIADO //cumple si es pendiente(0), confirmado(1) o en preparacion(2)
   }
 
 }

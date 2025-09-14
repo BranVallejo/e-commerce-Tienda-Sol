@@ -39,4 +39,8 @@ export class Pedido {
     getId(){
         return this.id;
     }
+
+    getEstado(){
+        return this.estado;
+    }
 }
