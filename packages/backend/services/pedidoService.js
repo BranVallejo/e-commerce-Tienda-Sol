@@ -42,18 +42,23 @@ export class PedidoService {
     return pedido;
   }
 
-  cancelarPedido(req, res) {
-    const pedido = obtenerPedidoRepo(req);
+  puedeCancelarPedido(pedido) {
+    let estadoPedido = pedido.getEstado();
 
-    if (!this.puedeCancelarPedido(pedido)) {
-      return res.status(404).json({
-        error: `Pedido con id: ${idResult.data} no puede ser cancelado. ya que fue enviado`,
-      });
+    return (
+      estadoPedido == estadoPedido.PENDIENTE ||
+      estadoPedido == estadoPedido.CONFIRMADO ||
+      estadoPedido == estadoPedido.EN_PREPARACION
+    );
+  }
+
+  cancelarPedido(pedido){
+
+    if(!this.puedeCancelarPedido(pedido)) {
+      return false
     }
 
-    this.pedidoService.cancelarPedido(pedido);
-
-    return res.status(200).json({ mensaje: "Pedido cancelado con éxito" });
+    pedido.cambiarEstado(EstadoPedido.CANCELADO);
   }
 
   puedeEnviarPedido(pedido) {

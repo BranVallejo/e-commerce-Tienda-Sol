@@ -126,17 +126,11 @@ export class PedidoController {
       });
     }
 
-    if(!this.puedeCancelarPedido(pedido)){
-      return res.status(404).json({
-        error: `Pedido con id: ${idResult.data} no puede ser cancelado. ya que fue enviado`
-      });
-    }
-
     this.pedidoService.cancelarPedido(pedido)
 
     return res.status(200).json({mensaje: "Pedido cancelado con éxito"});
   }
-  
+
   marcarEnviado(req, res) {
     const idResult = idTransform.safeParse(req.params.id);
 
