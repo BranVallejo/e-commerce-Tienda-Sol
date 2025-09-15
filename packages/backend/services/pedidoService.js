@@ -56,14 +56,6 @@ export class PedidoService {
     return res.status(200).json({ mensaje: "Pedido cancelado con éxito" });
   }
 
-  cancelarPedido(pedido) {
-    if (!this.puedeCancelarPedido(pedido)) {
-      return false;
-    }
-
-    pedido.cambiarEstado(EstadoPedido.CANCELADO);
-  }
-
   puedeEnviarPedido(pedido) {
     const items = pedido.getItems() || [];
 
