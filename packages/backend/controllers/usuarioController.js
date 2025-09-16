@@ -52,9 +52,4 @@ export class UsuarioController {
     res.status(201).json(this.usuarioService.historialPedidos(idResult.data));
   }
 
-  marcarPedidoEnviado(req, res){
-    
-
-
-  }
 }

@@ -24,6 +24,7 @@ app.use(
   })
 );
 
+// health check
 app.get("/hello", (req, res) => {
   res.json({ message: "hello world" });
 });
