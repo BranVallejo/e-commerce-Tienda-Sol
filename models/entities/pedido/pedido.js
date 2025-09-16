@@ -1,7 +1,7 @@
 import { Usuario } from "../usuario/usuario.js"; 
 import { EstadoPedido } from "./estadoPedido.js";
 import { Moneda } from "../moneda.js";
-import { ItemPedido } from  "./itemPedido.js";
+import { ItemPedido } from "./itemPedido.js";
 import { DireccionEntrega } from "./direccionEntrega.js";
 import { CambioEstadoPedido } from "./cambioEstadoPedido.js";
 
