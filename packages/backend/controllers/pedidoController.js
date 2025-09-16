@@ -126,6 +126,12 @@ export class PedidoController {
       });
     }
 
+    if(!this.pedidoService.puedeCancelarPedido(pedido)) {
+        return res.status(400).json({
+            error: `Pedido con id: ${idResult.data} no puede ser cancelado, porque el estado es ${pedido.getEstado()}`
+        });
+    }
+
     this.pedidoService.cancelarPedido(pedido)
 
     return res.status(200).json({mensaje: "Pedido cancelado con éxito"});

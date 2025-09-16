@@ -53,11 +53,6 @@ export class PedidoService {
   }
 
   cancelarPedido(pedido){
-
-    if(!this.puedeCancelarPedido(pedido)) {
-      return false
-    }
-
     pedido.cambiarEstado(EstadoPedido.CANCELADO);
   }
 
