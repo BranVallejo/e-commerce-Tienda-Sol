@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="27360920-9b69-487d-860f-a6c2d7ae6744" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/pedidoController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/pedidoController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/productoController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/productoController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/entities/producto/producto.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/entities/producto/producto.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/repository/pedidoRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/repository/pedidoRepository.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/repository/productoRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/repository/productoRepository.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/productoRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/productoRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/entities/pedido/pedido.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/entities/pedido/pedido.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/pedidoService.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/pedidoService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -62,7 +57,7 @@
       <option name="presentableId" value="Default" />
       <updated>1758077806638</updated>
       <workItem from="1758077808012" duration="2893000" />
-      <workItem from="1758080724261" duration="1315000" />
+      <workItem from="1758080724261" duration="3513000" />
     </task>
     <servers />
   </component>

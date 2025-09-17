@@ -16,7 +16,7 @@ export class Pedido {
         this.direccionEntrega = direccionEntrega;
         this.estado = EstadoPedido.PENDIENTE;
         this.fechaCreacion = new Date();
-        this.historialEstados = [EstadoPedido.PENDIENTE]
+        this.historialEstados = []
     }
 
     cambiarEstado(estado) {

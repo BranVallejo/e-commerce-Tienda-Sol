@@ -22,7 +22,6 @@ const direccionEntregaSchema = z.object({
 const itemPedido = z.object({
   producto: z.number().int().nonnegative(),
   cantidad: z.number().int().nonnegative()
-    //saque el item pedido, se calcula solo
 });
 
 const pedidoSchema = z.object({
@@ -110,16 +109,6 @@ export class PedidoController {
     return res.status(201).json(pedido);
   }
 
-  puedeCancelarPedido(pedido) {
-    let estadoPedido = pedido.getEstado();
-
-    return (
-      estadoPedido == estadoPedido.PENDIENTE ||
-      estadoPedido == estadoPedido.CONFIRMADO ||
-      estadoPedido == estadoPedido.EN_PREPARACION
-    );
-  }
-
   cancelarPedido(req, res){
     const idResult = idTransform.safeParse(req.params.id);
 
@@ -158,7 +147,7 @@ export class PedidoController {
 
     if (!this.pedidoService.puedeEnviarPedido(pedido)) {
       return res.status(404).json({
-        error: `Pedido con id: ${idResult.data} no puede ser enviado. Contiene productos de distintos vendedores`,
+        error: `Pedido con id: ${idResult.data} no puede ser enviado.`,
       });
     }
 

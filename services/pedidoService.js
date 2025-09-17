@@ -46,34 +46,37 @@ export class PedidoService {
     return pedido;
   }
 
-  puedeCancelarPedido(pedido) {
-    let estadoPedido = pedido.getEstado();
+    puedeCancelarPedido(pedido) {
+        const estadosPermitidos = [
+            EstadoPedido.PENDIENTE,
+            EstadoPedido.CONFIRMADO,
+            EstadoPedido.EN_PREPARACION
+        ];
+        return estadosPermitidos.includes(pedido.getEstado());
+    }
 
-    return (
-      estadoPedido == estadoPedido.PENDIENTE ||
-      estadoPedido == estadoPedido.CONFIRMADO ||
-      estadoPedido == estadoPedido.EN_PREPARACION
-    );
-  }
-
-  cancelarPedido(pedido){
+    cancelarPedido(pedido){
     pedido.cambiarEstado(EstadoPedido.CANCELADO);
   }
 
   puedeEnviarPedido(pedido) {
-    const items = pedido.getItems() || [];
 
-    if (items.length === 0) return false;
+      const items = pedido.getItems() || [];
 
-    const primerProducto = this.productoRepo.findById(items[0]?.getProducto());
-    if (!primerProducto) return false;
+      const estadosPermitidos = [
+          EstadoPedido.PENDIENTE,
+          EstadoPedido.CONFIRMADO,
+          EstadoPedido.EN_PREPARACION
+      ];
 
-    const idPrimerVendedor = primerProducto.getVendedorID();
+      const productos = items.map((item) => this.productoRepo.findById(item.getProducto()));
 
-    return items.every((itemPedido) => {
-      const producto = this.productoRepo.findById(itemPedido?.getProducto());
-      return producto?.getVendedorID() === idPrimerVendedor;
-    });
+      return (
+          items.length > 0 &&
+          !productos.some((p) => !p) &&
+          estadosPermitidos.includes(pedido.getEstado()) &&
+          productos.every((p) => p.getVendedorID() === productos[0].getVendedorID())
+      );
   }
 
   enviarPedido(pedido) {
