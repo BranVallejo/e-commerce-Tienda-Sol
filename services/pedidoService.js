@@ -29,7 +29,7 @@ export class PedidoService {
     return pedido
       .getItems()
       .every((item) =>
-        this.productoRepo.hayStockProducto(item.producto, item.cantidad)
+        this.hayStockProducto(item.producto, item.cantidad)
       );
   }
 
@@ -40,6 +40,21 @@ export class PedidoService {
         this.productoRepo.actualizarStock(item.producto, item.cantidad)
       );
   }
+
+    hayStockProducto(id, cantidad) {
+        const unProducto = this.productoRepo.findById(id);
+        if (unProducto === null) {
+            throw new Error(`El producto de id ${id} no existe como producto`);
+        }
+
+        if (unProducto.stock < cantidad) {
+            throw new Error(
+                `El producto ${unProducto.getTitulo()} tiene un stock inferior, ${unProducto.getStock()}, a la cantidad solicitada, ${cantidad}`
+            );
+        }
+
+        return true;
+    }
 
   obtenerPedido(idPedido) {
     const pedido = this.pedidoRepo.findById(idPedido);

@@ -70,42 +70,45 @@ const producto = {
 // Response esperado de pedido
 
 
-const pedido =
-    {
-        id: 1,
-        comprador: 1,
-        items: [
-            { producto: 1, cantidad: 2, precioUnitario: 35000 }
-        ],
-        total: 70000,
-        moneda: "PESO_ARG",
-        direccionEntrega: {
-            calle: "Av. Siempre Viva",
-            altura: "742",
-            piso: "",
-            departamento: "B",
-            codigoPostal: "1414",
-            ciudad: "Buenos Aires",
-            provincia: "Buenos Aires",
-            pais: "Argentina",
-            lat: "-34.6037"
+const pedidoResponse = {
+    data:{
+            id: 1,
+            comprador: 1,
+            items: [
+                {producto: 1, cantidad: 2, precioUnitario: 35000}
+            ],
+            total: 70000,
+            moneda: "PESO_ARG",
+            direccionEntrega: {
+                calle: "Av. Siempre Viva",
+                altura: "742",
+                piso: "",
+                departamento: "B",
+                codigoPostal: "1414",
+                ciudad: "Buenos Aires",
+                provincia: "Buenos Aires",
+                pais: "Argentina",
+                lat: "-34.6037"
+            },
+            estado: 0,
+            fechaCreacion: new Date(),
+            historialEstados: []
         },
-        estado: 0,
-        fechaCreacion: new Date(),
-        historialEstados: []
-    }
+        status: 201
+}
+
 
 const repoProducto = {
     findById: jest.fn().mockReturnValue(producto),
     getPrecio: jest.fn().mockReturnValue(35000),
-    hayStockProducto: jest.fn().mockReturnValue(), //Agregar lógica
     actualizarStock: jest.fn().mockReturnValue(), //Agregar lógica
-    create: jest.fn().mockReturnValue(pedido)
+    //create: jest.fn().mockReturnValue(pedidoResponse.data),
+    create: jest.fn().mockResolvedValue(pedidoResponse.data)
 
 };
 const repoPedido = {
-    crearPedido: jest.fn().mockResolvedValue(pedido),
-    getPedidos: jest.fn().mockResolvedValue([pedido])
+    create: jest.fn().mockResolvedValue(pedidoResponse.data),
+    getPedidos: jest.fn().mockResolvedValue([pedidoResponse.data])
 
 };
 
@@ -121,34 +124,36 @@ beforeEach(() => {
     };
 });
 
+
 test('Crea un pedido exitosamente', async () => {
 
     await pedidoController.crearPedido(reqPedido, res);
-    expect(res.json).toHaveBeenCalledWith(
-        expect.objectContaining({
-            id: 1,
-            comprador: 1,
-            total: 70000,
-            moneda: "PESO_ARG",
-            direccionEntrega: expect.objectContaining({
-                calle: "Av. Siempre Viva",
-                ciudad: "Buenos Aires"
-            }),
-            items: expect.arrayContaining([
-                expect.objectContaining({
-                    producto: 1,
-                    cantidad: 2,
-                    precioUnitario: 35000
-                })
-            ]),
-            estado: 0,
-            fechaCreacion: expect.any(Date), // o expect.any(String), según tu modelo
-            historialEstados: []
-        })
-    );
-    expect(res.status).toHaveBeenCalledWith(201);
+
+    // Creamos un objeto "resultado" como si fuese el res final
+    const resultado = {
+        status: res.status.mock.calls[0][0], // primer argumento de la primera llamada a status()
+        data: res.json.mock.calls[0][0]      // primer argumento de la primera llamada a json()
+    };
+
+    // Comparamos usando expect.any(Date) para evitar fallo por fecha
+    expect(resultado).toEqual({
+        status: 201,
+        data: {
+            ...pedidoResponse.data,
+            fechaCreacion: expect.any(Date) // acepta cualquier fecha válida
+        }
+    });
 });
 
-test('test test', () => {
-    expect(true).toBe(true);
-})
+// Por qué se usa toHaveBeenCalledWith() en lugar de toEquals
+test('Crea un pedido exitosamente 2', async () => {
+    await pedidoController.crearPedido(reqPedido, res);
+
+    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.json).toHaveBeenCalledWith({
+        ...pedidoResponse.data,
+        fechaCreacion: expect.any(Date)
+    });
+});
+
+

@@ -9,6 +9,12 @@
       <change beforePath="$PROJECT_DIR$/tests/pedido.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pedido.test.js" afterDir="false" />
     </list>
     <list id="a08b5a08-a0fb-4bbc-9180-e8582d959220" name="Changes by Amir" comment="">
+      <change beforePath="$PROJECT_DIR$/controllers/pedidoController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/pedidoController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/pedido.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pedido.test.js" afterDir="false" />
+    </list>
+    <list id="f6324e0c-6106-4ee3-b353-738a49673d94" name="Changes by gbolocco" comment="">
+      <change beforePath="$PROJECT_DIR$/models/repository/productoRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/repository/productoRepository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/pedidoService.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/pedidoService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/pedido.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pedido.test.js" afterDir="false" />
     </list>
     <list id="e297941e-a81e-4233-94b6-6829570f9137" name="Changes by joaqu" comment="" />
@@ -36,8 +42,14 @@
   <component name="LineStatusTrackerManager">
     <file path="$PROJECT_DIR$/tests/pedido.test.js">
       <ranges>
-        <range start1="49" end1="73" start2="49" end2="68" changelist="27360920-9b69-487d-860f-a6c2d7ae6744" />
-        <range start1="104" end1="107" start2="99" end2="102" changelist="a08b5a08-a0fb-4bbc-9180-e8582d959220" />
+        <range start1="72" end1="96" start2="72" end2="99" changelist="a08b5a08-a0fb-4bbc-9180-e8582d959220" />
+        <range start1="100" end1="101" start2="103" end2="103" changelist="f6324e0c-6106-4ee3-b353-738a49673d94" />
+        <range start1="102" end1="103" start2="104" end2="106" changelist="a08b5a08-a0fb-4bbc-9180-e8582d959220" />
+        <range start1="106" end1="108" start2="109" end2="111" changelist="a08b5a08-a0fb-4bbc-9180-e8582d959220" />
+        <range start1="123" end1="123" start2="126" end2="127" changelist="f6324e0c-6106-4ee3-b353-738a49673d94" />
+        <range start1="126" end1="149" start2="130" end2="145" changelist="27360920-9b69-487d-860f-a6c2d7ae6744" />
+        <range start1="151" end1="151" start2="147" end2="159" changelist="27360920-9b69-487d-860f-a6c2d7ae6744" />
+        <range start1="154" end1="154" start2="162" end2="163" changelist="f6324e0c-6106-4ee3-b353-738a49673d94" />
       </ranges>
     </file>
   </component>
@@ -49,30 +61,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Jest.Crea un pedido exitosamente (1).executor&quot;: &quot;Run&quot;,
-    &quot;Jest.Crea un pedido exitosamente (2).executor&quot;: &quot;Run&quot;,
-    &quot;Jest.Crea un pedido exitosamente.executor&quot;: &quot;Run&quot;,
-    &quot;Jest.pedido_test2.js.executor&quot;: &quot;Run&quot;,
-    &quot;Jest.prueba.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;/home/gbolocco/Desktop/dds/2025-2c-backend-grupo-09/node_modules/jest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/snap/webstorm/509/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Jest.Crea un pedido exitosamente (1).executor": "Run",
+    "Jest.Crea un pedido exitosamente (2).executor": "Run",
+    "Jest.Crea un pedido exitosamente.executor": "Run",
+    "Jest.pedido_test2.js.executor": "Run",
+    "Jest.prueba.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "/home/gbolocco/Desktop/dds/2025-2c-backend-grupo-09/node_modules/jest",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/tests" />
@@ -164,6 +176,8 @@
       <workItem from="1758077808012" duration="2893000" />
       <workItem from="1758080724261" duration="6159000" />
       <workItem from="1758123091541" duration="9401000" />
+      <workItem from="1758135590669" duration="118000" />
+      <workItem from="1758135772475" duration="4126000" />
     </task>
     <servers />
   </component>

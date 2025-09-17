@@ -74,7 +74,7 @@ export class PedidoController {
     );
 
     this.pedidoService.crearPedido(nuevoPedido);
-    res.status(201).json(nuevoPedido);
+    return res.status(201).json(nuevoPedido);
   }
 
   //Brandon, por qué aceptas req como parametro si no lo usas?

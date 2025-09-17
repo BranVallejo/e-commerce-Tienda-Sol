@@ -66,21 +66,6 @@ export class ProductoRepository {
     );
   }
 
-  hayStockProducto(id, cantidad) {
-    const unProducto = this.findById(id);
-    if (unProducto === null) {
-      throw new Error(`El producto de id ${id} no existe como producto`);
-    }
-
-    if (unProducto.getStock() < cantidad) {
-      throw new Error(
-        `El producto ${unProducto.getTitulo()} tiene un stock inferior, ${unProducto.getStock()}, a la cantidad solicitada, ${cantidad}`
-      );
-    }
-
-    return true;
-  }
-
   actualizarStock(id_item, cantidad_comprada){
     const unProducto = this.findById(id_item);
     
