@@ -1,14 +1,14 @@
 import { Producto } from "../producto/producto.js";
 
 export class ItemPedido {
-    constructor(producto, cantidad, precioUnitario) {
-        this.producto = producto;
+    constructor(productoID, cantidad, precioUnitario) {
+        this.productoID = productoID;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
     }
 
     getProducto(){
-        return this.producto;
+        return this.productoID;
     }
 
     getCantidad(){

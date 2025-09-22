@@ -1,159 +1,118 @@
-import { PedidoService} from "../services/pedidoService.js";
-import { PedidoController } from "../controllers/pedidoController.js";
-import { jest } from '@jest/globals';
+import {PedidoService} from "../services/pedidoService.js";
+import {jest} from '@jest/globals';
+import {ItemPedido} from "../models/entities/pedido/itemPedido.js";
+import {DireccionEntrega} from "../models/entities/pedido/direccionEntrega.js";
+import {Producto} from "../models/entities/producto/producto.js";
+import {Categoria} from "../models/entities/producto/categoria.js";
+import {Pedido} from "../models/entities/pedido/pedido.js";
 
-// Request de Producto
-const reqProducto = {
-        titulo: "Camiseta Deportiva",
-        descripcion: "Camiseta de algodón de alta calidad para entrenamiento",
-        precio: 1200,
-        moneda: "ARS",
-        stock: 50,
-        fotos: [
-            "https://example.com/foto1.jpg",
-            "https://example.com/foto2.jpg"
+const direccionDeEntregaGlobal = new DireccionEntrega(
+    "Av. Siempre Viva",
+    "742",
+    "",
+    "B",
+    "1414",
+    "Merlo",
+    "Buenos Aires",
+    "Argentina",
+    "-34.6037",
+    "-34.6037")
+
+function productoConStock(stockDeseado) {
+    return new Producto(
+        1,
+        "Zapatillas deportivas",
+        "Zapatillas de running, talle 42, color azul",
+        [
+            new Categoria("deporte"),
+            new Categoria("calzado")
         ],
-        activo: true,
-        categorias: [
-            { nombre: "Ropa Deportiva" },
-            { nombre: "Camisetas" }
+        35000,
+        "Chelines",
+        stockDeseado,
+        [
+            "https://example.com/img/zapatillas1.jpg",
+            "https://example.com/img/zapatillas2.jpg"
         ],
-        vendedor: 1
-};
+        true
+    );
+}
 
-const reqPedido = {
-    body: {
-        "comprador": 1,
-        "items": [
-            {
-                "producto": 1,
-                "cantidad": 2
-            }
-        ],
-        "moneda": "PESO_ARG",
-        "direccionEntrega": {
-            "calle": "Av. Siempre Viva",
-            "altura": "742",
-            "piso": "",
-            "departamento": "B",
-            "codigoPostal": "1414",
-            "ciudad": "Buenos Aires",
-            "provincia": "Buenos Aires",
-            "pais": "Argentina",
-            "lat": "-34.6037",
-            "lon": "-58.3816"
-        }
-    }
-};
-
-// Response esperado de producto
-const producto = {
-    id: 1,
-    vendedorID: 1,
-    titulo: "Zapatillas deportivas",
-    descripcion: "Zapatillas de running, talle 42, color azul",
-    categorias: [
-        { nombre: "deporte" },
-        { nombre: "calzado" }
-    ],
-    precio: 35000,
-    moneda: "PESO_ARG",
-    stock: 20,
-    fotos: [
-        "https://example.com/img/zapatillas1.jpg",
-        "https://example.com/img/zapatillas2.jpg"
-    ],
-    activo: true
-};
-
-
-// Response esperado de pedido
-
-
-const pedidoResponse = {
-    data:{
-            id: 1,
-            comprador: 1,
-            items: [
-                {producto: 1, cantidad: 2, precioUnitario: 35000}
-            ],
-            total: 70000,
-            moneda: "PESO_ARG",
-            direccionEntrega: {
-                calle: "Av. Siempre Viva",
-                altura: "742",
-                piso: "",
-                departamento: "B",
-                codigoPostal: "1414",
-                ciudad: "Buenos Aires",
-                provincia: "Buenos Aires",
-                pais: "Argentina",
-                lat: "-34.6037"
-            },
-            estado: 0,
-            fechaCreacion: new Date(),
-            historialEstados: []
-        },
-        status: 201
+function pedidoConItemPedido(itemDeseado) {
+    return new Pedido(
+        1,
+        [itemDeseado],
+        2000,
+        "Chelines",
+        direccionDeEntregaGlobal
+    );
 }
 
 
-const repoProducto = {
-    findById: jest.fn().mockReturnValue(producto),
-    getPrecio: jest.fn().mockReturnValue(35000),
-    actualizarStock: jest.fn().mockReturnValue(), //Agregar lógica
-    //create: jest.fn().mockReturnValue(pedidoResponse.data),
-    create: jest.fn().mockResolvedValue(pedidoResponse.data)
+describe("PedidoService", () => {
+    let pedidoService;
 
-};
-const repoPedido = {
-    create: jest.fn().mockResolvedValue(pedidoResponse.data),
-    getPedidos: jest.fn().mockResolvedValue([pedidoResponse.data])
+    //Si se necesita mockear algo en todos loss test va acá
+    beforeEach(() => {
+    });
 
-};
+    test("Crear pedido de un producto con stock suficiente", async () => {
+        //      SET UP
+        const productoFinal = productoConStock(10);
+        productoFinal.setId(1);
 
-const pedidoService= new PedidoService(repoPedido, repoProducto);
-const pedidoController = new PedidoController(pedidoService);
+        const pedidoFront = pedidoConItemPedido(new ItemPedido(1, 20, 100));
 
-let res;
+        const pedidoFinal = pedidoConItemPedido(new ItemPedido(1, 20, 100));
+        pedidoFinal.setId(1);
 
-beforeEach(() => {
-    res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn()
-    };
-});
+        //      MOCKEO
+        const pedidoRepository = {
+            create: jest.fn().mockResolvedValue(pedidoFinal)
+        };
+        const productoRepository = {
+            //Si findById no devuelve un objeto rompe porque al trabajar con objetos planos no puede llamar a sus metodos como get() o set()
+            findById: jest.fn().mockImplementation(async (id) => {
+                const p = productoConStock(30);
+                p.setId(id);
+                return p;
+            }),
+            actualizar: jest.fn().mockImplementation(async (id, nuevoStock) => productoFinal)
+        };
 
+        const pedidoService = new PedidoService(pedidoRepository, productoRepository);
 
-test('Crea un pedido exitosamente', async () => {
+        //      EJECUCION
+        const pedidoResultante = await pedidoService.crearPedido(pedidoFront);
 
-    await pedidoController.crearPedido(reqPedido, res);
+        //Me aseguro que los metodos mockeados fueron llamados con los parametros correctos
+        expect(pedidoRepository.create).toHaveBeenCalledWith(pedidoFront);
+        expect(productoRepository.actualizar).toHaveBeenCalledWith(1, productoFinal);
 
-    // Creamos un objeto "resultado" como si fuese el res final
-    const resultado = {
-        status: res.status.mock.calls[0][0], // primer argumento de la primera llamada a status()
-        data: res.json.mock.calls[0][0]      // primer argumento de la primera llamada a json()
-    };
+        //Me aseguro que haya retornado lo esperado
+        expect(pedidoResultante).toEqual(pedidoFinal);
+    });
 
-    // Comparamos usando expect.any(Date) para evitar fallo por fecha
-    expect(resultado).toEqual({
-        status: 201,
-        data: {
-            ...pedidoResponse.data,
-            fechaCreacion: expect.any(Date) // acepta cualquier fecha válida
-        }
+    test("Crear pedido de un producto con stock insuficiente", async () => {
+        // SET UP
+        const productobase = productoConStock(30);
+        productobase.setId(1);
+
+        const pedidoFront = pedidoConItemPedido(new ItemPedido(1, 100, 100));
+
+        const productoRepository = {
+            findById: jest.fn().mockImplementation(async (id) => {
+                const p = productoConStock(30);
+                p.setId(id);
+                return p;
+            })
+        };
+
+        const pedidoService = new PedidoService({}, productoRepository);
+
+        // Llamo al metodo directamente en el expect porque sino se lanza el error y no alcanza a chequear el resultado
+        await expect(pedidoService.crearPedido(pedidoFront)).rejects.toThrow(
+            `El producto ${productobase.getTitulo()} tiene un stock inferior, ${productobase.getStock()}, a la cantidad solicitada, 100`
+        );
     });
 });
-
-// Por qué se usa toHaveBeenCalledWith() en lugar de toEquals
-test('Crea un pedido exitosamente 2', async () => {
-    await pedidoController.crearPedido(reqPedido, res);
-
-    expect(res.status).toHaveBeenCalledWith(201);
-    expect(res.json).toHaveBeenCalledWith({
-        ...pedidoResponse.data,
-        fechaCreacion: expect.any(Date)
-    });
-});
-
-

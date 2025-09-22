@@ -3,34 +3,34 @@ import { Producto } from "../models/entities/producto/producto.js";
 import { Categoria } from "../models/entities/producto/categoria.js";
 
 export class ProductoService {
-  constructor(productoRepo) {
-    this.productoRepo = productoRepo;
+  constructor(productoRepository) {
+    this.productoRepository = productoRepository;
   }
 
-  crearProducto(producto) {
-    return this.productoRepo.create(producto);
+    async crearProducto(producto) {
+    return await this.productoRepository.create(producto);
   }
 
   eliminarProducto(id) {
-    return this.productoRepo.delete(id);
+    return this.productoRepository.delete(id);
   }
 
   obtenerProducto(id) {
-    const producto = this.productoRepo.findById(id);
+    const producto = this.productoRepository.findById(id);
     return producto;
   }
 
   listarProductos() {
-    return this.productoRepo.getPedidos();
+    return this.productoRepository.findAll();
   }
 
-  actualizar(id, datosActualizar) {
-    const productoGuardado = this.productoRepo.actualizar(id, datosActualizar);
+  actualizar(id, productoActualizado) {
+    const productoGuardado = this.productoRepository.actualizar(id, productoActualizado);
     return productoGuardado;
   }
 
   buscarPorCategoria(categorias) {
-    const productos = this.productoRepo.buscarPorCategoria(categorias);
+    const productos = this.productoRepository.buscarPorCategoria(categorias);
     if (!productos) {
       throw new Error("No se encontró ningún producto con esas categorías");
     }
@@ -38,7 +38,7 @@ export class ProductoService {
   }
 
   // validarStock(id, cantidad) {
-  //   const producto = this.productoRepo.findById(id);
+  //   const producto = this.productoRepository.findById(id);
   //   if (!producto) {
   //     throw new Error("Producto no encontrado");
   //   }
@@ -48,12 +48,12 @@ export class ProductoService {
   // reducirStock(id, cantidad) {
   //   const producto = this.obtenerProducto(id);
   //   producto.reducirStock(cantidad);
-  //   return this.productoRepo.update(producto);
+  //   return this.productoRepository.update(producto);
   // }
 
   // aumentarStock(id, cantidad) {
   //   const producto = this.obtenerProducto(id);
   //   producto.aumentarStock(cantidad);
-  //   return this.productoRepo.update(producto);
+  //   return this.productoRepository.update(producto);
   // }
 }

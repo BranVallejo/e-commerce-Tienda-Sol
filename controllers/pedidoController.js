@@ -132,7 +132,7 @@ export class PedidoController {
     return res.status(200).json({mensaje: "Pedido cancelado con éxito"});
   }
 
-  marcarEnviado(req, res) {
+  async marcarEnviado(req, res) {
     const idResult = idTransform.safeParse(req.params.id);
 
     if (idResult.error) return res.status(400).json(idResult.error.issues);
@@ -145,7 +145,7 @@ export class PedidoController {
       });
     }
 
-    if (!this.pedidoService.puedeEnviarPedido(pedido)) {
+    if (! await this.pedidoService.puedeEnviarPedido(pedido)) {
       return res.status(404).json({
         error: `Pedido con id: ${idResult.data} no puede ser enviado.`,
       });
