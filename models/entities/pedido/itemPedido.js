@@ -7,7 +7,7 @@ export class ItemPedido {
         this.precioUnitario = precioUnitario;
     }
 
-    getProducto(){
+    getProductoID(){
         return this.productoID;
     }
 

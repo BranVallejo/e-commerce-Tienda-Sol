@@ -1,159 +1,196 @@
-import { z } from "zod";
-import { Pedido } from "../models/entities/pedido/pedido.js";
-import { ItemPedido } from "../models/entities/pedido/itemPedido.js";
+import {z} from "zod";
+import {Pedido} from "../models/entities/pedido/pedido.js";
+import {ItemPedido} from "../models/entities/pedido/itemPedido.js";
 
 //import express from "express";
 
 const MonedaEnum = z.enum(["PESO_ARG", "DOLAR_USA", "REAL"]); // enum de monedas
 
 const direccionEntregaSchema = z.object({
-  calle: z.string(),
-  altura: z.string(),
-  piso: z.string().optional(), // puede ser opcional
-  departamento: z.string().optional(), // puede ser opcional
-  codigoPostal: z.string(),
-  ciudad: z.string(),
-  provincia: z.string(),
-  pais: z.string().default("Argentina"),
-  lat: z.string().optional(),
-  lng: z.string().optional(),
+    calle: z.string(),
+    altura: z.string(),
+    piso: z.string().optional(), // puede ser opcional
+    departamento: z.string().optional(), // puede ser opcional
+    codigoPostal: z.string(),
+    ciudad: z.string(),
+    provincia: z.string(),
+    pais: z.string().default("Argentina"),
+    lat: z.string().optional(),
+    lng: z.string().optional(),
 });
 
 const itemPedido = z.object({
-  producto: z.number().int().nonnegative(),
-  cantidad: z.number().int().nonnegative()
+    producto: z.number().int().nonnegative(),
+    cantidad: z.number().int().nonnegative()
 });
 
 const pedidoSchema = z.object({
-  comprador: z.number().int().nonnegative(),
-  items: z.array(itemPedido),
-  //total: z.number().int().nonnegative(),
-  moneda: MonedaEnum.default("PESO_ARG"),
-  direccionEntrega: direccionEntregaSchema,
+    comprador: z.number().int().nonnegative(),
+    items: z.array(itemPedido),
+    //total: z.number().int().nonnegative(),
+    moneda: MonedaEnum.default("PESO_ARG"),
+    direccionEntrega: direccionEntregaSchema,
 });
 
 const idTransform = z.string().transform((val, ctx) => {
-  const num = Number(val);
-  if (isNaN(num)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: "id must be a number",
-    });
-    return z.NEVER;
-  }
-  return num;
+    const num = Number(val);
+    if (isNaN(num)) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "id must be a number",
+        });
+        return z.NEVER;
+    }
+    return num;
 });
 
 export class PedidoController {
-  constructor(pedidoService) {
-    this.pedidoService = pedidoService;
-  }
-
-  crearPedido(req, res) {
-    const result = pedidoSchema.safeParse(req.body);
-    let totalCalculado = 0;
-
-    if (result.error) {
-      return res.status(400).json(result.error.issues);
+    constructor(pedidoService) {
+        this.pedidoService = pedidoService;
     }
 
-    const itemsInstanciados = result.data.items.map(
-      (i) => {
-          let precioUnitarioActual = this.pedidoService.getPrecioUnitario(i.producto)
-          totalCalculado += precioUnitarioActual * i.cantidad;
-          return new ItemPedido(i.producto, i.cantidad, precioUnitarioActual)
-      }
-    );
+    //#############
+    //CREATE pedido
+    //#############
 
-    const nuevoPedido = new Pedido(
-      result.data.comprador,
-      itemsInstanciados,
-      totalCalculado,
-      result.data.moneda,
-      result.data.direccionEntrega
-    );
+    async crearPedido(req, res) {
+        const result = pedidoSchema.safeParse(req.body);
+        let totalCalculado = 0;
 
-    this.pedidoService.crearPedido(nuevoPedido);
-    return res.status(201).json(nuevoPedido);
-  }
+        if (result.error) {
+            return res.status(400).json(result.error.issues);
+        }
 
-  //Brandon, por qué aceptas req como parametro si no lo usas?
-  listarPedidos(req, res) {
-    try {
-      const pedidos = this.pedidoService.listarPedidos(); // devuelve directamente un array o undefined
+        const itemsInstanciados = await Promise.all(
+            result.data.items.map(async (i) => {
+                const precioUnitarioActual = await this.pedidoService.getPrecioUnitario(i.producto);
+                totalCalculado += precioUnitarioActual * i.cantidad;
+                return new ItemPedido(i.producto, i.cantidad, precioUnitarioActual);
+            })
+        );
 
-      if (!pedidos || pedidos.length === 0) {
-        return res.status(404).json({ error: "No se encontraron pedidos" });
-      }
+        const nuevoPedido = new Pedido(
+            result.data.comprador,
+            itemsInstanciados,
+            totalCalculado,
+            result.data.moneda,
+            result.data.direccionEntrega
+        );
 
-      return res.status(200).json({ pedidos });
-    } catch (error) {
-      // Captura errores inesperados, por ejemplo si la base de datos lanza un error
-      return res.status(500).json({ error: error.message || "Error interno" });
-    }
-  }
-
-  obtenerPedido(req, res) {
-    const idResult = idTransform.safeParse(req.params.id);
-
-    if (idResult.error) return res.status(400).json(idResult.error.issues);
-
-    const pedido = this.pedidoService.obtenerPedido(idResult.data);
-
-    if (!pedido) {
-      return res.status(404).json({
-        error: `Pedido con id: ${idResult.data} no encontrado`,
-      });
+        await this.pedidoService.crearPedido(nuevoPedido);
+        return res.status(201).json(nuevoPedido);
     }
 
-    return res.status(200).json(pedido);
-  }
+    //#############
+    //CREATE pedido
+    //#############
 
-  cancelarPedido(req, res){
-    const idResult = idTransform.safeParse(req.params.id);
+    //#############
+    //RETRIEVE pedido
+    //#############
 
-    if (idResult.error) return res.status(400).json(idResult.error.issues);
+    async listarPedidos(req, res) {
+        try {
+            const pedidos = await this.pedidoService.listarPedidos(); // devuelve directamente un array o undefined
 
-    const pedido = this.pedidoService.obtenerPedido(idResult.data);
-    if (!pedido) {
-      return res.status(404).json({
-        error: `Pedido con id: ${idResult.data} no encontrado`
-      });
+            if (!pedidos || pedidos.length === 0) {
+                return res.status(404).json({error: "No se encontraron pedidos"});
+            }
+
+            return res.status(200).json({pedidos});
+        } catch (error) {
+            // Captura errores inesperados, por ejemplo si la base de datos lanza un error
+            return res.status(500).json({error: error.message || "Error interno"});
+        }
     }
 
-    if(!this.pedidoService.puedeCancelarPedido(pedido)) {
-        return res.status(400).json({
-            error: `Pedido con id: ${idResult.data} no puede ser cancelado, porque el estado es ${pedido.getEstado()}`
-        });
+    async obtenerPedido(req, res) {
+        const idResult = idTransform.safeParse(req.params.id);
+
+        if (idResult.error) return res.status(400).json(idResult.error.issues);
+
+        const pedido = await this.pedidoService.obtenerPedido(idResult.data);
+
+        if (!pedido) {
+            return res.status(404).json({
+                error: `Pedido con id: ${idResult.data} no encontrado`,
+            });
+        }
+
+        return res.status(200).json(pedido);
     }
 
-    this.pedidoService.cancelarPedido(pedido)
+    //#############
+    //RETRIEVE pedido
+    //#############
 
-    return res.status(200).json({mensaje: "Pedido cancelado con éxito"});
-  }
+    //#############
+    //UPDATE pedido
+    //#############
 
-  async marcarEnviado(req, res) {
-    const idResult = idTransform.safeParse(req.params.id);
+    async cancelarPedido(req, res) {
+        const idResult = idTransform.safeParse(req.params.id);
 
-    if (idResult.error) return res.status(400).json(idResult.error.issues);
+        if (idResult.error) return res.status(400).json(idResult.error.issues);
 
-    const pedido = this.pedidoService.obtenerPedido(idResult.data);
+        const pedido = await this.pedidoService.obtenerPedido(idResult.data);
+        if (!pedido) {
+            return res.status(404).json({
+                error: `Pedido con id: ${idResult.data} no encontrado`
+            });
+        }
 
-    if (!pedido) {
-      return res.status(404).json({
-        error: `Pedido con id: ${idResult.data} no encontrado`,
-      });
+        const pedidoCancelado = await this.pedidoService.cancelarPedido(pedido);
+
+        if (!pedidoCancelado) {
+            return res.status(400).json({
+                error: `Pedido con id: ${idResult.data} no puede ser cancelado, porque el estado es ${pedido.getEstado()}`
+            });
+        }
+
+        return res.status(200).json({
+                mensaje: "Pedido cancelado con éxito",
+                pedido: pedidoCancelado
+            }
+        );
     }
 
-    if (! await this.pedidoService.puedeEnviarPedido(pedido)) {
-      return res.status(404).json({
-        error: `Pedido con id: ${idResult.data} no puede ser enviado.`,
-      });
+    async marcarEnviado(req, res) {
+        const idResult = idTransform.safeParse(req.params.id);
+
+        if (idResult.error) return res.status(400).json(idResult.error.issues);
+
+        const pedidoObtenido = await this.pedidoService.obtenerPedido(idResult.data);
+
+        if (!pedidoObtenido) {
+            return res.status(404).json({
+                error: `Pedido con id: ${idResult.data} no encontrado`,
+            });
+        }
+
+        const pedidoEnviado = await this.pedidoService.enviarPedido(pedidoObtenido);
+        if (!pedidoEnviado) {
+            return res.status(404).json({
+                error: `Pedido con id: ${idResult.data} no puede ser enviado.`,
+            });
+        }
+        return res
+            .status(200)
+            .json({
+                mensaje: "Pedido marcado como enviado con éxito",
+                pedido: pedidoEnviado
+            });
     }
 
-    this.pedidoService.enviarPedido(pedido);
-    return res
-      .status(200)
-      .json({ mensaje: "Pedido marcado como enviado con éxito" });
-  }
+    //#############
+    //UPDATE pedido
+    //#############
+
+    //#############
+    //DELETE pedido
+    //#############
+
+    //#############
+    //DELETE pedido
+    //#############
 }

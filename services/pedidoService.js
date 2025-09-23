@@ -1,17 +1,21 @@
 import {EstadoPedido} from "../models/entities/pedido/estadoPedido.js";
 
 export class PedidoService {
-    constructor(pedidoRepo, productoRepo) {
-        this.pedidoRepo = pedidoRepo;
-        this.productoRepo = productoRepo;
+    constructor(pedidoRepository, productoRepository) {
+        this.pedidoRepository = pedidoRepository;
+        this.productoRepository = productoRepository;
     }
 
     async getPrecioUnitario(productoID) {
-        return await this.productoRepo.findById(productoID).precio;
+        return await this.productoRepository.findById(productoID).precio;
     }
-
+    //#############
+    //CREATE pedido
+    //#############
     async hayStockProducto(id, cantidad) {
-        const unProducto = await this.productoRepo.findById(id);
+        const unProducto = await this.productoRepository.findById(id);
+
+        //TODO: mover el manejo de errores a la capa de controller, de esta forma no tira el 400 al usuario
         if (unProducto === null) {
             throw new Error(`El producto de id ${id} no existe como producto`);
         }
@@ -40,10 +44,10 @@ export class PedidoService {
     }
 
     async actualizarStock(id_producto, cantidad_comprada) {
-        const unProducto = await this.productoRepo.findById(id_producto);
+        const unProducto = await this.productoRepository.findById(id_producto);
         const nuevoStock = unProducto.stock - cantidad_comprada;
         unProducto.setStock(nuevoStock);
-        await this.productoRepo.actualizar(id_producto, unProducto);
+        await this.productoRepository.actualizar(id_producto, unProducto);
     }
 
     //Foreach no espera a las promesas
@@ -61,17 +65,34 @@ export class PedidoService {
 
         await this.actualizarStockProductos(pedido);
 
-        return await this.pedidoRepo.create(pedido);
+        return await this.pedidoRepository.create(pedido);
     }
 
-    listarPedidos() {
-        return this.pedidoRepo.getPedidos();
+    //#############
+    //CREATE pedido
+    //#############
+
+    //#############
+    //RETRIEVE pedido
+    //#############
+
+    async listarPedidos() {
+        return await this.pedidoRepository.getPedidos();
     }
 
-    obtenerPedido(idPedido) {
-        const pedido = this.pedidoRepo.findById(idPedido);
+
+    async obtenerPedido(idPedido) {
+        const pedido = await this.pedidoRepository.findById(idPedido);
         return pedido;
     }
+
+    //#############
+    //RETRIEVE pedido
+    //#############
+
+    //#############
+    //UPDATE pedido
+    //#############
 
     puedeCancelarPedido(pedido) {
         const estadosPermitidos = [
@@ -82,13 +103,24 @@ export class PedidoService {
         return estadosPermitidos.includes(pedido.getEstado());
     }
 
-    cancelarPedido(pedido) {
+    async cancelarPedido(pedido) {
+        if (!this.puedeCancelarPedido(pedido)) {
+            return null;
+        }
+
         pedido.cambiarEstado(EstadoPedido.CANCELADO);
+        await this.pedidoRepository.actualizar(pedido);
+        return pedido;
     }
+
 
     async puedeEnviarPedido(pedido) {
 
-        const items = pedido.getItemsPedido() || [];
+        await console.log(pedido);
+        const items = pedido.getItemsPedido();
+        if(!items){
+            return false;
+        }
 
         const estadosPermitidos = [
             EstadoPedido.PENDIENTE,
@@ -97,18 +129,29 @@ export class PedidoService {
         ];
 
         const productos = await Promise.all(
-            items.map((item) => this.productoRepo.findById(item.getProducto()))
+            items.map((item) => this.productoRepository.findById(item.getProductoID()))
         );
 
-        return (
-            items.length > 0 &&
-            !productos.some((p) => !p) &&
-            estadosPermitidos.includes(pedido.getEstado()) &&
-            productos.every((p) => p.getVendedorID() === productos[0].getVendedorID())
+        const todosExisten = productos.every((p) => p);
+        const estadoValido = estadosPermitidos.includes(pedido.getEstado());
+        const mismoVendedor = productos.every(
+            (p) => p.getVendedorID() === productos[0].getVendedorID()
         );
+
+        return todosExisten && estadoValido && mismoVendedor;
     }
 
-    enviarPedido(pedido) {
+    async enviarPedido(pedido) {
+        if (!this.puedeEnviarPedido(pedido)) {
+            return null;
+        }
+
         pedido.cambiarEstado(EstadoPedido.ENVIADO);
+        await this.pedidoRepository.actualizar(pedido);
+        return pedido;
     }
+
+    //#############
+    //UPDATE pedido
+    //#############
 }
