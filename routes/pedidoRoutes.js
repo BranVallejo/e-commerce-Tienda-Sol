@@ -24,7 +24,7 @@ export default function pedidoRoutes(getController) {
 
     // Eliminar pedido por ID
     router.delete(pathPedido + "/:id", (req, res) => {
-        getController(PedidoController).eliminarPedido(req, res);
+        getController(PedidoController).delete(req, res);
     });
 
     // Cancelar / Enviar pedido en base al ID

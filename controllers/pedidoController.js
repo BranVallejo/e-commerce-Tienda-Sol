@@ -148,6 +148,33 @@ export class PedidoController {
         });
     }
 
+    //#############
+    //UPDATE pedido
+    //#############
+
+    //#############
+    //DELETE pedido
+    //#############
+
+    async delete(req, res){
+        const idResult = idTransform.safeParse(req.params.id);
+        if (idResult.error) return res.status(400).json(idResult.error.issues);
+
+        const pedidoEliminado = await this.pedidoService.delete(idResult.data);
+        if (!pedidoEliminado) {
+            return res.status(404).json({ error: `Pedido con ID ${idResult.data} no existe` });
+        }
+
+        return res.status(200).json({
+            mensaje: `Pedido eliminado con éxito`,
+            pedido: pedidoEliminado
+        });
+    }
+
+    //#############
+    //DELETE pedido
+    //#############
+
     /*
     async cancelarPedido(req, res) {
         const idResult = idTransform.safeParse(req.params.id);
@@ -203,15 +230,4 @@ export class PedidoController {
             });
     }*/
 
-    //#############
-    //UPDATE pedido
-    //#############
-
-    //#############
-    //DELETE pedido
-    //#############
-
-    //#############
-    //DELETE pedido
-    //#############
 }

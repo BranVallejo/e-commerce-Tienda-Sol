@@ -22,6 +22,7 @@ export class PedidoService {
     //#############
     //CREATE pedido
     //#############
+
     async hayStockProducto(id, cantidad) {
         const unProducto = await this.productoRepository.findById(id);
 
@@ -85,6 +86,7 @@ export class PedidoService {
     //#############
     //RETRIEVE pedido
     //#############
+
     async listarPedidos() {
         return await this.pedidoRepository.getPedidos();
     }
@@ -181,5 +183,18 @@ export class PedidoService {
 
     //#############
     //UPDATE pedido
+    //#############
+
+    //#############
+    //DELETE pedido
+    //#############
+
+    async delete(id){
+        return await this.pedidoRepository.delete(id);
+    }
+
+
+    //#############
+    //DELETE pedido
     //#############
 }
