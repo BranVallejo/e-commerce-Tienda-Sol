@@ -10,7 +10,7 @@ export class UsuarioRepository {
     usuario.setId(this.id);
     this.id++;
     this.usuarios.push(usuario);
-    return usuario;
+    return  Promise.resolve(usuario);
   }
 
   //TODO mantener consistencia

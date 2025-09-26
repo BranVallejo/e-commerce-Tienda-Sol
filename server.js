@@ -1,5 +1,6 @@
 // server.js
 import express from "express";
+import {errorHandler} from "./Middleware/errorHandler.js";
 
 export class Server {
   constructor(app, port) {
@@ -35,6 +36,12 @@ export class Server {
       this.app.use(route(this.getController.bind(this)))
     );
   }
+
+    configureErrorHandling() {
+        this.app.use((err, req, res, next) => {
+            errorHandler(err, req, res, next);
+        });
+    }
 
   launch() {
     this.app.listen(this.port, () => {

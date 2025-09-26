@@ -1,20 +1,19 @@
-
 export class UsuarioService {
-  constructor(usuarioRepo,pedidoRepo) {
-    this.usuarioRepo = usuarioRepo;
-    this.pedidoRepo = pedidoRepo;
-  }
+    constructor(usuarioRepo, pedidoRepo) {
+        this.usuarioRepo = usuarioRepo;
+        this.pedidoRepo = pedidoRepo;
+    }
 
-  crearUsuario(usuario){
-    return this.usuarioRepo.create(usuario);
-  }
+    crearUsuario(usuario) {
+        return this.usuarioRepo.create(usuario);
+    }
 
-  findUserByID(id_user){
-    return this.usuarioRepo.findUserByID(id_user);
-  }
+    findUserByID(id_user) {
+        return this.usuarioRepo.findUserByID(id_user);
+    }
 
-  historialPedidos(id){
-    return this.pedidoRepo.historialPedidos(id);
-  }
+    historialPedidos(id) {
+        return this.pedidoRepo.historialPedidos(id);
+    }
 
 }

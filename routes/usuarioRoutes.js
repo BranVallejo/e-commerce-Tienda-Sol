@@ -8,13 +8,15 @@ export default function usuarioRoutes(getController) {
   const router = express.Router();
 
   // Crear usuario
-  router.post(pathUsuario, (req, res,next) => {
-    getController(UsuarioController).crearUsuario(req, res);
+  router.post(pathUsuario, (req, res, next) => {
+    getController(UsuarioController).crearUsuario(req, res, next);
   });
 
+
+
   //Consulta del historial de pedidos de un usuario
-  router.get(pathUsuario + "/historialPedidos/:id", (req, res) => {
-    getController(UsuarioController).historialPedidos(req, res);
+  router.get(pathUsuario + "/historialPedidos/:id", (req, res, next) => {
+    getController(UsuarioController).historialPedidos(req, res, next);
   });
 
   // pedido/enviar/:id

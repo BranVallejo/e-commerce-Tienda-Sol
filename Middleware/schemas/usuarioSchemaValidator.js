@@ -1,4 +1,6 @@
 import {z} from "zod";
+import {Usuario} from "../../models/entities/usuario/usuario.js";
+
 
 export const usuarioSchema = z.object({
     nombre: z.string().min(1, "El nombre es obligatorio"),
@@ -7,7 +9,22 @@ export const usuarioSchema = z.object({
     tipo: z.enum(["COMPRADOR", "VENDEDOR", "ADMIN"]), // podés ajustar según tus tipos
 });
 
-/**/
+export const parsearUsuario = (req) => {
+
+    const result = usuarioSchema.safeParse(req.body);
+
+    if (result.error) {
+        throw result.error;
+    }
+
+    return new Usuario(
+        result.data.nombre,
+        result.data.email,
+        result.data.telefono,
+        result.data.tipo
+    );
+}
+
 export const idTransform = z.string().transform((val, ctx) => {
     const num = Number(val);
     if (isNaN(num)) {
@@ -19,3 +36,4 @@ export const idTransform = z.string().transform((val, ctx) => {
     }
     return num;
 });
+
