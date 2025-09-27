@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="27360920-9b69-487d-860f-a6c2d7ae6744" name="Changes" comment="a">
+    <list default="true" id="27360920-9b69-487d-860f-a6c2d7ae6744" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
     </list>
     <list id="a08b5a08-a0fb-4bbc-9180-e8582d959220" name="Changes by Amir" comment="" />
-    <list id="f6324e0c-6106-4ee3-b353-738a49673d94" name="Changes by gbolocco" comment="">
-      <change beforePath="$PROJECT_DIR$/Middleware/ErrorHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/Middleware/ErrorHandler.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/usuarioController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/usuarioController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/usuarioRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/usuarioRoutes.js" afterDir="false" />
-    </list>
     <list id="e297941e-a81e-4233-94b6-6829570f9137" name="Changes by joaqu" comment="" />
     <list id="1f7e82d2-9b81-427b-b11a-e9e8036beb99" name="Changes by yo" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,15 +29,6 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/index.js">
-      <ranges>
-        <range start1="15" end1="15" start2="15" end2="16" changelist="f6324e0c-6106-4ee3-b353-738a49673d94" />
-        <range start1="30" end1="30" start2="31" end2="34" changelist="f6324e0c-6106-4ee3-b353-738a49673d94" />
-        <range start1="58" end1="58" start2="62" end2="64" changelist="27360920-9b69-487d-860f-a6c2d7ae6744" />
-      </ranges>
-    </file>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2

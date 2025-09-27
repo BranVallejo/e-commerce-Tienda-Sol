@@ -197,4 +197,8 @@ export class PedidoService {
     //#############
     //DELETE pedido
     //#############
+
+    historialPedido(idPedido) {
+        return this.pedidoRepository.historialPedidos(idPedido);
+    }
 }

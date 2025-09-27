@@ -25,15 +25,10 @@ export const parsearUsuario = (req) => {
     );
 }
 
-export const idTransform = z.string().transform((val, ctx) => {
-    const num = Number(val);
-    if (isNaN(num)) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "id must be a number",
-        });
-        return z.NEVER;
+export const parsearId = (req) => {
+    const result= parseInt(req.params.id, 10);
+    if (result.error) {
+        throw result.error;
     }
-    return num;
-});
-
+    return result;
+}

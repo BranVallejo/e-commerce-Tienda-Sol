@@ -52,7 +52,7 @@ export class PedidoRepository {
     }
 
     historialPedidos(id) {
-        return this.getPedidos().filter(pedido => pedido.getComprador() === id);
+        return Promise.resolve(this.getPedidos().filter(pedido => pedido.getComprador() === id));
     }
 
 }

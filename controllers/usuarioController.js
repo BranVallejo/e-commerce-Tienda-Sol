@@ -1,6 +1,6 @@
 import {z} from "zod";
 import {Usuario} from "../models/entities/usuario/usuario.js";
-import {parsearUsuario, idTransform} from "../Middleware/schemas/usuarioSchemaValidator.js";
+import {parsearUsuario, idTransform, parsearId} from "../Middleware/schemas/usuarioSchemaValidator.js";
 import {asyncHandler} from "../Middleware/asyncHandler.js";
 
 
@@ -14,17 +14,15 @@ export class UsuarioController {
 
         const nuevoUsuario = parsearUsuario(req)
         this.usuarioService.crearUsuario(nuevoUsuario)
-            .then(usuarioCreado => {
-               return res.status(201).json(usuarioCreado);
-            })
-            .catch(error => {
-                next(error);
-            })
-
+        .then(usuarioCreado => {
+            return res.status(201).json(usuarioCreado);
+        })
+        .catch(error => {
+            next(error);
+        })
     }
 
     historialPedidos = asyncHandler(async (req, res) => {
-        const userId = parseInt(req.params.userId, 10);
         const idResult = idTransform.safeParse(req.params.id);
 
         if (idResult.error) {
@@ -35,19 +33,14 @@ export class UsuarioController {
     });
 
     historialPedidos(req, res, next) {
-        const idResult = idTransform.safeParse(req.params.id);
+        const idResult = parsearId(req);
+        this.usuarioService.historialPedidos(idResult.data)
+        .then(historial => {
+            return res.status(200).json(historial);
+        })
+        .catch(error => {
+            next(error);
+        })
     }
-}
 
-/*
-        Promise.resolve()
-            .then(() => {
-                const nuevoUsuario = parsearUsuario(req)
-                return this.usuarioService.crearUsuario(nuevoUsuario);
-            })
-            .then(usuarioCreado => {
-                res.status(201).json(usuarioCreado);
-            })
-            .catch(error => {
-                next(error);
-            });*/
+}

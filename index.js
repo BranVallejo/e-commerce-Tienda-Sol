@@ -50,7 +50,7 @@ server.setController(PedidoController, pedidoController);
 
 // usuario
 const usuarioRepo = new UsuarioRepository();
-const usuarioService = new UsuarioService(usuarioRepo, pedidoRepo);
+const usuarioService = new UsuarioService(usuarioRepo, pedidoService);
 const usuarioController = new UsuarioController(usuarioService);
 
 server.setController(UsuarioController, usuarioController);

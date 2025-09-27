@@ -1,7 +1,7 @@
 export class UsuarioService {
-    constructor(usuarioRepo, pedidoRepo) {
+    constructor(usuarioRepo, pedidoService) {
         this.usuarioRepo = usuarioRepo;
-        this.pedidoRepo = pedidoRepo;
+        this.pedidoService = pedidoService;
     }
 
     crearUsuario(usuario) {
@@ -13,7 +13,7 @@ export class UsuarioService {
     }
 
     historialPedidos(id) {
-        return this.pedidoRepo.historialPedidos(id);
+        return this.pedidoService.historialPedido(id);
     }
 
 }
