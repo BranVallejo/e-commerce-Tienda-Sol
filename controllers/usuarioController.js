@@ -24,7 +24,7 @@ export class UsuarioController {
 
     historialPedidos(req, res, next) {
         const idResult = parsearId(req);
-        this.usuarioService.historialPedidos(idResult.data)
+        this.usuarioService.historialPedidos(idResult)
         .then(historial => {
             return res.status(200).json(historial);
         })

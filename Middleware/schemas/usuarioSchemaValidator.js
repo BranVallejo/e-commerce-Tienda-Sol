@@ -26,7 +26,9 @@ export const parsearUsuario = (req) => {
 }
 
 export const parsearId = (req) => {
+    console.log("req: "+req.params.id);
     const result= parseInt(req.params.id, 10);
+    console.log("parseint: "+result);
     if (result.error) {
         throw result.error;
     }
