@@ -1,8 +1,4 @@
-import {z} from "zod";
-import {Usuario} from "../models/entities/usuario/usuario.js";
 import {usuarioSchema} from "../Middleware/schemas/usuarioSchema.js";
-import {asyncHandler} from "../Middleware/asyncHandler.js";
-
 
 export class UsuarioController {
 

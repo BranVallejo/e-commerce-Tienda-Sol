@@ -1,13 +1,13 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import { ProductoRepository } from "./models/repository/productoRepository.js";
+import { ProductoRepository } from "./repository/productoRepository.js";
 import { ProductoService } from "./services/productoService.js";
 import { ProductoController } from "./controllers/productoController.js";
-import { PedidoRepository } from "./models/repository/pedidoRepository.js";
+import { PedidoRepository } from "./repository/pedidoRepository.js";
 import { PedidoService } from "./services/pedidoService.js";
 import { PedidoController } from "./controllers/pedidoController.js";
-import { UsuarioRepository } from "./models/repository/usuarioRepository.js";
+import { UsuarioRepository } from "./repository/usuarioRepository.js";
 import { UsuarioService } from "./services/usuarioService.js";
 import { UsuarioController } from "./controllers/usuarioController.js";
 

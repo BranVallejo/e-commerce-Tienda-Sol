@@ -1,4 +1,4 @@
-import { Usuario } from "../entities/usuario/usuario.js";
+import { Usuario } from "../models/entities/usuario/usuario.js";
 
 export class UsuarioRepository {
   constructor() {

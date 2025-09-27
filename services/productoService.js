@@ -1,59 +1,54 @@
-import { ProductoRepository } from "../models/repository/productoRepository.js";
-import { Producto } from "../models/entities/producto/producto.js";
-import { Categoria } from "../models/entities/producto/categoria.js";
-
 export class ProductoService {
-  constructor(productoRepository) {
-    this.productoRepository = productoRepository;
-  }
-
-    async crearProducto(producto) {
-    return await this.productoRepository.create(producto);
-  }
-
-  eliminarProducto(id) {
-    return this.productoRepository.delete(id);
-  }
-
-  obtenerProducto(id) {
-    const producto = this.productoRepository.findById(id);
-    return producto;
-  }
-
-  listarProductos() {
-    return this.productoRepository.findAll();
-  }
-
-  actualizar(id, productoActualizado) {
-    const productoGuardado = this.productoRepository.actualizar(id, productoActualizado);
-    return productoGuardado;
-  }
-
-  buscarPorCategoria(categorias) {
-    const productos = this.productoRepository.buscarPorCategoria(categorias);
-    if (!productos) {
-      throw new Error("No se encontró ningún producto con esas categorías");
+    constructor(productoRepository) {
+        this.productoRepository = productoRepository;
     }
-    return productos;
-  }
 
-  // validarStock(id, cantidad) {
-  //   const producto = this.productoRepository.findById(id);
-  //   if (!producto) {
-  //     throw new Error("Producto no encontrado");
-  //   }
-  //   return producto.getStock() >= cantidad;
-  // }
+    crearProducto(producto) {
+        return this.productoRepository.create(producto);
+    }
 
-  // reducirStock(id, cantidad) {
-  //   const producto = this.obtenerProducto(id);
-  //   producto.reducirStock(cantidad);
-  //   return this.productoRepository.update(producto);
-  // }
+    eliminarProducto(id) {
+        return this.productoRepository.delete(id);
+    }
 
-  // aumentarStock(id, cantidad) {
-  //   const producto = this.obtenerProducto(id);
-  //   producto.aumentarStock(cantidad);
-  //   return this.productoRepository.update(producto);
-  // }
+    obtenerProducto(id) {
+        return this.productoRepository.findById(id);
+    }
+
+    listarProductos() {
+        return this.productoRepository.findAll();
+    }
+
+    actualizar(id, productoActualizado) {
+        const productoGuardado = this.productoRepository.actualizar(id, productoActualizado);
+        return productoGuardado;
+    }
+
+    buscarPorCategoria(categorias) {
+        const productos = this.productoRepository.buscarPorCategoria(categorias);
+        if (!productos) {
+            throw new Error("No se encontró ningún producto con esas categorías");
+        }
+        return productos;
+    }
+
+    // validarStock(id, cantidad) {
+    //   const producto = this.productoRepository.findById(id);
+    //   if (!producto) {
+    //     throw new Error("Producto no encontrado");
+    //   }
+    //   return producto.getStock() >= cantidad;
+    // }
+
+    // reducirStock(id, cantidad) {
+    //   const producto = this.obtenerProducto(id);
+    //   producto.reducirStock(cantidad);
+    //   return this.productoRepository.update(producto);
+    // }
+
+    // aumentarStock(id, cantidad) {
+    //   const producto = this.obtenerProducto(id);
+    //   producto.aumentarStock(cantidad);
+    //   return this.productoRepository.update(producto);
+    // }
 }

@@ -1,28 +1,25 @@
-import {Producto} from "../entities/producto/producto.js";
-import {Categoria} from "../entities/producto/categoria.js";
-
 export class ProductoRepository {
     constructor() {
         this.productos = [];
         this.id = 1;
     }
 
-    async create(prod) {
+    create(prod) {
         prod.setId(this.id);
         this.id++;
         this.productos.push(prod);
-        return prod;
+        return Promise.resolve(prod);
     }
 
-    async findById(id) {
+    findById(id) {
         const producto = this.productos.find(
             (unProducto) => unProducto.getId() === id
         );
-        return producto ?? null;
+        return Promise.resolve(producto);
     }
 
     findAll() {
-        return this.productos;
+        return Promise.resolve(this.productos);
     }
 
     delete(id) {
