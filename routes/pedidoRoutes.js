@@ -13,23 +13,23 @@ export default function pedidoRoutes(getController) {
     });
 
     // Listar todos los pedidos
-    router.get(pathPedido, (req, res) => {
-        getController(PedidoController).listarPedidos(req, res);
+    router.get(pathPedido, (req, res, next) => {
+        getController(PedidoController).listarPedidos(req, res, next);
     });
 
     // Obtener pedido por ID
-    router.get(pathPedido + "/:id", (req, res) => {
-        getController(PedidoController).obtenerPedido(req, res);
+    router.get(pathPedido + "/:id", (req, res, next) => {
+        getController(PedidoController).obtenerPedido(req, res, next);
     });
 
     // Eliminar pedido por ID
-    router.delete(pathPedido + "/:id", (req, res) => {
-        getController(PedidoController).eliminarPedido(req, res);
+    router.delete(pathPedido + "/:id", (req, res, next) => {
+        getController(PedidoController).eliminarPedido(req, res, next);
     });
 
     // Cancelar / Enviar pedido en base al ID
-    router.patch(pathPedido + "/:id", (req, res) => {
-        getController(PedidoController).actualizarEstado(req, res);
+    router.patch(pathPedido + "/:id", (req, res, next) => {
+        getController(PedidoController).actualizarEstado(req, res, next);
     });
 
 

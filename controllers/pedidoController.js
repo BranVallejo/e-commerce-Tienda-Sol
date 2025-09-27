@@ -1,6 +1,7 @@
 import {Pedido} from "../models/entities/pedido/pedido.js";
 import {ItemPedido} from "../models/entities/pedido/itemPedido.js";
-import {pedidoSchema, estadoSchema } from "../middleware/schemas/pedidoSchema.js";
+import {pedidoSchema } from "../middleware/schemas/pedidoSchema.js";
+import { id } from "zod/locales";
 
 
 export class PedidoController {
@@ -60,17 +61,19 @@ export class PedidoController {
 
         const idResult = pedidoSchema.parsearId(req);
 
-        this.pedidoService.delete(idResult)
+        this.pedidoService.eliminarPedido(idResult)
             .then(pedidoEliminado => {
                 res.status(200).json({
-                    mensaje: `Pedido eliminado con éxito`,
-                    pedido: pedidoEliminado
+                    mensaje: `Pedido ${idResult} eliminado con éxito`,
+                    //pedido: pedidoEliminado
                 });
             })
             .catch(error => next(error));
     }
 
-    async actualizarEstado(req, res, next) {
+
+    actualizarEstado(req, res, next) {
+
         const idResult = pedidoSchema.parsearId(req);
         const nuevoEstado = pedidoSchema.parsearEstado(req);
 

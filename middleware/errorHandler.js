@@ -1,5 +1,5 @@
 import { ZodError } from "zod";
-import { NotFoundError, StockError } from "../middleware/appError.js";
+import { NotFoundError, StockError, StatusTransitionError } from "../middleware/appError.js";
 import e from "express";
 
 export const errorHandler = (err, req, res, next) => {
@@ -17,6 +17,10 @@ export const errorHandler = (err, req, res, next) => {
     }
 
     if(err instanceof StockError) {
+        return res.status(err.statusCode).json({ error: err.message });
+    }
+
+    if(err instanceof StatusTransitionError) {
         return res.status(err.statusCode).json({ error: err.message });
     }
 

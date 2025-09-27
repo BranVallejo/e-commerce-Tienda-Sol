@@ -5,6 +5,7 @@ export class ProductoService {
         this.productoRepository = productoRepository;
     }
 
+
     async crearProducto(producto) {
         const nuevoProducto = await this.productoRepository.create(producto);
         return nuevoProducto;
@@ -17,10 +18,12 @@ export class ProductoService {
         return producto;
     }
 
+
     async listarProductos() {
         const productos = await this.productoRepository.findAll();
         return productos;
     }
+
 
     async actualizar(id, productoActualizado) {
 
@@ -32,10 +35,12 @@ export class ProductoService {
         return productoGuardado;
     }
 
+
     async eliminarProducto(id) {
         const prod = await this.productoRepository.delete(id);
         if (!prod) throw new NotFoundError(`${id}`);
     }
+
 
     async actualizarStock(id, cantidadComprada) {
         const unProducto = await this.obtenerProducto(id);
@@ -44,24 +49,4 @@ export class ProductoService {
         return this.productoRepository.update(id, unProducto);
 
     }
-
-    // validarStock(id, cantidad) {
-    //   const producto = this.productoRepository.findById(id);
-    //   if (!producto) {
-    //     throw new Error("Producto no encontrado");
-    //   }
-    //   return producto.getStock() >= cantidad;
-    // }
-
-    // reducirStock(id, cantidad) {
-    //   const producto = this.obtenerProducto(id);
-    //   producto.reducirStock(cantidad);
-    //   return this.productoRepository.update(producto);
-    // }
-
-    // aumentarStock(id, cantidad) {
-    //   const producto = this.obtenerProducto(id);
-    //   producto.aumentarStock(cantidad);
-    //   return this.productoRepository.update(producto);
-    // }
 }

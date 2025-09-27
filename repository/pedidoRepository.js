@@ -19,7 +19,7 @@ export class PedidoRepository {
         return Promise.resolve(pedido ?? null);
     }
 
-    getPedidos() {
+    findAll() {
         return Promise.resolve(this.pedidos);
     }
 
@@ -44,8 +44,6 @@ export class PedidoRepository {
     }
 
     obtenerIndicePorID(id){
-        console.log(this.pedidos);
-        this.pedidos.forEach(p => console.log(p.getId()));
         return this.pedidos.findIndex((pedido) => pedido.getId() === id);
     }
 

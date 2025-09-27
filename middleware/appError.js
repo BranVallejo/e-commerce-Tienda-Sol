@@ -26,3 +26,9 @@ export class StockError extends AppError {
     super(`Stock insuficiente para ${message}`, 400);
   }
 }
+
+export class StatusTransitionError extends AppError {
+  constructor(message) {
+    super(`Transición de estado inválida: ${message}`, 400);
+  }
+}

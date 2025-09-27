@@ -5,6 +5,7 @@ import { ItemPedido } from "./itemPedido.js";
 import { DireccionEntrega } from "./direccionEntrega.js";
 import { CambioEstadoPedido } from "./cambioEstadoPedido.js";
 import { tr } from "zod/locales";
+import { StatusTransitionError } from "../../../middleware/appError.js";
 
 
 export class Pedido {
@@ -20,15 +21,27 @@ export class Pedido {
         this.historialEstados = []
     }
 
+
+
     cambiarEstado(nuevoEstado) {
+
+        const transicionesPermitidas = {
+            [EstadoPedido.PENDIENTE]: [EstadoPedido.CONFIRMADO, EstadoPedido.CANCELADO, EstadoPedido.ENVIADO],
+            [EstadoPedido.CONFIRMADO]: [EstadoPedido.EN_PREPARACION, EstadoPedido.CANCELADO, EstadoPedido.ENVIADO],
+            [EstadoPedido.EN_PREPARACION]: [EstadoPedido.ENVIADO, EstadoPedido.CANCELADO],
+            [EstadoPedido.ENVIADO]: [EstadoPedido.ENTREGADO],
+            [EstadoPedido.ENTREGADO]: [],
+            [EstadoPedido.CANCELADO]: []
+        };
+
         this.historialEstados.push(this.estado);
-        if (nuevoEstado === EstadoPedido.ENVIADO && ![EstadoPedido.PENDIENTE, EstadoPedido.CONFIRMADO, EstadoPedido.EN_PREPARACION].includes(this.estado)) {
-            throw new Error(`No se puede cambiar al estado ${nuevoEstado} desde el estado ${this.estado}`); // TODO hacer una clase de error personalizada
+
+        const permitidos = transicionesPermitidas[this.estado] || [];
+
+        if (!permitidos.includes(nuevoEstado)) {
+            throw new StatusTransitionError(`${this.estado} a ${nuevoEstado}`);
         }
 
-        if(nuevoEstado === EstadoPedido.CANCELADO && ![EstadoPedido.PENDIENTE, EstadoPedido.CONFIRMADO, EstadoPedido.EN_PREPARACION].includes(this.estado)){
-            throw new Error(`No se puede cambiar al estado ${nuevoEstado} desde el estado ${this.estado}`); // TODO hacer una clase de error personalizada
-        }
         this.estado = nuevoEstado;
     }
 

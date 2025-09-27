@@ -48,6 +48,6 @@ export class pedidoSchema extends schemaBase {
     static parsearEstado(req){
         const nuevoEstado = estadoSchema.safeParse(req.body.estado);
         if (nuevoEstado.error) throw nuevoEstado.error;
-        return nuevoEstado;
+        return nuevoEstado.data;
     }
 }
