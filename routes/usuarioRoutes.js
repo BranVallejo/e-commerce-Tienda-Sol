@@ -12,7 +12,9 @@ export default function usuarioRoutes(getController) {
     getController(UsuarioController).crearUsuario(req, res, next);
   });
 
-
+  router.get(pathUsuario + "/:id", (req, res, next) => {
+    getController(UsuarioController).obtenerUsuario(req, res, next);
+  });
 
   //Consulta del historial de pedidos de un usuario
   router.get(pathUsuario + "/historialPedidos/:id", (req, res, next) => {

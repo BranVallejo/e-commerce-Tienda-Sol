@@ -14,11 +14,9 @@ export class UsuarioRepository {
   }
 
   //TODO mantener consistencia
-  findUserByID(id_user){
-    const usuario = this.usuarios.find(
-      (unUsuario) => unUsuario.getId() == id_user
-    );
-    return producto ?? null;
-  }
+  findUserByID(id_user) {
+    const usuario = this.usuarios.find((u) => u.getId() === parseInt(id_user));
+    return Promise.resolve(usuario);
+  } 
 
 }

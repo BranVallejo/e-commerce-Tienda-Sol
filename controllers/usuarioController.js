@@ -18,6 +18,17 @@ export class UsuarioController {
         })
     }
 
+    obtenerUsuario(req, res, next) {
+        const idResult = usuarioSchema.parsearId(req);
+        this.usuarioService.obtenerUsuario(idResult)
+        .then(usuario => {
+            return res.status(200).json(usuario);
+        })
+        .catch(error => {
+            next(error);
+        })
+    }
+
     historialPedidos(req, res, next) {
         const idResult = usuarioSchema.parsearId(req);
         this.usuarioService.historialPedidos(idResult)

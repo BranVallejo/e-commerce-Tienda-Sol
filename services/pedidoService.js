@@ -62,7 +62,6 @@ export class PedidoService {
     }
 
 
-    //TODO falta este
     async historialPedido(idCliente) {
         return await this.pedidoRepository.historialPedidos(idCliente);
     }

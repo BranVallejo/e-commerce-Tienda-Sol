@@ -8,7 +8,7 @@ export class UsuarioService {
         return await this.usuarioRepo.create(usuario);
     }
 
-    async findUserByID(id_user) {
+    async obtenerUsuario(id_user) {
         return await this.usuarioRepo.findUserByID(id_user);
     }
 
