@@ -1,10 +1,12 @@
 import { NotFoundError } from "../middleware/appError.js";
+import { NotificacionPedido, NotificacionEstadoPedido, NotificacionCancelacionPedido } from "../models/entities/notificacion/notificacion.js";
 import {EstadoPedido} from "../models/entities/pedido/estadoPedido.js";
 
 export class PedidoService {
-    constructor(pedidoRepository, productoService) {
+    constructor(pedidoRepository, productoService, notificacionService) {
         this.pedidoRepository = pedidoRepository;
         this.productoService = productoService;
+        this.notificacionService = notificacionService;
     }
 
     async getPrecioUnitario(productoID) {
@@ -23,10 +25,23 @@ export class PedidoService {
 
     // ======================================
 
-    async crearPedido(pedido) {
+    async getIdVendedor(pedido) {
+        const idPrimerProducto = pedido.getItemsPedido()[0].productoID;
+        const producto = await this.productoService.obtenerProducto(idPrimerProducto);
 
+        return producto.vendedorID;
+    }
+
+    async crearPedido(pedido) {
         await this.actualizarStockProductos(pedido);
-        return await this.pedidoRepository.create(pedido);
+
+        const nuevoPedido = await this.pedidoRepository.create(pedido);
+
+        const idVendedor = await this.getIdVendedor(pedido);
+
+        this.notificacionService.crearNotificacion(new NotificacionPedido(idVendedor, nuevoPedido.id, pedido.compradorID));
+
+        return nuevoPedido;
     }
 
 
@@ -55,7 +70,17 @@ export class PedidoService {
 
         if(!pedido) throw new NotFoundError(`${id}`);
 
+
+        const estadoAnterior = pedido.estado;
+
         pedido.cambiarEstado(nuevoEstado); // para validar que el estado es correcto
+
+        this.notificacionService.crearNotificacion(new NotificacionEstadoPedido(pedido.compradorID, pedido.id, nuevoEstado, estadoAnterior));
+
+        if(nuevoEstado === EstadoPedido.CANCELADO){
+            const idVendedor = await this.getIdVendedor(pedido);
+            this.notificacionService.crearNotificacion(new NotificacionCancelacionPedido(idVendedor, pedido.id, pedido.compradorID));
+        }
 
         await this.pedidoRepository.actualizar(id, pedido);
         return pedido;

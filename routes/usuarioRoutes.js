@@ -20,6 +20,17 @@ export default function usuarioRoutes(getController) {
   router.get(pathUsuario + "/historialPedidos/:id", (req, res, next) => {
     getController(UsuarioController).historialPedidos(req, res, next);
   });
+  
+  // Notificaciones
+  
+  router.get(pathUsuario + "/notificaciones/:id", (req, res, next) => {
+    getController(UsuarioController).obtenerNotificaciones(req, res, next);
+  });
+
+  // Marcar notificaciones como leidas POST???
+  // router.put(pathUsuario + "/notificaciones/leer/:id", (req, res, next) => {
+  //   getController(UsuarioController).marcarNotificacionesLeidas(req, res, next);
+  // });
 
   // pedido/enviar/:id
   return router;

@@ -10,9 +10,13 @@ import { PedidoController } from "./controllers/pedidoController.js";
 import { UsuarioRepository } from "./repository/usuarioRepository.js";
 import { UsuarioService } from "./services/usuarioService.js";
 import { UsuarioController } from "./controllers/usuarioController.js";
+import { NotificacionRepository } from "./repository/notificacionRepository.js";
+import { NotificacionService } from "./services/notificacionService.js";
+
 
 import { Server } from "./server.js";
 import routes from "./routes/routes.js";
+import { no } from "zod/locales";
 
 const app = express();
 app.use(express.json());
@@ -35,6 +39,13 @@ const PORT = Number(process.env.SERVER_PORT) || 8000;
 // Se envía al server el puerto
 const server = new Server(app, PORT);
 
+// Notificaciones
+const notificacionRepo = new NotificacionRepository();
+const notificacionService = new NotificacionService(notificacionRepo);
+//const notificacionController = new NotificacionController(notificacionService);
+//server.setController(NotificacionController, notificacionController);
+
+// Productos
 const productoRepo = new ProductoRepository();
 const productoService = new ProductoService(productoRepo);
 const productoController = new ProductoController(productoService);
@@ -43,14 +54,14 @@ server.setController(ProductoController, productoController);
 
 // Pedidos
 const pedidoRepo = new PedidoRepository();
-const pedidoService = new PedidoService(pedidoRepo, productoService);
+const pedidoService = new PedidoService(pedidoRepo, productoService, notificacionService);
 const pedidoController = new PedidoController(pedidoService);
 
 server.setController(PedidoController, pedidoController);
 
 // usuario
 const usuarioRepo = new UsuarioRepository();
-const usuarioService = new UsuarioService(usuarioRepo, pedidoService);
+const usuarioService = new UsuarioService(usuarioRepo, pedidoService, notificacionService);
 const usuarioController = new UsuarioController(usuarioService);
 
 server.setController(UsuarioController, usuarioController);

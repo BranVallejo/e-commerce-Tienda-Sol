@@ -26,7 +26,7 @@ export class Producto {
         this.activo = activo;//Bool
     }
 
-    getVendedorID() {
+    getIdVendedor() {
         return this.vendedorID;
     }
 
