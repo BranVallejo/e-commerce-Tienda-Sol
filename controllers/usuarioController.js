@@ -52,6 +52,38 @@ export class UsuarioController {
             next(error);
         })
     }
+    
+    obtenerNotificacionesNoLeidas(req, res, next) {
+        const idResult = usuarioSchema.parsearId(req);
+        this.usuarioService.obtenerNotificacionesNoLeidas(idResult)
+        .then(notificaciones => {
+            return res.status(200).json(notificaciones);
+        })
+        .catch(error => {
+            next(error);
+        })
+    }
 
+    obtenerNotificacionesLeidas(req, res, next) {
+        const idResult = usuarioSchema.parsearId(req);
+        this.usuarioService.obtenerNotificacionesLeidas(idResult)
+        .then(notificaciones => {
+            return res.status(200).json(notificaciones);
+        })
+        .catch(error => {
+            next(error);
+        })
+    }
+
+    marcarComoLeida(req, res, next) {
+        const idResult = usuarioSchema.parsearId(req);
+        this.usuarioService.marcarComoLeida(idResult)
+        .then(notificaciones => {
+            return res.status(200).json(notificaciones);
+        })
+        .catch(error => {
+            next(error);
+        })
+    }
 
 }

@@ -26,4 +26,16 @@ export class UsuarioService {
         return await this.notificacionService.obtenerNotificaciones(id);
     }
 
+    async obtenerNotificacionesNoLeidas(id) {
+        return await this.notificacionService.obtenerNotificacionesNoLeidas(id);
+    }
+
+    async obtenerNotificacionesLeidas(id) {
+        return await this.notificacionService.obtenerNotificacionesLeidas(id);
+    }
+
+    async marcarComoLeida(idNotificacion) {
+        return await this.notificacionService.marcarComoLeida(idNotificacion);
+    }
+
 }

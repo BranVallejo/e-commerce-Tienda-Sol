@@ -15,6 +15,11 @@ export class Notificacion {
     setId(id) {
         this.id = id;
     }
+
+    marcarComoLeida() {
+        this.leida = true;
+        this.fechaLeida = new Date();
+    }
 }
 
 export class NotificacionPedido extends Notificacion {
