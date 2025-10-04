@@ -41,6 +41,7 @@ export class UsuarioController {
     }
 
     // Notificaciones
+    
     obtenerNotificaciones(req, res, next) {
         const idResult = usuarioSchema.parsearId(req);
         this.usuarioService.obtenerNotificaciones(idResult)

@@ -23,7 +23,6 @@ export class PedidoService {
         );
     }
 
-    // ======================================
 
     async getIdVendedor(pedido) {
         const idPrimerProducto = pedido.getItemsPedido()[0].productoID;
@@ -73,7 +72,7 @@ export class PedidoService {
 
         const estadoAnterior = pedido.estado;
 
-        pedido.cambiarEstado(nuevoEstado); // para validar que el estado es correcto
+        pedido.cambiarEstado(nuevoEstado);
 
         this.notificacionService.crearNotificacion(new NotificacionEstadoPedido(pedido.compradorID, pedido.id, nuevoEstado, estadoAnterior));
 
