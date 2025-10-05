@@ -1,7 +1,7 @@
 import express from "express";
 import { ProductoController } from "../controllers/productoController.js";
 
-const pathProducto= "/productos";
+const pathProducto = "/productos";
 const pathProductoID = "/productos/:id";
 
 // Este getController recibe la clase del controller y devuelve la instancia

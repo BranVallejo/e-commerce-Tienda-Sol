@@ -1,41 +1,48 @@
+import { Usuario } from "../models/entities/usuario/usuario.js";
+import { UsuarioModel } from "../schemasDB/usuarioSchema.js";
+
 export class UsuarioService {
-    constructor(usuarioRepo, pedidoService, notificacionService) {
-        this.usuarioRepo = usuarioRepo;
-        this.pedidoService = pedidoService;
-        this.notificacionService = notificacionService;
+  constructor(usuarioRepo, pedidoService, notificacionService) {
+    this.usuarioRepo = usuarioRepo;
+    this.pedidoService = pedidoService;
+    this.notificacionService = notificacionService;
+    this.usuarioSchema = UsuarioModel;
+  }
+
+  async crearUsuario(usuarioData) {
+    const usuario = await new this.usuarioSchema(usuarioData);
+    return await usuario.save();
+  }
+
+  async obtenerUsuario(id_user) {
+    const user = await this.usuarioSchema.findById(id_user);
+
+    if (!user) {
+      throw new NotFoundError(`${id}`); //TODO: lanzar un error posta
     }
 
-    async crearUsuario(usuario) {
-        return await this.usuarioRepo.create(usuario);
-    }
+    return user;
+  }
 
-    async obtenerUsuario(id_user) {
-        const user = await this.usuarioRepo.findUserByID(id_user);
-        if (!user) {throw new NotFoundError(`${id}`);}
+  async historialPedidos(id) {
+    return await this.pedidoService.historialPedido(id);
+  }
 
-        return user;
-    }
+  // Notificaciones
 
-    async historialPedidos(id) {
-        return await this.pedidoService.historialPedido(id);
-    }
+  async obtenerNotificaciones(id) {
+    return await this.notificacionService.obtenerNotificaciones(id);
+  }
 
-    // Notificaciones
-    
-    async obtenerNotificaciones(id) {
-        return await this.notificacionService.obtenerNotificaciones(id);
-    }
+  async obtenerNotificacionesNoLeidas(id) {
+    return await this.notificacionService.obtenerNotificacionesNoLeidas(id);
+  }
 
-    async obtenerNotificacionesNoLeidas(id) {
-        return await this.notificacionService.obtenerNotificacionesNoLeidas(id);
-    }
+  async obtenerNotificacionesLeidas(id) {
+    return await this.notificacionService.obtenerNotificacionesLeidas(id);
+  }
 
-    async obtenerNotificacionesLeidas(id) {
-        return await this.notificacionService.obtenerNotificacionesLeidas(id);
-    }
-
-    async marcarComoLeida(idNotificacion) {
-        return await this.notificacionService.marcarComoLeida(idNotificacion);
-    }
-
+  async marcarComoLeida(idNotificacion) {
+    return await this.notificacionService.marcarComoLeida(idNotificacion);
+  }
 }

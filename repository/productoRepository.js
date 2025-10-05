@@ -1,48 +1,51 @@
 export class ProductoRepository {
-    constructor() {
-        this.productos = [];
-        this.id = 1;
+  constructor() {
+    //this.model = ProductoModel;
+  }
+  /*
+    async create(usuarioData) {
+    const usuario = new this.model(usuarioData);
+    return await usuario.save();
     }
 
-    create(prod) {
-        prod.setId(this.id);
-        this.id++;
-        this.productos.push(prod);
-        return Promise.resolve(prod);
+    async findUserByID(id) {
+       return await this.model.findById(id);
     }
+    */
 
-    findById(id) {
-        const producto = this.productos.find(
-            (unProducto) => unProducto.getId() === id
-        );
-        return Promise.resolve(producto);
-    }
+  async create(prod) {
+    const producto = new this.model(prod);
+    return await producto.save();
+  }
 
-    findAll() {
-        return Promise.resolve(this.productos);
-    }
+  async findById(id) {
+    return await this.model.findById(id);
+  }
 
-    update(id, productoActualizado) {
-        const indice = this.productos.findIndex((prod) => prod.getId() == id);
+  async findAll() {
+    return;
+  }
 
-        if (indice === -1) return Promise.resolve(null);
+  findAll() {
+    return Promise.resolve(this.productos);
+  }
 
-        this.productos[indice] = productoActualizado;
-        return Promise.resolve(productoActualizado);
-    }
+  update(id, productoActualizado) {
+    const indice = this.productos.findIndex((prod) => prod.getId() == id);
 
-    delete(id) {
-        const indice = this.productos.findIndex(
-            (unProducto) => unProducto.getId() === id
-        );
-        if (indice === -1) return false;
+    if (indice === -1) return Promise.resolve(null);
 
-        this.productos.splice(indice, 1);
-        return true;
-    }
+    this.productos[indice] = productoActualizado;
+    return Promise.resolve(productoActualizado);
+  }
 
+  delete(id) {
+    const indice = this.productos.findIndex(
+      (unProducto) => unProducto.getId() === id
+    );
+    if (indice === -1) return false;
 
-
+    this.productos.splice(indice, 1);
+    return true;
+  }
 }
-
-
