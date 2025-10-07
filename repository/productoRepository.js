@@ -31,8 +31,8 @@ export class ProductoRepository {
 
     const skip = (page - 1) * documentosXpagina;
 
-    // console.log("la pagina: ", page);
-    // console.log("cuantos traer:", documentosXpagina);
+    console.log("la pagina: ", page);
+    console.log("cuantos traer:", documentosXpagina);
 
     const filtros = {};
 
@@ -44,13 +44,12 @@ export class ProductoRepository {
         { descripcion: { $regex: keyWord, $options: "i" } }, //la i es case insensitive
       ];
     }
-    if (minPrice && maxPrice) {
+    if (minPrice || maxPrice) {
       filtros.precio = {};
       if (minPrice) filtros.precio.$gte = Number(minPrice); //gte equivale a >=
       if (maxPrice) filtros.precio.$lte = Number(maxPrice); //gte equivale a <=
     }
 
-    console.log(filtros);
 
     return await this.productoSchema
       .find(filtros)
