@@ -26,9 +26,10 @@ export class PedidoService {
     await Promise.all(
       pedido
         .getItemsPedido()
-        .map((item) =>
+        .map((item) => {
+          console.log("item es: ", item);
           this.productoService.actualizarStock(item.productoID, item.cantidad)
-        )
+        })
     );
   }
 
@@ -42,7 +43,7 @@ export class PedidoService {
   }
 
   async crearPedido(pedido) {
-    console.log(`log mariano: ${pedido}`);
+    //console.log(`log mariano: ${pedido}`);
     await this.actualizarStockProductos(pedido);
 
     const nuevoPedido = await this.pedidoRepository.create(pedido);
