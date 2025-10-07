@@ -11,20 +11,29 @@ export class ProductoService {
     return await this.productoRepository.create(prod);
   }
 
-  async obtenerProducto(id) {
+  /*async obtenerProducto(id) {
     return await this.productoRepository.findById(id);
-  }
+  }*/
 
-  //TODO: Arreglar y agregar paginación
-  async listarProductos(page, limit, sortOrder) {
-    return await this.productoRepository.findAll(page, limit, sortOrder);
-  }
-
-  async obtenerProductosVendedor(condicionesDeObtencion, page, limit) {
-    return await this.productoRepository.findProductosVendedorFiltrados(
-      condicionesDeObtencion,
+  async obtenerProductos(
+    page,
+    limit,
+    sortOrder,
+    sellerId,
+    keyWord,
+    category,
+    minPrice,
+    maxPrice
+  ) {
+    return await this.productoRepository.obtenerProductos(
       page,
-      limit
+      limit,
+      sortOrder,
+      sellerId,
+      keyWord,
+      category,
+      minPrice,
+      maxPrice
     );
   }
 

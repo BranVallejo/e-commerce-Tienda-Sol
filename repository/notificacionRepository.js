@@ -13,16 +13,14 @@ export class NotificacionRepository {
 
   async obtenerNotificacionesDeUsuario(idUsuario, leidas, page, limit) {
     const skip = (page - 1) * limit;
-    const filtro = {}
+    const filtro = {};
+    filtro.usuarioDestino = idUsuario;
 
-    if(leidas !== null){
-       filtro.leida = leidas
+    if (leidas !== null) {
+      filtro.leida = leidas;
     }
 
-    return await this.notificacionSchema
-      .find(filtro)
-      .limit(limit)
-      .skip(skip);
+    return await this.notificacionSchema.find(filtro).limit(limit).skip(skip);
   }
 
   async findById(id) {

@@ -3,7 +3,6 @@ import { NotFoundError } from "../middleware/appError.js";
 
 import { BadQuery } from "../middleware/appError.js";
 
-
 export class ProductoRepository {
   constructor() {
     this.productoSchema = ProductoModel;
@@ -21,22 +20,38 @@ export class ProductoRepository {
     return producto;
   }
 
-  async findProductosVendedorFiltrados(
-    condicionesDeObtencion,
-    page,
-    documentosXpagina
-  ) {
-    const { sellerID, category, keyWord, minPrice, maxPrice } =
-      condicionesDeObtencion;
+  sortOrderToTypeOfFilter(sortOrder) {
+    if (sortOrder === "asc") {
+      return { precio: 1 };
+    } //Precio ascendente (menor a mayor)
+    if (sortOrder === "desc") {
+      return { precio: -1 };
+    } // Precio descendente (mayor a menor)
+    if (sortOrder === "masVendido") {
+      return { unidadesVendidas: -1 };
+    }
 
-    const skip = (page - 1) * documentosXpagina;
+    throw new BadQuery(`${sortOrder}`);
+  }
+
+  async obtenerProductos(
+    page,
+    limit,
+    sortOrder,
+    sellerId,
+    keyWord,
+    category,
+    minPrice,
+    maxPrice
+  ) {
+    const skip = (page - 1) * limit;
 
     console.log("la pagina: ", page);
-    console.log("cuantos traer:", documentosXpagina);
+    console.log("cuantos traer:", limit);
 
     const filtros = {};
 
-    if (sellerID) filtros.vendedor = sellerID;
+    if (sellerId) filtros.vendedor = sellerId;
     if (category) filtros.categoria = category;
     if (keyWord) {
       filtros.$or = [
@@ -50,10 +65,10 @@ export class ProductoRepository {
       if (maxPrice) filtros.precio.$lte = Number(maxPrice); //gte equivale a <=
     }
 
-
     return await this.productoSchema
       .find(filtros)
-      .limit(documentosXpagina)
+      .sort(this.sortOrderToTypeOfFilter(sortOrder))
+      .limit(limit)
       .skip(skip);
   }
 
@@ -69,41 +84,14 @@ export class ProductoRepository {
     return productoActualizado;
   }
 
-  async save(producto){
+  async save(producto) {
     return await producto.save();
   }
 
-  delete(id) {
-    const productoEliminado = this.productoSchema.findByIdAndDelete(id);
+  async delete(id) {
+    const productoEliminado = await this.productoSchema.findByIdAndDelete(id);
     if (!productoEliminado) throw new NotFoundError(`${id}`);
 
     return productoEliminado;
-  }
-
-  sortOrderToTypeOfFilter(sortOrder) {
-    if (sortOrder === "asc") {
-      return { precio: 1 };
-    } //Precio ascendente (menor a mayor)
-    if (sortOrder === "desc") {
-      return { precio: -1 };
-    } // Precio descendente (mayor a menor)
-    if (sortOrder === "masVendido") {
-      return { unidadesVendidas: -1 };
-    }
-
-    throw new BadQuery(`${sortOrder}`);
-  }
-
-  async findAll(page, documentosXpagina, sortOrder) {
-    const skip = (page - 1) * documentosXpagina;
-
-    console.log("la pagina: ", page);
-    console.log("cuantos traer:", documentosXpagina);
-
-    return await this.productoSchema
-      .find()
-      .sort(this.sortOrderToTypeOfFilter(sortOrder))
-      .limit(documentosXpagina)
-      .skip(skip);
   }
 }

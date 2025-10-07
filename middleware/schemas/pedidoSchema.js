@@ -37,7 +37,7 @@ const direccionEntregaSchema = z.object({
 const pedido = z.object({
   compradorID: z.string(),
   itemsPedido: z.array(itemPedido),
-  moneda: z.number().min(0).max(2),
+  moneda: MonedaEnum,
   direccionEntrega: direccionEntregaSchema,
 });
 

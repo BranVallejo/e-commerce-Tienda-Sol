@@ -7,8 +7,8 @@ import { Moneda } from "../models/entities/moneda.js";
 const productoSchema = new mongoose.Schema(
   {
     vendedor: {
-      type: String, //mongoose.Schema.Types.ObjectId,
-      //ref: "Usuario",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Usuario",
       required: [true, "Me quiero matar y grabarlo en 4k"],
     },
     nombre: {
@@ -51,7 +51,7 @@ const productoSchema = new mongoose.Schema(
       type: Number,
       required: false,
       default: 0,
-    }
+    },
   },
   {
     collection: "productos", //como se va a llamar la coleccion en la DB

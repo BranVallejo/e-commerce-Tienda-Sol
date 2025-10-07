@@ -6,16 +6,15 @@ import { EstadoPedido } from "../models/entities/pedido/estadoPedido.js";
 const pedidoSchema = new mongoose.Schema(
   {
     compradorID: {
-      //type: mongoose.Schema.Types.ObjectId,
-      //ref: "Usuario", //TODO: descomentar y arreglar
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Usuario", //TODO: descomentar y arreglar
       required: true,
     },
     itemsPedido: [
       {
         productoID: {
-          //type: mongoose.Schema.Types.ObjectId,
-          type: String,
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Producto",
           required: true,
         },
         cantidad: {
@@ -36,7 +35,7 @@ const pedidoSchema = new mongoose.Schema(
       min: 0,
     },
     moneda: {
-      type: Number,
+      type: String,
       enum: Moneda, // PESO_ARG, DOLAR_USA, REAL
       required: [true, "La moneda es obligatoria"],
     },

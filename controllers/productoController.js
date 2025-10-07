@@ -18,34 +18,50 @@ export class ProductoController {
       });
   }
 
-  obtenerProducto(req, res, next) {
-    const idResult = productoSchema.parsearId(req);
+  /*obtenerProducto(req, res, next) {
+    const idResult = productoSchema.parsearId(req);    
     this.productoService
       .obtenerProducto(idResult)
       .then((producto) => res.status(200).json(producto))
       .catch((error) => {
         next(error);
       });
-  }
+  }*/
 
-  listarProductos(req, res, next) {
-    const { page = 1, limit = 10, sortOrder = "asc" } = req.query;
+  //vendedorId=:vendedorID&categoria=:categoria&minPrice=:minPrice&maxPrice=:maxPrice&keyWord=:keyWord
+
+  /*sellerID: result.data.sellerID,
+      category: result.data.category,
+      keyWord: result.data.keyWord,
+      minPrice: result.data.minPrice,
+      maxPrice: result.data.maxPrice,*/
+  obtenerProductos(req, res, next) {
+    const {
+      page = 1,
+      limit = 10,
+      sortOrder = "asc",
+      sellerId,
+      keyWord,
+      category,
+      minPrice,
+      maxPrice,
+    } = req.query;
 
     this.productoService
-      .listarProductos(page, limit, sortOrder)
+      .obtenerProductos(
+        page,
+        limit,
+        sortOrder,
+        sellerId,
+        keyWord,
+        category,
+        minPrice,
+        maxPrice
+      )
       .then((productos) => res.status(200).json(productos))
       .catch((error) => {
         next(error);
       });
-  }
-
-  obtenerProductosVendedor(req, res, next) {
-    const condicionesDeObtencion = productoSchema.parsearBusquedaProducto(req);
-    const { page = 1, limit = 10 } = req.query;
-    this.productoService
-      .obtenerProductosVendedor(condicionesDeObtencion, page, limit)
-      .then((productosObtenidos) => res.status(200).json(productosObtenidos))
-      .catch(next);
   }
 
   actualizarProducto(req, res, next) {

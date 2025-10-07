@@ -12,16 +12,12 @@ export default function productoRoutes(getController) {
     getController(ProductoController).crearProducto(req, res, next);
   });
 
-  router.get(pathProducto, (req, res, next) => {
+  /*router.get(pathProducto, (req, res, next) => {
     getController(ProductoController).listarProductos(req, res, next);
-  });
+  });*/
 
-  router.get(pathProductoID, (req, res, next) => {
-    getController(ProductoController).obtenerProducto(req, res, next);
-  });
-
-  router.get("/searchSeller", (req, res, next) => {
-    getController(ProductoController).obtenerProductosVendedor(req, res, next);
+  router.get(pathProducto, (req, res, next) => {
+    getController(ProductoController).obtenerProductos(req, res, next);
   });
 
   router.patch(pathProductoID, (req, res, next) => {
