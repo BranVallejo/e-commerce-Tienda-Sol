@@ -1,55 +1,73 @@
+import { PedidoModel } from "../schemasDB/pedidoSchema.js";
+
 export class PedidoRepository {
+  constructor() {
+    this.pedidoSchema = PedidoModel;
+  }
 
-    constructor() {
-        this.pedidos = [];
-        this.id = 1;
-    }
+  /*
+  create(pedido) {
+    pedido.setId(this.id);
+    this.id++;
+    this.pedidos.push(pedido);
+    return Promise.resolve(pedido);
+  }*/
 
-    create(pedido) {
-        pedido.setId(this.id);
-        this.id++;
-        this.pedidos.push(pedido);
-        return Promise.resolve(pedido);
-    }
+  async create(prod) {
+    const producto = new this.pedidoSchema(prod);
+    return await producto.save();
+  }
 
-    findById(id) {
-        const pedido = this.pedidos.find(
-            (unPedido) => unPedido.getId() === id
-        );
-        return Promise.resolve(pedido ?? null);
-    }
+  /*
+  findById(id) {
+    const pedido = this.pedidos.find((unPedido) => unPedido.getId() === id);
+    return Promise.resolve(pedido ?? null);
+  }*/
 
-    findAll() {
-        return Promise.resolve(this.pedidos);
-    }
+  async findById(id) {
+    const pedido = await this.pedidoSchema.findById(id);
 
-    delete(id){
-        const indice = this.obtenerIndicePorID(id);
-        if(indice === -1) return Promise.resolve(null);
-        const [pedidoEliminado] = this.pedidos.splice(indice, 1);//borra desde indice la cantidad de elementos que indiques.
-        return Promise.resolve(pedidoEliminado);
-    }
+    if (!pedido) throw new NotFoundError(`${id}`);
 
-    actualizar(id, pedidoActualizado) {
+    return pedido;
+  }
 
-        if(pedidoActualizado == null) return Promise.resolve(null);
+  async findAll(page, documentosXpagina) {
+    const skip = (page - 1) * documentosXpagina;
 
-        const indice = this.obtenerIndicePorID(id);
+    return await this.pedidoSchema
+      .find()
+      .limit(documentosXpagina)
+      .skip(skip)
+      .toArray();
+  }
 
-        if (indice === -1) return Promise.resolve(null);
+  delete(id) {
+    const pedidoEliminado = this.pedidoSchema.findByIdAndDelete(id);
+    if (!pedidoEliminado) return null;
 
-        this.pedidos[indice] = pedidoActualizado;
+    return pedidoEliminado;
+  }
 
-        return Promise.resolve(pedidoActualizado);
-    }
+  actualizar(id, pedidoActualizado) {
+    if (pedidoActualizado == null) return Promise.resolve(null);
 
-    obtenerIndicePorID(id){
-        return this.pedidos.findIndex((pedido) => pedido.getId() === id);
-    }
+    const indice = this.obtenerIndicePorID(id);
 
+    if (indice === -1) return Promise.resolve(null);
 
-    historialPedidos(compradorID) {
-        return Promise.resolve(this.pedidos.filter(pedido => pedido.getCompradorID() == compradorID));
-    }
+    this.pedidos[indice] = pedidoActualizado;
 
+    return Promise.resolve(pedidoActualizado);
+  }
+
+  obtenerIndicePorID(id) {
+    return this.pedidos.findIndex((pedido) => pedido.getId() === id);
+  }
+
+  historialPedidos(compradorID) {
+    return Promise.resolve(
+      this.pedidos.filter((pedido) => pedido.getCompradorID() == compradorID)
+    );
+  }
 }

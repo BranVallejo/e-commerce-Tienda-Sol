@@ -25,8 +25,8 @@ export class ProductoService {
     );
   }
 
-  async actualizar(id, productoActualizado) {
-    return await this.productoRepository.update(id, productoActualizado);
+  async actualizar(id, camposActualizados) {
+    return await this.productoRepository.update(id, camposActualizados);
   }
 
   async actualizarStock(id, cantidadComprada) {

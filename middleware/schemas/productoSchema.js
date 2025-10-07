@@ -36,28 +36,6 @@ export const searchSchema = z.object({
   maxPrice: z.number().nonnegative().optional(),
 });
 
-/*export class productoSchema extends schemaBase {
-  static parsearProducto(req) {
-    const result = productSchema.safeParse(req.body); //le agrege el partial para que los atributos sean opcionales
-
-    if (result.error) {
-      throw result.error;
-    }
-
-    return new Producto(
-      new mongoose.Types.ObjectId(result.data.vendedor),
-      result.data.nombre,
-      result.data.descripcion,
-      result.data.categorias,
-      result.data.precio,
-      result.data.moneda,
-      result.data.stock,
-      result.data.fotos,
-      result.data.activo
-    );
-  }
-}*/
-
 export class productoSchema extends schemaBase {
   static parsearProducto(req) {
     const result = productSchema.safeParse(req.body);

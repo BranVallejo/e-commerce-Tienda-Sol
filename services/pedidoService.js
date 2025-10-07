@@ -56,8 +56,8 @@ export class PedidoService {
     return nuevoPedido;
   }
 
-  async listarPedidos() {
-    const pedidos = await this.pedidoRepository.findAll();
+  async listarPedidos(page, limit) {
+    const pedidos = await this.pedidoRepository.findAll(page, limit);
     return pedidos || [];
   }
 

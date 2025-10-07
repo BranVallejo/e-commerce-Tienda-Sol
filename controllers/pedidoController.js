@@ -46,8 +46,10 @@ export class PedidoController {
   }
 
   listarPedidos(req, res, next) {
+    const { page = 1, limit = 10 } = req.query;
+
     this.pedidoService
-      .listarPedidos()
+      .listarPedidos(page, limit)
       .then((pedidos) => {
         return res.status(200).json({ pedidos });
       })

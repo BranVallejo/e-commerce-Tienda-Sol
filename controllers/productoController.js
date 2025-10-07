@@ -48,10 +48,10 @@ export class ProductoController {
 
   actualizarProducto(req, res, next) {
     const resultId = productoSchema.parsearId(req);
-    const resultBody = productoSchema.parsearProducto(req);
+    const camposActualizados = req.body;
 
     this.productoService
-      .actualizar(resultId, resultBody)
+      .actualizar(resultId, camposActualizados)
       .then((productoActualizado) => res.status(200).json(productoActualizado))
       .catch(next);
   }

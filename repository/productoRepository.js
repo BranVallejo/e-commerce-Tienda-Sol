@@ -17,14 +17,6 @@ export class ProductoRepository {
     return producto;
   }
 
-  /*
-      sellerID: result.data.sellerID,
-      category: result.data.category,
-      keyWord: result.data.keyWord,
-      minPrice: result.data.minPrice,
-      maxPrice: result.data.maxPrice,
-  */
-
   async findProductosVendedorFiltrados(condicionesDeObtencion) {
     const { sellerID, category, keyWord, minPrice, maxPrice } =
       condicionesDeObtencion;
@@ -50,35 +42,22 @@ export class ProductoRepository {
     return await this.productoSchema.find(filtros);
   }
 
-  /*
-  async findAll() {
-    return;
-  }
-  
-
-  findAll() {
-    return Promise.resolve(this.productos);
-  }
-  */
-
-  async update(id, productoActualizado) {
-    const productoGuardado = await this.productoSchema.findByIdAndUpdate(
+  async update(id, camposActualizados) {
+    const productoActualizado = await ProductoModel.findByIdAndUpdate(
       id,
-      productoActualizado
+      { $set: camposActualizados },
+      { new: true, runValidators: true } // devuelve el nuevo documento validado
     );
 
-    if (!productoGuardado) throw new NotFoundError(`${id}`);
+    if (!productoActualizado) throw new NotFoundError(`${id}`);
 
-    return productoGuardado;
+    return productoActualizado;
   }
 
   delete(id) {
-    const indice = this.productos.findIndex(
-      (unProducto) => unProducto.getId() === id
-    );
-    if (indice === -1) return false;
+    const productoEliminado = this.productoSchema.findByIdAndDelete(id);
+    if (!productoEliminado) throw new NotFoundError(`${id}`);
 
-    this.productos.splice(indice, 1);
-    return true;
+    return productoEliminado;
   }
 }
