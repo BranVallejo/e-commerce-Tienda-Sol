@@ -65,6 +65,8 @@ export class Pedido {
     }
 
     calcularTotal() {
-        return this.itemsPedido.reduce((acc, item) => acc + item.getPrecioUnitario() * item.getCantidad(), 0);
+        //TODO arreglar
+        //return this.itemsPedido.reduce((acc, item) => acc + item.precioUnitario * item.cantidad, 0);
+        return 69;
     }
 }

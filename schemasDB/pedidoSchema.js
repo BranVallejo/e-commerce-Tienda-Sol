@@ -82,9 +82,9 @@ const pedidoSchema = new mongoose.Schema(
       },
     },
     estado: {
-      type: Number,
-      enum: [0, 1, 2, 3, 4],
-      default: 0, // PENDIENTE
+      type: String,
+      enum: ["PENDIENTE", "CONFIRMADO", "EN_PREPARACION", "ENVIADO", "ENTREGADO", "CANCELADO"],
+      default: "PENDIENTE",
       required: false,
     },
     fechaCreacion: {
@@ -93,9 +93,9 @@ const pedidoSchema = new mongoose.Schema(
       required: false,
     },
     historialEstados: {
-      type: [Number],
-      enum: [0, 1, 2, 3, 4],
-      default: [0],
+      type: [String],
+      enum: ["PENDIENTE", "CONFIRMADO", "EN_PREPARACION", "ENVIADO", "ENTREGADO", "CANCELADO"],
+      default: [],
       required: false,
     },
   },

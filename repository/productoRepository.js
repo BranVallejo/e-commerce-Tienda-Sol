@@ -1,4 +1,5 @@
 import { ProductoModel } from "../schemasDB/productoSchema.js";
+import { NotFoundError } from "../middleware/appError.js";
 
 export class ProductoRepository {
   constructor() {
