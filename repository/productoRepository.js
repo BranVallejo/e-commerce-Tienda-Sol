@@ -1,6 +1,9 @@
 import { ProductoModel } from "../schemasDB/productoSchema.js";
 import { NotFoundError } from "../middleware/appError.js";
 
+import { BadQuery } from "../middleware/appError.js";
+
+
 export class ProductoRepository {
   constructor() {
     this.productoSchema = ProductoModel;
@@ -74,12 +77,30 @@ export class ProductoRepository {
     return productoEliminado;
   }
 
-  async findAll(page, documentosXpagina) {
+  sortOrderToTypeOfFilter(sortOrder) {
+    if (sortOrder === "asc") {
+      return { precio: 1 };
+    } //Precio ascendente (menor a mayor)
+    if (sortOrder === "desc") {
+      return { precio: -1 };
+    } // Precio descendente (mayor a menor)
+    if (sortOrder === "masVendido") {
+      return { cantidadVendida: -1 };
+    }
+
+    throw new BadQuery(`${sortOrder}`);
+  }
+
+  async findAll(page, documentosXpagina, sortOrder) {
     const skip = (page - 1) * documentosXpagina;
 
     console.log("la pagina: ", page);
     console.log("cuantos traer:", documentosXpagina);
 
-    return await this.productoSchema.find().limit(documentosXpagina).skip(skip);
+    return await this.productoSchema
+      .find()
+      .sort(this.sortOrderToTypeOfFilter(sortOrder))
+      .limit(documentosXpagina)
+      .skip(skip);
   }
 }
