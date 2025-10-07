@@ -13,7 +13,7 @@ export default function productoRoutes(getController) {
   });
 
   router.get(pathProducto, (req, res, next) => {
-    getController(ProductoController).listarProductos(req, res, next); //agregar paginacion HECHO
+    getController(ProductoController).listarProductos(req, res, next);
   });
 
   router.get(pathProductoID, (req, res, next) => {
@@ -21,7 +21,7 @@ export default function productoRoutes(getController) {
   });
 
   router.get("/searchSeller", (req, res, next) => {
-    getController(ProductoController).obtenerProductosVendedor(req, res, next); //agregar paginacion HECHO
+    getController(ProductoController).obtenerProductosVendedor(req, res, next);
   });
 
   router.patch(pathProductoID, (req, res, next) => {
@@ -31,10 +31,6 @@ export default function productoRoutes(getController) {
   router.delete(pathProductoID, (req, res, next) => {
     getController(ProductoController).eliminarProducto(req, res, next);
   });
-
-  // TODO: implementar estas
-  // buscarPorCategoria
-  //buscarPorVendedor
 
   return router;
 }

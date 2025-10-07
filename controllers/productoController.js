@@ -29,10 +29,10 @@ export class ProductoController {
   }
 
   listarProductos(req, res, next) {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit = 10, sortOrder = "asc" } = req.query;
 
     this.productoService
-      .listarProductos(page, limit)
+      .listarProductos(page, limit, sortOrder)
       .then((productos) => res.status(200).json(productos))
       .catch((error) => {
         next(error);
@@ -41,8 +41,9 @@ export class ProductoController {
 
   obtenerProductosVendedor(req, res, next) {
     const condicionesDeObtencion = productoSchema.parsearBusquedaProducto(req);
+    const { page = 1, limit = 10 } = req.query;
     this.productoService
-      .obtenerProductosVendedor(condicionesDeObtencion)
+      .obtenerProductosVendedor(condicionesDeObtencion, page, limit)
       .then((productosObtenidos) => res.status(200).json(productosObtenidos))
       .catch(next);
   }

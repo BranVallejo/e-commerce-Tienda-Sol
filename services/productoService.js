@@ -1,4 +1,5 @@
 import { NotFoundError } from "../middleware/appError.js";
+import { BadQuery } from "../middleware/appError.js";
 import { ProductoModel } from "../schemasDB/productoSchema.js";
 
 export class ProductoService {
@@ -15,8 +16,8 @@ export class ProductoService {
   }
 
   //TODO: Arreglar y agregar paginación
-  async listarProductos(page, limit) {
-    return await this.productoRepository.findAll(page, limit);
+  async listarProductos(page, limit, sortOrder) {
+    return await this.productoRepository.findAll(page, limit, sortOrder);
   }
 
   async obtenerProductosVendedor(condicionesDeObtencion, page, limit) {

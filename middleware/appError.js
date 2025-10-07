@@ -2,7 +2,7 @@ export class AppError extends Error {
   constructor(message, statusCode) {
     super(message);
     this.statusCode = statusCode;
-    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+    this.status = `${statusCode}`.startsWith("4") ? "fail" : "error";
     this.isOperational = true;
 
     Error.captureStackTrace(this, this.constructor);
@@ -15,8 +15,14 @@ export class NotFoundError extends AppError {
   }
 }
 
+export class BadQuery extends AppError {
+  constructor(message) {
+    super(`Parametro ${message} no es compatible`, 400);
+  }
+}
+
 export class BadRequestError extends AppError {
-  constructor(message = 'Solicitud incorrecta') {
+  constructor(message = "Solicitud incorrecta") {
     super(message, 400);
   }
 }
