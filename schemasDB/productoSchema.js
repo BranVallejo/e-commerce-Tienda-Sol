@@ -9,7 +9,7 @@ const productoSchema = new mongoose.Schema(
     vendedor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Usuario",
-      required: [true, "Me quiero matar y grabarlo en 4k"],
+      required: [true],
     },
     nombre: {
       type: String,
