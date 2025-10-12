@@ -2,6 +2,8 @@ import express from "express";
 import { UsuarioController } from "../controllers/usuarioController.js";
 
 const pathUsuario = "/usuarios";
+const pathUsuarioId = "/usuarios/:id";
+const pathNotificacionID = "/notificaciones/:idNotificacion"
 
 /**
  * @swagger
@@ -83,7 +85,7 @@ export default function usuarioRoutes(getController) {
      *             schema:
      *               $ref: '#/components/schemas/Error'
      */
-    router.get(pathUsuario + "/:id", (req, res, next) => {
+    router.get(pathUsuarioId, (req, res, next) => {
         getController(UsuarioController).obtenerUsuario(req, res, next);
     });
 
@@ -112,7 +114,7 @@ export default function usuarioRoutes(getController) {
      *       404:
      *         description: Usuario no encontrado
      */
-    router.get(pathUsuario + "/historialPedidos/:id", (req, res, next) => {
+    router.get(pathUsuarioId + "/historialPedidos", (req, res, next) => {
         getController(UsuarioController).historialPedidos(req, res, next);
     });
 
@@ -148,7 +150,7 @@ export default function usuarioRoutes(getController) {
      *       404:
      *         description: Usuario no encontrado
      */
-    router.get(pathUsuario + "/notificaciones/:id", (req, res, next) => {
+    router.get(pathUsuarioId + "/notificaciones", (req, res, next) => {
         getController(UsuarioController).obtenerNotificaciones(req, res, next);
     });
 
@@ -171,7 +173,7 @@ export default function usuarioRoutes(getController) {
      *       404:
      *         description: Notificación no encontrada
      */
-    router.patch(pathUsuario + "/notificaciones/:id", (req, res, next) => {
+    router.patch(pathUsuarioId + pathNotificacionID, (req, res, next) => {
         getController(UsuarioController).marcarLectura(req, res, next);
     });
 

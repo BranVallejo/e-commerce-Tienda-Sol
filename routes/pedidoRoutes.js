@@ -3,6 +3,8 @@ import { PedidoController } from "../controllers/pedidoController.js";
 
 const pathPedido = "/pedidos";
 
+const pathPedidoId = "/pedidos/:id";
+
 /**
  * @swagger
  * tags:
@@ -117,7 +119,7 @@ export default function pedidoRoutes(getController) {
      *       404:
      *         description: Pedido no encontrado
      */
-    router.get(pathPedido + "/:id", (req, res, next) => {
+    router.get(pathPedidoId, (req, res, next) => {
         getController(PedidoController).obtenerPedido(req, res, next);
     });
 
@@ -140,7 +142,7 @@ export default function pedidoRoutes(getController) {
      *       404:
      *         description: Pedido no encontrado
      */
-    router.delete(pathPedido + "/:id", (req, res, next) => {
+    router.delete(pathPedidoId, (req, res, next) => {
         getController(PedidoController).eliminarPedido(req, res, next);
     });
 
@@ -182,7 +184,7 @@ export default function pedidoRoutes(getController) {
      *       400:
      *         description: Estado inválido
      */
-    router.patch(pathPedido + "/:id", (req, res, next) => {
+    router.patch(pathPedidoId, (req, res, next) => {
         getController(PedidoController).actualizarEstado(req, res, next);
     });
 

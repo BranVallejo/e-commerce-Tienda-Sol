@@ -46,9 +46,8 @@ export class ProductoRepository {
   ) {
     const skip = (page - 1) * limit;
 
-    console.log("la pagina: ", page);
-    console.log("cuantos traer:", limit);
-
+    
+    //
     const filtros = {};
 
     if (sellerId) filtros.vendedor = sellerId;
@@ -64,7 +63,7 @@ export class ProductoRepository {
       if (minPrice) filtros.precio.$gte = Number(minPrice); //gte equivale a >=
       if (maxPrice) filtros.precio.$lte = Number(maxPrice); //gte equivale a <=
     }
-
+    //
     return await this.productoSchema
       .find(filtros)
       .sort(this.sortOrderToTypeOfFilter(sortOrder))

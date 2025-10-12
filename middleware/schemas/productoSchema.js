@@ -5,16 +5,19 @@ import { schemaBase } from "./SchemaBase.js";
 import { Producto } from "../../models/entities/producto/producto.js";
 import mongoose from "mongoose";
 
+const MonedaEnum = z.enum(["PESO_ARG", "DOLAR_USA", "REAL", "CHELIN"]);
+const CategoriaEnum = z.enum(["REMERA", "PANTALON", "ZAPATOS", "CAMPERA"]);
+
 export const productSchema = z.object({
   // id: z.number(),
   nombre: z.string(),
   descripcion: z.string().default(""),
   precio: z.number().nonnegative(),
-  moneda: z.number().default(0), // ✅ Cambiar "ARS" por 0 (número)
+  moneda: MonedaEnum,
   stock: z.number().int().nonnegative(),
   fotos: z.array(z.string()).default([]),
   activo: z.boolean().default(true),
-  categorias: z.array(z.number()).default([]),
+  categorias: z.array(CategoriaEnum),
   vendedor: z.string(),
   createdAt: z
     .preprocess((arg) => {
@@ -30,7 +33,7 @@ export const productSchema = z.object({
 
 export const searchSchema = z.object({
   sellerID: z.string(),
-  category: z.number().optional(),
+  category: z.array(CategoriaEnum).optional(),
   keyWord: z.string().optional(),
   minPrice: z.number().nonnegative().optional(),
   maxPrice: z.number().nonnegative().optional(),

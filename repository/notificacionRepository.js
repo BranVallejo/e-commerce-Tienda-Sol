@@ -30,14 +30,25 @@ export class NotificacionRepository {
     return notificacion;
   }
 
-  async update(id, camposActualizados) {
+  obtenerObjetoConFechaActual(campos){ 
+    return {
+        ...campos,
+        fechaLeida: new Date()
+    };
+  }
+
+  async update(idDelUsuario, idNotificacion, camposActualizados) {
+    const camposMasFecha = this.obtenerObjetoConFechaActual(camposActualizados);
+
     const notificacion = await this.notificacionSchema.findByIdAndUpdate(
-      id,
-      { $set: camposActualizados },
+      idNotificacion,
+      { $set: camposMasFecha },
       { new: true, runValidators: true } // devuelve el nuevo documento validado
     );
 
     if (!notificacion) throw new NotFoundError(`${id}`);
+    if (notificacion.usuarioDestino != idDelUsuario)
+        throw new UserNotFoundError(idNotificacion, idDelUsuario);
 
     return notificacion;
   }

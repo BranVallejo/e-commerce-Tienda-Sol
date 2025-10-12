@@ -22,17 +22,17 @@ const productoSchema = new mongoose.Schema(
       maxlength: [1000, "El nombre no puede exceder 1000 caracteres"],
     },
     categorias: {
-      type: [Number],
-      enum: [0, 1, 2, 3],
-      required: true,
+      type: [String],
+      enum: ["REMERA", "PANTALON", "ZAPATOS", "CAMPERA"],
+      required: [true, "las categorias son obligatorias"],
     },
     precio: {
       type: Number,
       required: [true, "El precio es obligatorio"],
     },
     moneda: {
-      type: Number,
-      enum: [0, 1, 2],
+      type: String,
+      enum: ["PESO_ARG", "DOLAR_USA", "REAL", "CHELIN"],
       required: [true, "La moneda es obligatoria"],
     },
     stock: {

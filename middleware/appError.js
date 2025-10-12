@@ -15,6 +15,12 @@ export class NotFoundError extends AppError {
   }
 }
 
+export class UserNotFoundError extends AppError {
+  constructor(idNotificacion, idDelUsuario) {
+    super(`Notificacion: ${idNotificacion} no encontrada para el usuario: ${idDelUsuario}`, 404);
+  }
+}
+
 export class BadQuery extends AppError {
   constructor(message) {
     super(`Parametro ${message} no es compatible`, 400);

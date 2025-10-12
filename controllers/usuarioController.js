@@ -84,13 +84,15 @@ export class UsuarioController {
   }
 
   async marcarLectura(req, res, next) {
-    const idResult = usuarioSchema.parsearId(req);
+    const idUsuarioResult = usuarioSchema.parsearIdString(req.params.id);
+    const idNotificacionResult = usuarioSchema.parsearIdString(req.params.idNotificacion);
+
     const camposActualizados = req.body
 
     return await this.usuarioService
-      .marcarLectura(idResult, camposActualizados)
-      .then((notificaciones) => {
-        return res.status(200).json(notificaciones);
+      .marcarLectura(idUsuarioResult, idNotificacionResult, camposActualizados)
+      .then((nuevaNotificaciones) => {
+        return res.status(200).json(nuevaNotificaciones);
       })
       .catch((error) => {
         next(error);

@@ -34,7 +34,7 @@ export class UsuarioService {
     return await this.notificacionService.obtenerNotificacionesLeidas(id);
   }
 
-  async marcarLectura(idNotificacion, camposActualizados) {
-    return await this.notificacionService.marcarLectura(idNotificacion, camposActualizados);
+  async marcarLectura( idUsuario, idNotificacion, camposActualizados) {
+    return await this.notificacionService.marcarLectura(idUsuario, idNotificacion, camposActualizados);
   }
 }

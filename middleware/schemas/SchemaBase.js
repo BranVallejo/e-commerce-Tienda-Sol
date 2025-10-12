@@ -19,4 +19,17 @@ export class schemaBase {
 
     return id;
   }
+
+  static parsearIdString(id) {
+    if (!id || typeof id !== "string") {
+      throw new Error("ID inválido: debe ser un string");
+    }
+
+    if (id.length !== 24) {
+      // Los ObjectId tienen 24 caracteres
+      throw new Error("ID inválido: formato incorrecto");
+    }
+
+    return id;
+  }
 }

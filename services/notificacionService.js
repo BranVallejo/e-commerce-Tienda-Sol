@@ -1,3 +1,6 @@
+import { UserNotFoundError } from "../middleware/appError.js";
+
+
 export class NotificacionService {
     constructor(notificacionRepo) {
         this.notificacionRepo = notificacionRepo;
@@ -23,7 +26,7 @@ export class NotificacionService {
         return notificaciones.filter(n => n.leida);
     }
 
-    async marcarLectura(idNotificacion, camposActualizados) {
-        return await this.notificacionRepo.update(idNotificacion, camposActualizados);
+    async marcarLectura(idDelUsuario, idNotificacion, camposActualizados) {
+        return await this.notificacionRepo.update(idDelUsuario, idNotificacion, camposActualizados);
     }
 }
