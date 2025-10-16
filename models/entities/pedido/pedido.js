@@ -9,7 +9,6 @@ import { StatusTransitionError } from "../../../middleware/appError.js";
 
 export class Pedido {
     constructor(compradorID, itemsPedido, moneda, direccionEntrega) {
-        this.id = 1;
         this.compradorID = compradorID;
         this.itemsPedido = itemsPedido;
         this.total = this.calcularTotal();
@@ -19,8 +18,6 @@ export class Pedido {
         this.fechaCreacion = new Date();
         this.historialEstados = []
     }
-
-
 
     cambiarEstado(nuevoEstado) {
 
@@ -44,16 +41,8 @@ export class Pedido {
         this.estado = nuevoEstado;
     }
 
-    setId(id){
-        this.id = id
-    }
-
     getItemsPedido(){
         return this.itemsPedido;
-    }
-
-    getId(){
-        return this.id;
     }
 
     getEstado(){
@@ -65,6 +54,6 @@ export class Pedido {
     }
 
     calcularTotal() {
-        return this.itemsPedido.reduce((acc, item) => acc + item.getPrecioUnitario() * item.getCantidad(), 0);
+        return this.itemsPedido.reduce((acc, item) => acc + item.precioUnitario * item.cantidad, 0);
     }
 }

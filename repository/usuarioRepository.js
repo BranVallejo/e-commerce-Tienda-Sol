@@ -1,22 +1,35 @@
-import { Usuario } from "../models/entities/usuario/usuario.js";
+import { UsuarioModel } from '../schemasDB/usuarioSchema.js';
 
 export class UsuarioRepository {
-  constructor() {
-    this.usuarios = [];
-    this.id = 1;
-  }
 
-  create(usuario) {
-    usuario.setId(this.id);
-    this.id++;
-    this.usuarios.push(usuario);
-    return  Promise.resolve(usuario);
-  }
+    constructor() {
+        this.usuarioSchema = UsuarioModel;
+    }
 
-  //TODO mantener consistencia
-  findUserByID(id_user) {
-    const usuario = this.usuarios.find((u) => u.getId() === parseInt(id_user));
-    return Promise.resolve(usuario);
-  } 
+    async create(usuarioData) {
+        const usuario = new this.usuarioSchema(usuarioData);
+        return await usuario.save();
+    }
 
+    async findById(id) {
+        const usuario = await this.usuarioSchema.findById(id);
+
+        if (!usuario) {
+        throw new NotFoundError(`${id}`);
+        }
+
+        return usuario;
+    }
+
+    // async findAll() {
+    //     return await this.usuarioSchema.find();
+    // }
+
+    // async update(id, usuarioData) {
+    //     return await this.usuarioSchema.findByIdAndUpdate(id, usuarioData, { new: true });
+    // }
+
+    // async delete(id) {
+    //     return await this.usuarioSchema.findByIdAndDelete(id);
+    // }
 }

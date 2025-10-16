@@ -1,14 +1,18 @@
+import { UserNotFoundError } from "../middleware/appError.js";
+
+
 export class NotificacionService {
     constructor(notificacionRepo) {
         this.notificacionRepo = notificacionRepo;
     }
 
     async crearNotificacion(notificacion) {
+        //console.log(notificacion.usuarioDestino)
         return await this.notificacionRepo.create(notificacion);
     }
 
-    async obtenerNotificaciones(idUsuario) {
-        const notificaciones = await this.notificacionRepo.obtenerNotificacionesDeUsuario(idUsuario);
+    async obtenerNotificaciones(idUsuario, leidas, page, limit) {
+        const notificaciones = await this.notificacionRepo.obtenerNotificacionesDeUsuario(idUsuario, leidas, page, limit);
         return notificaciones || [];
     }   
 
@@ -22,10 +26,7 @@ export class NotificacionService {
         return notificaciones.filter(n => n.leida);
     }
 
-    async marcarComoLeida(idNotificacion) {
-        const notificacion = await this.notificacionRepo.findById(idNotificacion);
-        if (!notificacion) throw new NotFoundError(`${idNotificacion}`);
-        notificacion.marcarComoLeida();
-        return await this.notificacionRepo.update(idNotificacion, notificacion);
+    async marcarLectura(idDelUsuario, idNotificacion, camposActualizados) {
+        return await this.notificacionRepo.update(idDelUsuario, idNotificacion, camposActualizados);
     }
 }

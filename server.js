@@ -43,9 +43,13 @@ export class Server {
         });
     }
 
-    launch() {
+    launch(callback) {
         this.app.listen(this.port, () => {
-            console.log(`Server running on port ${this.port}`);
+            if (callback) {
+                callback();
+            } else {
+                console.log(`Server running on port ${this.port}`);
+            }
         });
     }
 }

@@ -1,42 +1,61 @@
+import { NotificacionModel } from "../schemasDB/notificacionSchema.js";
+import { NotFoundError } from "../middleware/appError.js";
+
 export class NotificacionRepository {
-    constructor() {
-        this.notificaciones = [];
-        this.id = 1;
+  constructor() {
+    this.notificacionSchema = NotificacionModel;
+  }
+
+  async create(notificacion) {
+    const nuevaNotificacion = new this.notificacionSchema(notificacion);
+    return await nuevaNotificacion.save();
+  }
+
+  async obtenerNotificacionesDeUsuario(idUsuario, leidas, page, limit) {
+    const skip = (page - 1) * limit;
+    const filtro = {};
+    filtro.usuarioDestino = idUsuario;
+
+    if (leidas !== null) {
+      filtro.leida = leidas;
     }
 
-    create(notificacion) {
-        notificacion.setId(this.id);
-        this.id++;
-        this.notificaciones.push(notificacion);
-        return Promise.resolve(notificacion);
-    }
+    return await this.notificacionSchema.find(filtro).limit(limit).skip(skip);
+  }
 
-    obtenerNotificacionesDeUsuario(idUsuario) {
-        const notificacionesUsuario = this.notificaciones.filter(n => n.usuarioDestino == idUsuario);
-        return Promise.resolve(notificacionesUsuario);
-    }
+  async findById(id) {
+    const notificacion = await this.notificacionSchema.findById(id);
 
-    findById(id) {
-        const notificacion = this.notificaciones.find(
-            (unaNotificacion) => unaNotificacion.id == id
-        );
-        return Promise.resolve(notificacion ?? null);
-    }
+    if (!notificacion) throw new NotFoundError(`${id}`);
+    return notificacion;
+  }
 
-    update(id, notificacionActualizada) {
+  obtenerObjetoConFechaActual(campos){ 
+    return {
+        ...campos,
+        fechaLeida: new Date()
+    };
+  }
 
-        if(notificacionActualizada == null) return Promise.resolve(null);
+  async update(idDelUsuario, idNotificacion, camposActualizados) {
+    const camposMasFecha = this.obtenerObjetoConFechaActual(camposActualizados);
 
-        const indice = this.obtenerIndicePorID(id);
+    const notificacion = await this.notificacionSchema.findByIdAndUpdate(
+      idNotificacion,
+      { $set: camposMasFecha },
+      { new: true, runValidators: true } // devuelve el nuevo documento validado
+    );
 
-        if (indice === -1) return Promise.resolve(null);
+    if (!notificacion) throw new NotFoundError(`${id}`);
+    if (notificacion.usuarioDestino != idDelUsuario)
+        throw new UserNotFoundError(idNotificacion, idDelUsuario);
 
-        this.notificaciones[indice] = notificacionActualizada;
+    return notificacion;
+  }
 
-        return Promise.resolve(notificacionActualizada);
-    }
-
-    obtenerIndicePorID(id){
-        return this.notificaciones.findIndex((notificacion) => notificacion.id == id);
-    }
+  obtenerIndicePorID(id) {
+    return this.notificaciones.findIndex(
+      (notificacion) => notificacion.id == id
+    );
+  }
 }

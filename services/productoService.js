@@ -1,52 +1,56 @@
 import { NotFoundError } from "../middleware/appError.js";
+import { BadQuery } from "../middleware/appError.js";
+import { ProductoModel } from "../schemasDB/productoSchema.js";
 
 export class ProductoService {
-    constructor(productoRepository) {
-        this.productoRepository = productoRepository;
-    }
+  constructor(productoRepository) {
+    this.productoRepository = productoRepository;
+  }
 
+  async crearProducto(prod) {
+    return await this.productoRepository.create(prod);
+  }
 
-    async crearProducto(producto) {
-        const nuevoProducto = await this.productoRepository.create(producto);
-        return nuevoProducto;
-    }
+  async obtenerProducto(id) {
+    return await this.productoRepository.findById(id);
+  }
 
+  async obtenerProductosSegun(
+    page,
+    limit,
+    sortOrder,
+    sellerId,
+    keyWord,
+    category,
+    minPrice,
+    maxPrice
+  ) {
+    return await this.productoRepository.obtenerProductosSegun(
+      page,
+      limit,
+      sortOrder,
+      sellerId,
+      keyWord,
+      category,
+      minPrice,
+      maxPrice
+    );
+  }
 
-    async obtenerProducto(id) {
-        const producto = await this.productoRepository.findById(id);
-        if (!producto) throw new NotFoundError(`${id}`);
-        return producto;
-    }
+  async actualizar(id, camposActualizados) {
+    return await this.productoRepository.update(id, camposActualizados);
+  }
 
+  async actualizarStock(id, unidades, modificarStock) {
+    const unProducto = await this.obtenerProducto(id);
 
-    async listarProductos() {
-        const productos = await this.productoRepository.findAll();
-        return productos;
-    }
+    modificarStock(unProducto, unidades);
 
+    // Guardar los cambios
+    return await this.productoRepository.save(unProducto);
+  }
 
-    async actualizar(id, productoActualizado) {
-
-        productoActualizado.setId(id);
-        const productoGuardado = await this.productoRepository.update(id, productoActualizado);
-        
-        if (!productoGuardado) throw new NotFoundError(`${id}`);
-        
-        return productoGuardado;
-    }
-
-
-    async eliminarProducto(id) {
-        const prod = await this.productoRepository.delete(id);
-        if (!prod) throw new NotFoundError(`${id}`);
-    }
-
-
-    async actualizarStock(id, cantidadComprada) {
-        const unProducto = await this.obtenerProducto(id);
-        unProducto.reducirStock(cantidadComprada);
-
-        return this.productoRepository.update(id, unProducto);
-
-    }
+  async eliminarProducto(id) {
+    return await this.productoRepository.delete(id);
+  }
 }
