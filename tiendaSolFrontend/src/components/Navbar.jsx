@@ -1,0 +1,99 @@
+import { useState, useEffect } from "react";
+import { ShoppingCart, Moon, Sun, User } from "lucide-react";
+import logo from "/logoTiendaSol.png";
+
+export default function Navbar() {
+  const [darkMode, setDarkMode] = useState(false);
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+
+  const [userOpen, setUserOpen] = useState(false);
+
+  const user = {
+    name: "Gianlucca Bolocco",
+    notifications: 3,
+  };
+
+  return (
+    <nav className="fixed top-0 left-0 w-full z-50 bg-neutral-900/95 backdrop-blur-md border-b border-neutral-200/40 dark:border-neutral-800/40 font-[Outfit,sans-serif]">
+      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        {/* LOGO */}
+        <a
+          href="/"
+          className="flex items-center gap-3 text-lg font-semibold tracking-wide text-white"
+        >
+          <img src={logo} alt="Logo Tienda Sol" className="h-16 w-auto" />
+        </a>
+
+        {/* LINKS */}
+        <div className="hidden md:flex items-center space-x-10 text-base text-white">
+          {["Inicio", "Productos"].map((link) => (
+            <a
+              key={link}
+              href="#"
+              className="relative font-medium transition-colors duration-300 text-white hover:text-neutral-400"
+            >
+              {link}
+              <span className="absolute left-0 bottom-0 w-0 h-1 bg-neutral-400 rounded-full transition-all duration-300 group-hover:w-full"></span>
+            </a>
+          ))}
+        </div>
+
+        {/* ACCIONES */}
+        <div className="flex items-center space-x-4">
+          {/* MODO OSCURO */}
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="p-3 rounded-full hover:bg-neutral-800/70 transition"
+          >
+            {darkMode ? (
+              <Sun className="w-6 h-6 text-yellow-400" />
+            ) : (
+              <Moon className="w-6 h-6 text-white" />
+            )}
+          </button>
+
+          {/* CARRITO */}
+          <button className="relative p-3 rounded-full hover:bg-neutral-800/70 transition">
+            <ShoppingCart className="w-6 h-6 text-white" />
+            <span className="absolute -top-1 -right-1 bg-neutral-400 text-neutral-900 text-xs px-2 rounded-full">
+              2
+            </span>
+          </button>
+
+          {/* USUARIO */}
+          <div className="relative">
+            <button
+              onClick={() => setUserOpen(!userOpen)}
+              className="p-3 rounded-full hover:bg-neutral-800/70 transition"
+            >
+              <User className="w-6 h-6 text-white" />
+            </button>
+
+            {userOpen && (
+              <div className="absolute right-0 mt-3 w-64 bg-neutral-800 dark:bg-neutral-900 border border-neutral-700/50 dark:border-neutral-800/50 rounded-2xl shadow-xl overflow-hidden">
+                <div className="px-4 py-3 border-b border-neutral-700 dark:border-neutral-800">
+                  <p className="text-xs text-neutral-400">Sesión iniciada como</p>
+                  <p className="font-medium text-white truncate">{user.name}</p>
+                </div>
+
+                <button className="w-full text-left px-4 py-2 flex items-center justify-between text-sm hover:bg-neutral-700/50 transition">
+                  <span className="text-neutral-100">Notificaciones</span>
+                  {user.notifications > 0 && (
+                    <span className="text-xs bg-neutral-400 text-neutral-900 rounded-full px-2 py-0.5">
+                      {user.notifications}
+                    </span>
+                  )}
+                </button>
+                <button className="w-full text-left px-4 py-2 text-sm hover:bg-neutral-700/50 transition text-red-400">
+                  Cerrar sesión
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}
