@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import { ShoppingCart, Moon, Sun, User } from "lucide-react";
 import logo from "/logoTiendaSol.png";
@@ -23,7 +24,10 @@ export default function Navbar({ darkMode, setDarkMode }) {
             Inicio
           </a>
 
-          <a href="/productos" className="relative font-medium text-white hover:text-neutral-400 transition" > Productos </a>
+          <a href="/productos" className="relative font-medium text-white hover:text-neutral-400 transition" >
+            Productos
+          </a>
+
         </div>
 
         <div className="flex items-center space-x-4">
@@ -39,12 +43,12 @@ export default function Navbar({ darkMode, setDarkMode }) {
             )}
           </button>
 
-          <button className="relative p-3 rounded-full hover:bg-neutral-800/70 transition">
+          <Link to="/cart" className="relative p-3 rounded-full hover:bg-neutral-800/70 transition">
             <ShoppingCart className="w-6 h-6 text-white" />
             <span className="absolute -top-1 -right-1 bg-neutral-400 text-neutral-900 text-xs px-2 rounded-full">
-              2
+              3
             </span>
-          </button>
+          </Link>
 
           <div>
             <button
@@ -73,7 +77,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
                 <button className="w-full text-left px-4 py-2 text-sm hover:bg-neutral-700/50 transition text-red-400">
                   Cerrar sesión
                 </button>
-                
+
               </div>
             )}
           </div>

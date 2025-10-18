@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Footer from "./components/Footer";
+import Cart from "./pages/Cart";
 
 function App() {
 
@@ -17,13 +18,14 @@ function App() {
   return (
     <div className="bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 min-h-screen">
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-      
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/productos/:idProducto" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 }
