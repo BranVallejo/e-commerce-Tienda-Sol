@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { Pedido } from "../models/entities/pedido/pedido.js";
-import { Moneda } from "../models/entities/moneda.js";
 import { EstadoPedido } from "../models/entities/pedido/estadoPedido.js";
 
 const pedidoSchema = new mongoose.Schema(
@@ -33,11 +32,6 @@ const pedidoSchema = new mongoose.Schema(
       type: Number,
       required: true,
       min: 0,
-    },
-    moneda: {
-      type: String,
-      enum: Moneda, // PESO_ARG, DOLAR_USA, REAL
-      required: [true, "La moneda es obligatoria"],
     },
     direccionEntrega: {
       // objeto embebido

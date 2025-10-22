@@ -23,11 +23,6 @@ const usuarioSchema = new mongoose.Schema(
       minlength: [8, "El nombre debe tener al menos 2 caracteres"],
       maxlength: [20, "El nombre no puede exceder 50 caracteres"],
     },
-    tipo: {
-      type: String,
-      enum: ["COMPRADOR", "VENDEDOR", "ADMIN"],
-      default: "COMPRADOR",
-    },
     fechaCreacion: {
       type: Date,
       default: Date.now,

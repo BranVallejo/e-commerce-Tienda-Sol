@@ -1,6 +1,5 @@
 import { Usuario } from "../usuario/usuario.js"; 
 import { EstadoPedido } from "./estadoPedido.js";
-import { Moneda } from "../moneda.js";
 import { ItemPedido } from "./itemPedido.js";
 import { DireccionEntrega } from "./direccionEntrega.js";
 import { tr } from "zod/locales";
@@ -8,11 +7,10 @@ import { StatusTransitionError } from "../../../middleware/appError.js";
 
 
 export class Pedido {
-    constructor(compradorID, itemsPedido, moneda, direccionEntrega) {
+    constructor(compradorID, itemsPedido, direccionEntrega) {
         this.compradorID = compradorID;
         this.itemsPedido = itemsPedido;
         this.total = this.calcularTotal();
-        this.moneda = moneda;
         this.direccionEntrega = direccionEntrega; //DireccionEntrega
         this.estado = EstadoPedido.PENDIENTE;
         this.fechaCreacion = new Date();

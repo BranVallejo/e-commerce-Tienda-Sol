@@ -4,7 +4,6 @@ import { productSchema } from "./productoSchema.js";
 import { Producto } from "../../models/entities/producto/producto.js";
 import { Pedido } from "../../models/entities/pedido/pedido.js";
 
-const MonedaEnum = z.enum(["PESO_ARG", "DOLAR_USA", "REAL"]); // enum de monedas
 
 export const estadoSchema = z.enum([
   "PENDIENTE",
@@ -37,7 +36,6 @@ const direccionEntregaSchema = z.object({
 const pedido = z.object({
   compradorID: z.string(),
   itemsPedido: z.array(itemPedido),
-  moneda: MonedaEnum,
   direccionEntrega: direccionEntregaSchema,
 });
 

@@ -5,7 +5,6 @@ import { schemaBase } from "./SchemaBase.js";
 import { Producto } from "../../models/entities/producto/producto.js";
 import mongoose from "mongoose";
 
-const MonedaEnum = z.enum(["PESO_ARG", "DOLAR_USA", "REAL", "CHELIN"]);
 const CategoriaEnum = z.enum(["REMERA", "PANTALON", "ZAPATOS", "CAMPERA"]);
 
 export const productSchema = z.object({
@@ -13,7 +12,6 @@ export const productSchema = z.object({
   nombre: z.string(),
   descripcion: z.string().default(""),
   precio: z.number().nonnegative(),
-  moneda: MonedaEnum,
   stock: z.number().int().nonnegative(),
   fotos: z.array(z.string()).default([]),
   activo: z.boolean().default(true),
@@ -51,7 +49,6 @@ export class productoSchema extends schemaBase {
       descripcion: result.data.descripcion,
       categorias: result.data.categorias,
       precio: result.data.precio,
-      moneda: result.data.moneda,
       stock: result.data.stock,
       fotos: result.data.fotos,
       activo: result.data.activo,

@@ -9,7 +9,6 @@ export class Producto {
     descripcion,
     categorias,
     precio,
-    moneda,
     stock,
     fotos,
     activo
@@ -19,7 +18,6 @@ export class Producto {
     this.descripcion = descripcion;
     this.categorias = categorias; // [categoria]
     this.precio = precio; //Int
-    this.moneda = moneda; //String
     this.stock = stock; //Int
     this.fotos = fotos; // [String]
     this.activo = activo; //Bool

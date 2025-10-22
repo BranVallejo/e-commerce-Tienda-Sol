@@ -25,7 +25,6 @@ export class PedidoController {
         const nuevoPedido = new Pedido(
           result.data.compradorID,
           itemsInstanciados,
-          result.data.moneda,
           result.data.direccionEntrega
         );
 

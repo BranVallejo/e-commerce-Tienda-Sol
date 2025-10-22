@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
 import { Producto } from "../models/entities/producto/producto.js";
-import { Usuario } from "../models/entities/usuario/usuario.js";
-import { Categoria } from "../models/entities/producto/categoria.js";
-import { Moneda } from "../models/entities/moneda.js";
 
 const productoSchema = new mongoose.Schema(
   {
@@ -30,14 +27,9 @@ const productoSchema = new mongoose.Schema(
       type: Number,
       required: [true, "El precio es obligatorio"],
     },
-    moneda: {
-      type: String,
-      enum: ["PESO_ARG", "DOLAR_USA", "REAL", "CHELIN"],
-      required: [true, "La moneda es obligatoria"],
-    },
     stock: {
       type: Number,
-      required: [true, "Tiene que tener un precio"],
+      required: [true, "Tiene que tener un stock"],
     },
     fotos: {
       type: [String],

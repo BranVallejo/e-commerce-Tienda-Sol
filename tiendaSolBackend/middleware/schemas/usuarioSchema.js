@@ -6,7 +6,6 @@ const userSchema = z.object({
     nombre: z.string().min(1, "El nombre es obligatorio"),
     email: z.string().email("Formato de email inválido"),
     telefono: z.string().min(6, "El teléfono debe tener al menos 6 dígitos"),
-    tipo: z.enum(["COMPRADOR", "VENDEDOR", "ADMIN"]), // podés ajustar según tus tipos
 });
 
 export class usuarioSchema extends schemaBase {
@@ -22,7 +21,6 @@ export class usuarioSchema extends schemaBase {
             result.data.nombre,
             result.data.email,
             result.data.telefono,
-            result.data.tipo
         );
     }
 }

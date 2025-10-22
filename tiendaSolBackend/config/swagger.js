@@ -34,11 +34,6 @@ const options = {
                         email: {
                             type: 'string',
                             example: 'juan@email.com'
-                        },
-                        rol: {
-                            type: 'string',
-                            enum: ['CLIENTE', 'VENDEDOR', 'ADMIN'],
-                            example: 'CLIENTE'
                         }
                     }
                 },
