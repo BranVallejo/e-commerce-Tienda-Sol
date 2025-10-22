@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 
 export default function ProductDetailInfo({producto}) {
   return (
@@ -13,12 +14,12 @@ export default function ProductDetailInfo({producto}) {
             </p>
             <p className="text-sm mb-4">
                 Vendido por{" "}
-                <a 
-                href={`/${producto.vendedor._id}/productos`} 
+                <Link 
+                to={`/${producto.vendedor._id}/productos`} 
                 className="text-blue-500 hover:underline"
                 >
                 {producto.vendedor.nombre}
-                </a>
+                </Link>
             </p>
             {producto.categorias?.length > 0 && (
                 <div className="mb-4">

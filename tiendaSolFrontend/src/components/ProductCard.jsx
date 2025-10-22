@@ -1,9 +1,10 @@
+import {Link} from "react-router-dom";
+
 export default function ProductCard({ product }) {
-  // Usar la primera foto del array de fotos
 
   return (
-    <a
-      href={`/productos/${product._id}`}
+    <Link
+      to={`/productos/${product._id}`}
       className="bg-white dark:bg-neutral-800 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition cursor-pointer flex flex-col"
     >
       <div className="relative w-full h-56 overflow-hidden rounded-t-2xl">
@@ -24,6 +25,6 @@ export default function ProductCard({ product }) {
           </p>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
