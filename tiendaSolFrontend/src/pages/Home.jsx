@@ -1,5 +1,5 @@
 import ProductList from "../components/ProductList";
-import Filtros from "../components/Filtros";
+import Filtros from "../components/Filtros/Filtros";
 import { useEffect, useState } from "react";
 
 function Home() {
