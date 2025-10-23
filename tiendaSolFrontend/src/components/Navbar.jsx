@@ -3,9 +3,10 @@ import { useState } from "react";
 import { ShoppingCart, Moon, Sun, User } from "lucide-react";
 import logo from "/logoTiendaSol.png";
 import { useCart } from "../context/CartContext.jsx";
-import UserPanel from "./UserPanel.jsx";
+import UserMenu from "./UserMenu.jsx";
 
 export default function Navbar({ darkMode, setDarkMode }) {
+  
   const [userOpen, setUserOpen] = useState(false);
   const { carrito } = useCart();
 
@@ -89,7 +90,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
 
             {userOpen && (
               <div className="absolute right-0 mt-2">
-                <UserPanel />
+                <UserMenu />
               </div>
             )}
           </div>

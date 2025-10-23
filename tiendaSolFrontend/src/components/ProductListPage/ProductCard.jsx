@@ -5,9 +5,9 @@ export default function ProductCard({ product }) {
   return (
     <Link
       to={`/productos/${product._id}`}
-      className="bg-white dark:bg-neutral-800 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition cursor-pointer flex flex-col"
+      className="bg-white dark:bg-neutral-800 rounded-md shadow-md overflow-hidden hover:shadow-xl transition cursor-pointer flex flex-col"
     >
-      <div className="relative w-full h-56 overflow-hidden rounded-t-2xl">
+      <div className="relative w-full h-56 overflow-hidden rounded-t-md">
         <img
           src={product.fotos[0]}
           alt={product.nombre}

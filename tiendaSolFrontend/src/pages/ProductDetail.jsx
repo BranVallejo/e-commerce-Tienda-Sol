@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
-import ProductDetailCarrousel from "../components/ProductDetailCarrousel.jsx";
-import ProductDetailInfo from "../components/ProductDetailInfo.jsx";
-import ProductDetailCart from "../components/ProductDetailCart.jsx";
+import ProductDetailCarrousel from "../components/ProductDetail/ProductDetailCarrousel.jsx";
+import ProductDetailInfo from "../components/ProductDetail/ProductDetailInfo.jsx";
+import ProductDetailCart from "../components/ProductDetail/ProductDetailCart.jsx";
 
 
 export default function DetalleProducto() {

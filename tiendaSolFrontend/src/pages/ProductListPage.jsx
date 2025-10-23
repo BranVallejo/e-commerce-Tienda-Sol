@@ -1,4 +1,4 @@
-import ProductList from "../components/ProductList";
+import ProductList from "../components/ProductListPage/ProductList";
 import Filtros from "../components/Filtros/Filtros";
 import { useEffect, useState } from "react";
 

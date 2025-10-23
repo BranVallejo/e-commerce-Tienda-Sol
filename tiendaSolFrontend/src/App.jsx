@@ -6,9 +6,10 @@ import ProductDetail from "./pages/ProductDetail";
 import Footer from "./components/Footer";
 import Cart from "./pages/Cart";
 import NotificationPage from "./pages/NotificationPage";
-import CreateProductPage from "./pages/CreateProductPage";
+import CreateProduct from "./components/SellerPanel/CreateProduct";
 import Login from "./pages/Login";
-import SellerPage from "./pages/SellerPage";
+import SellerProductPage from "./pages/SellerProductPage";
+import SellerPanelPage from "./pages/SellerPanelPage";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -25,11 +26,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/productos/:idProducto" element={<ProductDetail />} />
-        <Route path="/:sellerId/productos" element={<SellerPage />} />
+        <Route path="/:sellerId/productos" element={<SellerProductPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/notificaciones" element={<NotificationPage />} />
-        <Route path="/nuevo-producto" element={<CreateProductPage />} />
+        <Route path="/nuevo-producto" element={<CreateProduct />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/panel-vendedor" element={<SellerPanelPage />} />
       </Routes>
 
       <Footer />

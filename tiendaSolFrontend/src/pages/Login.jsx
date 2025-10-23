@@ -6,7 +6,7 @@ import FormularioLogin from "../components/Login/FormularioLogin";
 export default function Login() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { setUsuario } = useContext(UserContext); // 👈 acá lo obtenés del contexto
+  const { setUsuario } = useContext(UserContext);
 
   const handleLogin = async (usuario) => {
     setError(null);
@@ -25,8 +25,7 @@ export default function Login() {
       console.log("usuario del servidor:", data);
 
       if (data) {
-        setUsuario(data); // 👈 guardás el usuario en contexto
-        alert("¡Login exitoso!");
+        setUsuario(data); 
         navigate("/");
       } else {
         setError("Usuario o contraseña incorrectos.");
