@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react'; // Iconos opcionales
+import { ChevronLeft, ChevronRight } from 'lucide-react'; 
 
-// Datos de ejemplo para el carrusel
 const slides = [
   {
     id: 1,

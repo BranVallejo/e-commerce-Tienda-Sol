@@ -1,9 +1,7 @@
-// NotificationPage.jsx
 import { useState } from "react";
-//import { useAuth } from "../context/AuthContext";
+
 
 export default function NotificationPage() {
-  //const { usuario } = useAuth();
 
   const usuario = {
     nombre: "Gianlucca Bolocco",

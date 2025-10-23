@@ -6,7 +6,7 @@ import { FotosInput } from "./Inputs/FotosInput";
 import { FormMessage } from "./Inputs/FormMessage";
 import { DollarSign, Package, Tag } from "lucide-react";
 
-const CATEGORIAS = ["PANTALON", "CAMPERA", "ZAPATO", "REMERA"];
+const CATEGORIAS = ["PANTALON", "CAMPERA", "ZAPATOS", "REMERA"];
 
 export default function CreateProduct({ sellerId }) {
   const [form, setForm] = useState({

@@ -20,7 +20,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
                  transition-all duration-300"
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* LOGO */}
+
         <Link to="/" className="flex items-center space-x-3 group">
           <img
             src={logo}
@@ -32,7 +32,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
           </span>
         </Link>
 
-        {/* LINKS */}
+
         <div className="hidden md:flex items-center space-x-10 text-lg">
           <Link
             to="/"
@@ -52,9 +52,9 @@ export default function Navbar({ darkMode, setDarkMode }) {
           </Link>
         </div>
 
-        {/* ICONOS */}
+
         <div className="flex items-center space-x-4 relative">
-          {/* Dark Mode */}
+
           <button
             onClick={() => setDarkMode(!darkMode)}
             className="p-3 rounded-full hover:bg-neutral-800/70 transition"
@@ -66,7 +66,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
             )}
           </button>
 
-          {/* Carrito */}
+
           <Link
             to="/cart"
             className="relative p-3 rounded-full hover:bg-neutral-800/70 transition"
@@ -79,7 +79,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
             )}
           </Link>
 
-          {/* Usuario */}
+
           <div className="relative">
             <button
               onClick={() => setUserOpen(!userOpen)}

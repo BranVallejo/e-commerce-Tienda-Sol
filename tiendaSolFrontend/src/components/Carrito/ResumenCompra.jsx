@@ -24,7 +24,6 @@ export default function ResumenCompra({ carrito }) {
         Resumen
       </h2>
 
-      {/* 🛒 Lista de productos */}
       <div className="mb-6 space-y-3">
         {carrito.length === 0 ? (
           <p className="text-neutral-500 dark:text-neutral-400">

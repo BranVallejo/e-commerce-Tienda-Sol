@@ -8,7 +8,7 @@ export default function FormularioLogin({ onSubmit, error }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(usuario); //, contrasena); // enviás solo el usuario
+    onSubmit(usuario); //, contraseña); // enviás solo el usuario
   };
 
   return (
@@ -16,7 +16,7 @@ export default function FormularioLogin({ onSubmit, error }) {
       className="relative bg-neutral-100 dark:bg-neutral-900 p-10 pt-16 rounded-3xl shadow-2xl 
                  transition-colors duration-300 max-w-md mx-auto"
     >
-      {/* Icono superior */}
+
       <div
         className="absolute -top-12 left-1/2 -translate-x-1/2 
                    bg-indigo-500 dark:bg-indigo-400 
@@ -31,7 +31,7 @@ export default function FormularioLogin({ onSubmit, error }) {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Usuario */}
+
         <div>
           <label
             htmlFor="usuario"
@@ -77,14 +77,13 @@ export default function FormularioLogin({ onSubmit, error }) {
           />
         </div>
 */}
-        {/* Mensaje de error */}
+
         {error && (
           <div className="text-red-500 dark:text-red-400 text-sm text-center font-medium pt-2">
             {error}
           </div>
         )}
 
-        {/* Botón */}
         <button
           type="submit"
           className="w-full bg-indigo-500 hover:bg-indigo-600 

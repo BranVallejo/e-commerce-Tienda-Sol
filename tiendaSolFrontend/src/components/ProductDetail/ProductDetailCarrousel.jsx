@@ -18,7 +18,6 @@ export default function ProductDetailCarrousel({ producto }) {
 
   return (
     <div className="flex flex-col items-center bg-neutral-100 dark:bg-neutral-800 p-6 rounded-3xl shadow-md transition">
-      {/* Imagen principal */}
       <div className="relative w-full flex items-center justify-center">
         <img
           src={fotos[imagenIndex]}
@@ -45,7 +44,6 @@ export default function ProductDetailCarrousel({ producto }) {
         )}
       </div>
 
-      {/* Miniaturas */}
       {fotos.length > 1 && (
         <div className="flex gap-3 mt-6 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600">
           {fotos.map((foto, idx) => (

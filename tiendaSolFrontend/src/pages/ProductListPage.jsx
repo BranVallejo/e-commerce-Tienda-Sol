@@ -75,7 +75,6 @@ function ProductListPage({sellerId}) {
 
   return (
     <>
-      <div className="text-left text-2xl py-10 pl-10">Productos:</div>
 
       <Filtros
         filtros={filtros}

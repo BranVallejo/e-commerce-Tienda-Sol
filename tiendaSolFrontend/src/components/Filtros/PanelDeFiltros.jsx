@@ -1,5 +1,4 @@
 import { Search, ArrowUpDown } from "lucide-react";
-//import PropTypes from "prop-types";
 
 const CATEGORIAS = [
   { value: "", label: "Todas las categorías" },

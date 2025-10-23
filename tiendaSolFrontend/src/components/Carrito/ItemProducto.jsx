@@ -39,7 +39,7 @@ export default function ItemProducto({
         </div>
       </div>
 
-      {/* Derecha */}
+
       <div className="flex items-center gap-4 flex-grow justify-end lg:flex-grow-0">
         <div className="w-28 text-right flex-shrink-0">
           <p className="text-lg font-medium text-neutral-900 dark:text-white">
