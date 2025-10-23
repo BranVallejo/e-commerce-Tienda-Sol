@@ -9,6 +9,7 @@ import { StatusTransitionError } from "../../../middleware/appError.js";
 export class Pedido {
     constructor(compradorID, itemsPedido, direccionEntrega) {
         this.compradorID = compradorID;
+        this.vendedorID = null;
         this.itemsPedido = itemsPedido;
         this.total = this.calcularTotal();
         this.direccionEntrega = direccionEntrega; //DireccionEntrega

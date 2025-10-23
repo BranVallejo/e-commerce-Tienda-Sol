@@ -9,6 +9,11 @@ const pedidoSchema = new mongoose.Schema(
       ref: "Usuario", //TODO: descomentar y arreglar
       required: true,
     },
+    vendedorID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Usuario", //TODO: descomentar y arreglar
+      required: true,
+    },
     itemsPedido: [
       {
         productoID: {

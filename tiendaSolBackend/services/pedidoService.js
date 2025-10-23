@@ -1,4 +1,5 @@
 import { NotFoundError } from "../middleware/appError.js";
+import mongoose from 'mongoose';
 import {
   NotificacionPedido,
   Notificacion,
@@ -15,6 +16,13 @@ export class PedidoService {
     this.notificacionService = notificacionService;
     this.pedidoSchema = PedidoModel;
   }
+
+// En tu PedidoService.js
+
+async obtenerPedidosSegun(query) {
+    return await this.pedidoRepository.obtenerPedidosSegun(query);
+}
+
 
   async getPrecioUnitario(productoID) {
     const producto = await this.productoService.obtenerProducto(productoID);
@@ -62,9 +70,10 @@ export class PedidoService {
   async crearPedido(pedido) {
     await this.actualizarStockProductosPorVenta(pedido);
 
-    const nuevoPedido = await this.pedidoRepository.create(pedido);
-
     const idVendedor = await this.getIdVendedor(pedido);
+    pedido.vendedorID = idVendedor;
+
+    const nuevoPedido = await this.pedidoRepository.create(pedido);
 
     await this.notificacionService.crearNotificacion(
       new Notificacion(idVendedor, `Tiene un nuevo pedido con ID: ${nuevoPedido.id} / [-] Comprador: ${pedido.compradorID}`)
@@ -73,10 +82,6 @@ export class PedidoService {
     return nuevoPedido;
   }
 
-  async listarPedidos(page, limit) {
-    const pedidos = await this.pedidoRepository.findAll(page, limit);
-    return pedidos || [];
-  }
 
   async obtenerPedido(idPedido) {
     const pedido = await this.pedidoRepository.findById(idPedido);

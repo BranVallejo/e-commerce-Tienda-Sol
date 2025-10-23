@@ -92,9 +92,6 @@ export default function pedidoRoutes(getController) {
      *               items:
      *                 $ref: '#/components/schemas/Pedido'
      */
-    router.get(pathPedido, (req, res, next) => {
-        getController(PedidoController).listarPedidos(req, res, next);
-    });
 
     /**
      * @swagger
@@ -186,6 +183,10 @@ export default function pedidoRoutes(getController) {
      */
     router.patch(pathPedidoId, (req, res, next) => {
         getController(PedidoController).actualizarEstado(req, res, next);
+    });
+
+    router.get(pathPedido, (req, res, next) => {
+        getController(PedidoController).obtenerPedidosSegun(req, res, next);
     });
 
     return router;
