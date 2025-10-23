@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import SalesTable from "../components/SellerPanel/SalesTable";
+import SalesTable from "../components/SellerPanel/SalesTable/SalesTable";
 import CreateProduct from "../components/SellerPanel/CreateProductForm/CreateProduct";
 import { useUser } from "../context/UserContext";
 
 export default function SellerPanelPage() {
 
-    const [ventas, setVentas] = useState([]);
     
     const { usuario, setUsuario } = useUser();
+
 
 
     return (
@@ -22,7 +22,7 @@ export default function SellerPanelPage() {
 
         <section>
             <h2 className="text-2xl font-semibold mb-4">Ventas / Pedidos</h2>
-            <SalesTable ventas={ventas} />
+            <SalesTable sellerId={usuario?._id} />
         </section>
         </div>
     );

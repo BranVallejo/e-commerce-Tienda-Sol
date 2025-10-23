@@ -39,8 +39,8 @@ export default function DetalleProducto() {
 
 
   return  (
-    <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800 px-6 py-12 transition-colors duration-500">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 bg-white dark:bg-neutral-900 rounded-3xl shadow-2xl overflow-hidden transition-all duration-500">
+    <div className="from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800 px-6 py-12">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 bg-white dark:bg-neutral-900 rounded-3xl shadow-2xl">
 
         <ProductDetailCarrousel producto={producto}/>
         

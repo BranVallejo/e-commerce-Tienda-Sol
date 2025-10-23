@@ -54,11 +54,11 @@ export default function CreateProduct({ sellerId }) {
       });
       if (!res.ok) throw new Error(`Error ${res.status}`);
       const data = await res.json();
-      setMensaje("✅ Producto creado exitosamente!");
+      setMensaje("Producto creado exitosamente!");
       setForm({ nombre: "", descripcion: "", categorias: [], precio: 0, stock: 0, fotos: [], activo: true, vendedor: sellerId });
     } catch (err) {
       console.error(err);
-      setMensaje("❌ Error al crear el producto.");
+      setMensaje("Error al crear el producto.");
     } finally {
       setLoading(false);
       setTimeout(() => setMensaje(""), 3000);
@@ -66,7 +66,7 @@ export default function CreateProduct({ sellerId }) {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 px-4 sm:px-6 py-12 transition-colors duration-500">
+    <div className="bg-neutral-50 dark:bg-neutral-900 px-4 sm:px-6 py-12">
       <div className="max-w-3xl mx-auto bg-white dark:bg-neutral-800 p-6 sm:p-10 rounded-3xl shadow-2xl">
         <h1 className="text-3xl sm:text-4xl font-extrabold mb-8 text-neutral-900 dark:text-white border-b border-neutral-200 dark:border-neutral-700 pb-4">Crear Nuevo Producto</h1>
         <FormMessage mensaje={mensaje} />
