@@ -57,22 +57,25 @@ export default function OrderPage() {
     );
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-6 bg-neutral-50 dark:bg-neutral-900">
+    <div className="max-w-screen bg-neutral-50 dark:bg-neutral-900">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-6 ">
 
-      <header className="text-center">
-        <h1 className="text-4xl font-extrabold mb-2 text-neutral-900 dark:text-white">
-          Pedidos de <span className="text-indigo-600 dark:text-indigo-400">{usuario.nombre}</span>
-        </h1>
-      </header>
+            <header className="text-center">
+                <h1 className="text-4xl font-extrabold mb-2 text-neutral-900 dark:text-white">
+                Pedidos de <span className="text-indigo-600 dark:text-indigo-400">{usuario.nombre}</span>
+                </h1>
+            </header>
 
-      <div className="space-y-6">
-        {pedidos.map(pedido => {
+            <div className="space-y-6">
+                {pedidos.map(pedido => {
 
-          return (
-            <OrderCard key={pedido._id} pedido={pedido} cancelarPedido={cancelarPedido} />
-          );
-        })}
-      </div>
+                return (
+                    <OrderCard key={pedido._id} pedido={pedido} cancelarPedido={cancelarPedido} />
+                );
+                })}
+            </div>
+        </div>
     </div>
+
   );
 }

@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 
 export default function ProductDetailInfo({producto}) {
   return (
-        <div>
+        <div>            
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                {producto.unidadesVendidas} unidades vendidas
+            </p>
             <h1 className="text-4xl font-extrabold mb-4">{producto.nombre}</h1>
-            <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">{producto.descripcion}</p>
             <p className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
                 ${producto.precio?.toLocaleString("es-AR") || "0"}
             </p>
