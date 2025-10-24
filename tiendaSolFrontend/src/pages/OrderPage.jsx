@@ -22,7 +22,7 @@ export default function OrderPage() {
     setPedidos(prev =>
       prev.map(p =>
         p._id === pedidoId
-          ? { ...p, estado: "CANCELADO", historialEstados: [...p.historialEstados, "CANCELADO"] }
+          ? { ...p, estado: "CANCELADO" }
           : p
       )
     );
