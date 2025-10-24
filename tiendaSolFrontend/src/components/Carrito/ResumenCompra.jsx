@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useCart } from "../../context/CartContext";
 import DireccionForm from "./DireccionForm";
-import { Truck, DollarSign, ChevronDown, CheckCircle } from 'lucide-react'; // Iconos
+import { Truck, DollarSign, ChevronDown, CheckCircle } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
+
 
 export default function ResumenCompra({ compradorId, subtotal, vendedorId, direccionUsuario }) {
   const { crearPedido } = useCart();
@@ -14,8 +16,15 @@ export default function ResumenCompra({ compradorId, subtotal, vendedorId, direc
     setDireccionValida(esValida);
   };
 
-  const handleGenerarPedido = () => {
-    crearPedido(direccionSeleccionada, compradorId, vendedorId);
+  const navigate = useNavigate()
+
+  const handleGenerarPedido = async () => {
+    try {
+      await crearPedido(direccionSeleccionada, compradorId, vendedorId);
+      navigate("/orders");
+    } catch (error) {
+      console.error("Error al generar el pedido:", error);
+    }
   };
 
   return (
