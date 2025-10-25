@@ -5,6 +5,8 @@ import { CheckBoxGroup } from "./Inputs/CheckBoxGroup";
 import { FotosInput } from "./Inputs/FotosInput";
 import { FormMessage } from "./Inputs/FormMessage";
 import { DollarSign, Package, Tag } from "lucide-react";
+import { toast } from 'react-toastify';
+
 
 const CATEGORIAS = ["PANTALON", "CAMPERA", "ZAPATOS", "REMERA"];
 
@@ -54,11 +56,11 @@ export default function CreateProduct({ sellerId }) {
       });
       if (!res.ok) throw new Error(`Error ${res.status}`);
       const data = await res.json();
-      setMensaje("Producto creado exitosamente!");
+      toast.success('🛍️ ¡Producto creado exitosamente!');
       setForm({ nombre: "", descripcion: "", categorias: [], precio: 0, stock: 0, fotos: [], activo: true, vendedor: sellerId });
     } catch (err) {
       console.error(err);
-      setMensaje("Error al crear el producto.");
+      toast.error('🛍️ ¡Error al crear el producto!');
     } finally {
       setLoading(false);
       setTimeout(() => setMensaje(""), 3000);
