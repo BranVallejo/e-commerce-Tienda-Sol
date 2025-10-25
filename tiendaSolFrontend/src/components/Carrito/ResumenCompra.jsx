@@ -3,6 +3,7 @@ import { useCart } from "../../context/CartContext";
 import DireccionForm from "./DireccionForm";
 import { Truck, DollarSign, ChevronDown, CheckCircle } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 
 export default function ResumenCompra({ compradorId, subtotal, vendedorId, direccionUsuario }) {
@@ -21,9 +22,11 @@ export default function ResumenCompra({ compradorId, subtotal, vendedorId, direc
   const handleGenerarPedido = async () => {
     try {
       await crearPedido(direccionSeleccionada, compradorId, vendedorId);
+      toast.success('🛒 ¡Pedido generado con éxito!');
       navigate("/orders");
     } catch (error) {
       console.error("Error al generar el pedido:", error);
+      toast.error('🛒 ¡Error al generar el pedido!');
     }
   };
 

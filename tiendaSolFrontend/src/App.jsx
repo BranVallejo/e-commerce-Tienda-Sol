@@ -12,6 +12,8 @@ import SellerProductPage from "./pages/SellerProductPage";
 import SellerPanelPage from "./pages/SellerPanelPage";
 import OrderPage from "./pages/OrderPage";
 import AllProducts from "./pages/AllProducts";
+import { ToastContainer, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -43,6 +45,19 @@ function App() {
       </Routes>
 
       <Footer />
+      <ToastContainer
+        position="top-right"
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        transition={Bounce}
+      />
     </div>
   );
 }

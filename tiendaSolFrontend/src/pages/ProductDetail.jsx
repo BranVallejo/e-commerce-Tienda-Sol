@@ -4,6 +4,7 @@ import { useCart } from "../context/CartContext";
 import ProductDetailCarrousel from "../components/ProductDetail/ProductDetailCarrousel.jsx";
 import ProductDetailInfo from "../components/ProductDetail/ProductDetailInfo.jsx";
 import ProductDetailCart from "../components/ProductDetail/ProductDetailCart.jsx";
+import { toast } from 'react-toastify';
 
 export default function DetalleProducto() {
   const { idProducto } = useParams();
@@ -49,15 +50,16 @@ export default function DetalleProducto() {
   }, [idProducto]);
 
   const manejarAgregarAlCarrito = () => {
-    if (!producto) return;
-
-    if (cantidad <= 0 || cantidad > producto.stock) {
-      alert(`No puedes agregar esa cantidad. Stock disponible: ${producto.stock}`);
+    if (!producto) {
+      toast.error('🛍️ Llego un falsy del back');
       return;
     }
 
+ 
+
     agregarAlCarrito(producto, cantidad);
     setAgregado(true);
+    toast.success('🛍️ ¡Producto agregado al carrito!');
     setTimeout(() => setAgregado(false), 2500);
   };
 

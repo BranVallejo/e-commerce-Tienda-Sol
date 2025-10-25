@@ -2,6 +2,8 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import FormularioLogin from "../components/Login/FormularioLogin";
+import { toast } from 'react-toastify';
+
 
 export default function Login() {
   const [error, setError] = useState(null);
@@ -25,7 +27,8 @@ export default function Login() {
       console.log("usuario del servidor:", data);
 
       if (data) {
-        setUsuario(data); 
+        setUsuario(data);
+        toast.success('🎉 ¡Bienvenido de nuevo!');
         navigate("/");
       } else {
         setError("Usuario o contraseña incorrectos.");
