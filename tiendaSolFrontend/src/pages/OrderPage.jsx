@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
 import { Link } from "react-router-dom";
 import OrderCard from "../components/OrderPage/OrderCard";
+import { toast } from 'react-toastify';
+
 
 
 export default function OrderPage() {
@@ -32,11 +34,13 @@ export default function OrderPage() {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ estado: "CANCELADO" }),
+
       });
+      toast.info("Pedido cancelado con éxito.");
       if (!res.ok) throw new Error();
     } catch (error) {
       console.error(error);
-      alert("No se pudo cancelar el pedido.");
+      toast.error("No se pudo cancelar el pedido.");
       setPedidos(prevPedidos);
     }
   };
