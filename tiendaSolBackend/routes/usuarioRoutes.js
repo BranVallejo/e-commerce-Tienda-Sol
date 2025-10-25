@@ -58,6 +58,10 @@ export default function usuarioRoutes(getController) {
     getController(UsuarioController).crearUsuario(req, res, next);
   });
 
+  router.post("/login", (req, res, next) => {
+    getController(UsuarioController).logearUsuario(req, res, next);
+  });
+
   /**
    * @swagger
    * /usuarios/{id}:

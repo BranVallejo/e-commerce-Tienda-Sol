@@ -27,6 +27,10 @@ export class UsuarioService {
     return user;
   }
 
+  async buscarPorEmail(email) {
+    return await this.usuarioRepo.findByMail(email);
+  }
+
   async historialPedidos(id, page, limit) {
     return await this.pedidoService.historialPedido(id, page, limit);
   }

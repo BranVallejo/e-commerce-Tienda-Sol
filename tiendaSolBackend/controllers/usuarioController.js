@@ -38,6 +38,63 @@ export class UsuarioController {
       });
   }
 
+  async logearUsuario(req, res, next) {
+    const { email, password } = req.body;
+    console.log("🔐 Intentando login para:", email);
+
+    // Validar que vengan email y password
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email y contraseña son obligatorios",
+      });
+    }
+
+    await this.usuarioService
+      .buscarPorEmail(email)
+      .then(async (usuario) => {
+        if (!usuario) {
+          return res.status(400).json({
+            success: false,
+            message: "Credenciales inválidas",
+          });
+        }
+
+        // Verificar password
+        const esPasswordValido = await usuario.comparePassword(password);
+        if (!esPasswordValido) {
+          return res.status(400).json({
+            success: false,
+            message: "Credenciales inválidas",
+          });
+        }
+
+        console.log("✅ Login exitoso para:", usuario.email);
+
+        // Generar JWT
+        const token = JWTGenerator.generarToken(usuario._id);
+
+        // Responder con token
+        return res.json({
+          success: true,
+          message: "Login exitoso",
+          token,
+          user: {
+            id: usuario._id,
+            nombre: usuario.nombre,
+            apellido: usuario.apellido,
+            email: usuario.email,
+            telefono: usuario.telefono,
+            fechaCreacion: usuario.fechaCreacion,
+          },
+        });
+      })
+      .catch((error) => {
+        console.error("❌ Error en login:", error);
+        next(error);
+      });
+  }
+
   async obtenerUsuario(req, res, next) {
     const idResult = usuarioSchema.parsearId(req);
     await this.usuarioService
