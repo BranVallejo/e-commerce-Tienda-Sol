@@ -8,7 +8,6 @@ export class PedidoController {
     this.pedidoService = pedidoService;
   }
 
-
 obtenerPedidosSegun(req, res, next) {
     return this.pedidoService
       .obtenerPedidosSegun(req.query) 

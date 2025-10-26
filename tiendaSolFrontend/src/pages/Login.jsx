@@ -2,53 +2,71 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import FormularioLogin from "../components/Login/FormularioLogin";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUsuario } = useContext(UserContext);
 
-  const handleLogin = async (usuario) => {
+  const handleLogin = async (email, password) => {
     setError(null);
-    console.log("Datos recibidos:", { usuario });
+    setLoading(true);
+    console.log("Datos recibidos:", { email, password });
 
     try {
       const response = await fetch(
-        `http://localhost:8000/usuarios/${usuario}`
+        `${import.meta.env.VITE_API_URL_INICIAL}/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        }
       );
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error("Error al obtener el usuario");
+        throw new Error(data.message || "Error en el login");
       }
 
-      const data = await response.json();
-      console.log("usuario del servidor:", data);
+      console.log("Respuesta del servidor:", data);
 
-      if (data) {
-        setUsuario(data);
-        toast.success('🎉 ¡Bienvenido de nuevo!');
+      if (data.token) {
+        // Guardar el token en localStorage
+        localStorage.setItem("token", data.token);
+
+        // Guardar información del usuario en el contexto
+        if (data.user) {
+          setUsuario(data.user);
+        } else {
+          // Si el backend no devuelve el usuario, puedes hacer otra request
+          // o guardar solo el token y obtener el usuario después
+          setUsuario({ email: email });
+        }
+
+        toast.success("🎉 ¡Bienvenido de nuevo!");
         navigate("/");
       } else {
-        setError("Usuario o contraseña incorrectos.");
+        setError("No se recibió token de autenticación.");
       }
     } catch (err) {
       console.error(err);
-      setError("Error al conectar con el servidor.");
+      setError(err.message || "Error al conectar con el servidor.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-150px)] px-6 py-12">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center max-w-5xl w-full">
-        <FormularioLogin onSubmit={handleLogin} error={error} />
-        <div className="hidden lg:block">
-          <h1 className="text-6xl font-light uppercase tracking-widest text-neutral-900 dark:text-neutral-100">
-            Ingresa
-          </h1>
-        </div>
-      </div>
+    <div className="flex items-center justify-center min-h-[calc(70vh-150px)] px-6 py-12">
+      <FormularioLogin onSubmit={handleLogin} error={error} loading={loading} />
     </div>
   );
 }

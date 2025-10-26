@@ -12,8 +12,9 @@ import SellerProductPage from "./pages/SellerProductPage";
 import SellerPanelPage from "./pages/SellerPanelPage";
 import OrderPage from "./pages/OrderPage";
 import AllProducts from "./pages/AllProducts";
-import { ToastContainer, Bounce } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import RegisterForm from "./pages/Register";
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -40,6 +41,7 @@ function App() {
         <Route path="/notificaciones" element={<NotificationPage />} />
         <Route path="/nuevo-producto" element={<CreateProduct />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<RegisterForm />} />
         <Route path="/panel-vendedor" element={<SellerPanelPage />} />
         <Route path="/orders" element={<OrderPage />} />
       </Routes>

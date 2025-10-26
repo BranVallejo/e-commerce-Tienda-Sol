@@ -11,17 +11,6 @@ export class UsuarioService {
     return await this.usuarioRepo.create(usuarioData);
   }
 
-  /*
-  async register(req) {
-    //const { email, password, nombre, apellido } = req.body;
-
-    await this.usuarioRepo.create(req.body);
-
-    console.log("✅ Usuario creado exitosamente:", user._id);
-
-    const token = generateToken(user._id);
-  }*/
-
   async obtenerUsuario(id) {
     const user = await this.usuarioRepo.findById(id);
     return user;
