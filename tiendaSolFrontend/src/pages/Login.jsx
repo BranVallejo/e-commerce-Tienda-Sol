@@ -47,7 +47,7 @@ export default function Login() {
           setUsuario({ email: email });
         }
 
-        toast.success("🎉 ¡Bienvenido de nuevo!");
+        toast.success("¡Bienvenido de nuevo!");
         navigate("/");
       } else {
         setError("No se recibió token de autenticación.");

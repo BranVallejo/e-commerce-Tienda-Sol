@@ -22,11 +22,11 @@ export default function ResumenCompra({ compradorId, subtotal, vendedorId, direc
   const handleGenerarPedido = async () => {
     try {
       await crearPedido(direccionSeleccionada, compradorId, vendedorId);
-      toast.success('🛒 ¡Pedido generado con éxito!');
+      toast.success('¡Pedido generado con éxito!');
       navigate("/orders");
     } catch (error) {
       console.error("Error al generar el pedido:", error);
-      toast.error('🛒 ¡Error al generar el pedido!');
+      toast.error('¡Error al generar el pedido!');
     }
   };
 

@@ -37,11 +37,11 @@ export default function Cart() {
       });
       await Promise.all(promesasDePedidos);
 
-      toast.success('🛒 ¡Todos los pedidos han sido generados con éxito!');
+      toast.success('¡Todos los pedidos han sido generados con éxito!');
       navigate("/orders");
     } catch (error) {
       console.error("Error al generar uno o más pedidos:", error);
-      toast.error('🛒 ¡Error al generar uno o más pedidos!');
+      toast.error('¡Error al generar uno o más pedidos!');
     }
   };
 

@@ -51,7 +51,7 @@ export default function DetalleProducto() {
 
   const manejarAgregarAlCarrito = () => {
     if (!producto) {
-      toast.error('🛍️ Llego un falsy del back');
+      toast.error('Llego un falsy del back');
       return;
     }
 
@@ -59,7 +59,7 @@ export default function DetalleProducto() {
 
     agregarAlCarrito(producto, cantidad);
     setAgregado(true);
-    toast.success('🛍️ ¡Producto agregado al carrito!');
+    toast.success('¡Producto agregado al carrito!');
     setTimeout(() => setAgregado(false), 2500);
   };
 

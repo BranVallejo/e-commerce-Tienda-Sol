@@ -56,11 +56,11 @@ export default function CreateProduct({ sellerId }) {
       });
       if (!res.ok) throw new Error(`Error ${res.status}`);
       const data = await res.json();
-      toast.success('🛍️ ¡Producto creado exitosamente!');
+      toast.success('¡Producto creado exitosamente!');
       setForm({ nombre: "", descripcion: "", categorias: [], precio: 0, stock: 0, fotos: [], activo: true, vendedor: sellerId });
     } catch (err) {
       console.error(err);
-      toast.error('🛍️ ¡Error al crear el producto!');
+      toast.error('¡Error al crear el producto!');
     } finally {
       setLoading(false);
       setTimeout(() => setMensaje(""), 3000);
