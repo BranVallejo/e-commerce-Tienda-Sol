@@ -4,7 +4,7 @@ import { MapPin, ChevronDown } from "lucide-react";
 export default function DireccionEntrega({ direccion }) {
   return (
     <details>
-      <summary className="flex items-center gap-2 cursor-pointer text-purple-600 dark:text-purple-400 font-medium">
+      <summary className="flex items-center gap-2 cursor-pointer text-indigo-600 dark:text-indigo-400 font-medium">
         <MapPin className="w-4 h-4" />
         Ver dirección
         <ChevronDown className="w-3 h-3" />

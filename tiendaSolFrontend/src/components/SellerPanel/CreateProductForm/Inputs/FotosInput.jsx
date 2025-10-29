@@ -17,13 +17,13 @@ export function FotosInput({ fotos = [], setFotos }) {
   };
 
   const inputClass =
-    "flex-1 p-3 border rounded-xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 border-neutral-300 dark:border-neutral-600 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition";
+    "flex-1 p-3 border rounded-xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 border-neutral-300 dark:border-neutral-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition";
   const labelClass = "block mb-2 font-semibold text-neutral-800 dark:text-neutral-200";
 
   return (
     <div>
       <label className={labelClass}>
-        <ImageIcon className="inline w-4 h-4 mr-1 mb-1 text-purple-500" /> Fotos (URLs)
+        <ImageIcon className="inline w-4 h-4 mr-1 mb-1 text-indigo-500" /> Fotos (URLs)
       </label>
 
       <div className="flex gap-3 mb-3 flex-wrap sm:flex-nowrap">
@@ -37,7 +37,7 @@ export function FotosInput({ fotos = [], setFotos }) {
         <button
           type="button"
           onClick={handleAdd}
-          className="flex items-center px-4 py-2 bg-purple-600 text-white rounded-xl hover:bg-purple-500 active:scale-95 transition-transform"
+          className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-500 active:scale-95 transition-transform"
         >
           <Plus className="w-5 h-5 mr-1" /> Agregar
         </button>

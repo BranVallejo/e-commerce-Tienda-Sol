@@ -14,7 +14,7 @@ export default function FormularioLogin({ onSubmit, error, loading = false }) {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="relative bg-white dark:bg-neutral-800 p-8 rounded-2xl  border border-neutral-200 dark:border-neutral-700 transition-all duration-300 w-full max-w-md">
-        <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-purple-600 p-5 rounded-2xl border-4 border-white dark:border-neutral-800">
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-indigo-600 p-5 rounded-2xl border-4 border-white dark:border-neutral-800">
           <User className="w-8 h-8 text-white" />
         </div>
 
@@ -46,7 +46,7 @@ export default function FormularioLogin({ onSubmit, error, loading = false }) {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="tu@email.com"
-                className="block w-full pl-10 pr-3 py-3 bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-lg placeholder-neutral-400 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                className="block w-full pl-10 pr-3 py-3 bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-lg placeholder-neutral-400 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
               />
             </div>
           </div>
@@ -69,7 +69,7 @@ export default function FormularioLogin({ onSubmit, error, loading = false }) {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className="block w-full pl-10 pr-10 py-3 bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-lg placeholder-neutral-400 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                className="block w-full pl-10 pr-10 py-3 bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-lg placeholder-neutral-400 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
               />
               <button
                 type="button"
@@ -88,7 +88,7 @@ export default function FormularioLogin({ onSubmit, error, loading = false }) {
           <div className="text-right">
             <a
               href="/login"
-              className="text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
+              className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
             >
               ¿Olvidaste tu contraseña?
             </a>
@@ -114,7 +114,7 @@ export default function FormularioLogin({ onSubmit, error, loading = false }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-neutral-400 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-800 flex items-center justify-center"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-neutral-400 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-800 flex items-center justify-center"
           >
             {loading ? (
               <>
@@ -150,7 +150,7 @@ export default function FormularioLogin({ onSubmit, error, loading = false }) {
               ¿No tenés una cuenta?{" "}
               <a
                 href="/register"
-                className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium transition-colors"
+                className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium transition-colors"
               >
                 Registrate
               </a>

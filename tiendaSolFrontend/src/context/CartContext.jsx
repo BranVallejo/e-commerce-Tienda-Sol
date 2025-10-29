@@ -108,7 +108,6 @@ export const CartProvider = ({ children }) => {
       direccionEntrega: direccion,
     };
 
-    console.log("🧾 Pedido a enviar:", pedido);
 
     const response = await fetch(`${import.meta.env.VITE_API_URL_INICIAL}/pedidos`, {
       method: "POST",
