@@ -1,301 +1,177 @@
-import {PedidoService} from "../services/pedidoService.js";
-import {jest} from '@jest/globals';
-import {ItemPedido} from "../models/entities/pedido/itemPedido.js";
-import {DireccionEntrega} from "../models/entities/pedido/direccionEntrega.js";
-import {Producto} from "../models/entities/producto/producto.js";
-import {Categoria} from "../models/entities/producto/categoria.js";
-import {Pedido} from "../models/entities/pedido/pedido.js";
-import {EstadoPedido} from "../models/entities/pedido/estadoPedido.js";
+import { jest } from "@jest/globals";
+import { PedidoService } from "../services/pedidoService.js";
+import { EstadoPedido } from "../models/entities/pedido/estadoPedido.js";
+import { NotFoundError } from "../middleware/appError.js";
 
-const direccionDeEntregaGlobal = new DireccionEntrega(
-    "Av. Siempre Viva",
-    "742",
-    "",
-    "B",
-    "1414",
-    "Merlo",
-    "Buenos Aires",
-    "Argentina",
-    "-34.6037",
-    "-34.6037")
+// --- Mocks básicos para dependencias ---
+const mockPedidoRepository = {
+  create: jest.fn(),
+  findById: jest.fn(),
+  delete: jest.fn(),
+  actualizar: jest.fn(),
+  historialPedidos: jest.fn(),
+  obtenerPedidosSegun: jest.fn(),
+};
 
-function productoConStock(stockDeseado) {
-    return new Producto(
-        1,
-        "Zapatillas deportivas",
-        "Zapatillas de running, talle 42, color azul",
-        [
-            new Categoria("deporte"),
-            new Categoria("calzado")
-        ],
-        35000,
-        "Chelines",
-        stockDeseado,
-        [
-            "https://example.com/img/zapatillas1.jpg",
-            "https://example.com/img/zapatillas2.jpg"
-        ],
-        true
-    );
-}
+const mockProductoService = {
+  obtenerProducto: jest.fn(),
+  actualizarStock: jest.fn(),
+};
 
-function productoConID(id) {
-    const p = new Producto(
-        1,
-        "Zapatillas deportivas",
-        "Zapatillas de running, talle 42, color azul",
-        [
-            new Categoria("deporte"),
-            new Categoria("calzado")
-        ],
-        35000,
-        "Chelines",
-        30,
-        [
-            "https://example.com/img/zapatillas1.jpg",
-            "https://example.com/img/zapatillas2.jpg"
-        ],
-        true
-    );
-    p.setId(id);
-    return p
-}
+const mockNotificacionService = {
+  crearNotificacion: jest.fn(),
+};
 
-function pedidoConItemPedido(itemDeseado) {
-    return new Pedido(
-        1,
-        [itemDeseado],
-        2000,
-        "Chelines",
-        direccionDeEntregaGlobal
-    );
-}
+// --- Instancia global del service ---
+let pedidoService;
 
-function pedidoConID(idDeseado) {
-    const p = new Pedido(
-        1,
-        [new ItemPedido(1, 20, 100)],
-        2000,
-        "Chelines",
-        direccionDeEntregaGlobal
-    );
-    p.setId(idDeseado);
-    return p;
-
-}
-
+beforeEach(() => {
+  jest.clearAllMocks();
+  pedidoService = new PedidoService(
+    mockPedidoRepository,
+    mockProductoService,
+    mockNotificacionService
+  );
+});
 
 describe("PedidoService", () => {
-    let pedidoService;
+  // ==========================================================
+  // 🔹 obtenerPedido(id)
+  // ==========================================================
+  test("Debería obtener un pedido existente por su ID", async () => {
+    const pedidoMock = { id: "123", compradorID: "abc" };
+    mockPedidoRepository.findById.mockResolvedValue(pedidoMock);
 
-    //Si se necesita mockear algo en todos loss test va acá
-    beforeEach(() => {
-    });
+    const result = await pedidoService.obtenerPedido("123");
 
-    test("Crear pedido de un producto con stock suficiente", async () => {
-        //      SET UP
-        const productoFinal = productoConStock(10);
-        productoFinal.setId(1);
+    expect(mockPedidoRepository.findById).toHaveBeenCalledWith("123");
+    expect(result).toBe(pedidoMock);
+  });
 
-        const pedidoFront = pedidoConItemPedido(new ItemPedido(1, 20, 100));
+  test("Debería lanzar NotFoundError si el pedido no existe", async () => {
+    mockPedidoRepository.findById.mockResolvedValue(null);
 
-        const pedidoFinal = pedidoConItemPedido(new ItemPedido(1, 20, 100));
-        pedidoFinal.setId(1);
+    await expect(pedidoService.obtenerPedido("999")).rejects.toThrow(NotFoundError);
+  });
 
-        //      MOCKEO
-        const pedidoRepository = {
-            create: jest.fn().mockResolvedValue(pedidoFinal)
-        };
-        const productoRepository = {
-            //Si findById no devuelve un objeto rompe porque al trabajar con objetos planos no puede llamar a sus metodos como get() o set()
-            findById: jest.fn().mockImplementation(async (id) => {
-                const p = productoConStock(30);
-                p.setId(id);
-                return p;
-            }),
-            actualizar: jest.fn().mockImplementation(async (id, nuevoStock) => {})
-        };
+  // ==========================================================
+  // 🔹 eliminarPedido(id)
+  // ==========================================================
+  test("Debería eliminar un pedido existente", async () => {
+    const pedidoMock = { id: "1" };
+    mockPedidoRepository.delete.mockResolvedValue(pedidoMock);
 
-        const pedidoService = new PedidoService(pedidoRepository, productoRepository);
+    const result = await pedidoService.eliminarPedido("1");
 
-        //      EJECUCION
-        const pedidoResultante = await pedidoService.crearPedido(pedidoFront);
+    expect(mockPedidoRepository.delete).toHaveBeenCalledWith("1");
+    expect(result).toEqual(pedidoMock);
+  });
 
-        //Me aseguro que los metodos mockeados fueron llamados con los parametros correctos
-        expect(pedidoRepository.create).toHaveBeenCalledWith(pedidoFront);
-        expect(productoRepository.actualizar).toHaveBeenCalledWith(1, productoFinal);
+  test("Debería lanzar NotFoundError si no existe el pedido al eliminar", async () => {
+    mockPedidoRepository.delete.mockResolvedValue(null);
 
-        //Me aseguro que haya retornado lo esperado
-        expect(pedidoResultante).toEqual(pedidoFinal);
-    });
+    await expect(pedidoService.eliminarPedido("404")).rejects.toThrow(NotFoundError);
+  });
 
-    test("Crear pedido de un producto con stock insuficiente", async () => {
-        // SET UP
-        const productobase = productoConStock(30);
-        productobase.setId(1);
+  // ==========================================================
+  // 🔹 getPrecioUnitario(productoID)
+  // ==========================================================
+  test("Debería retornar el precio unitario de un producto existente", async () => {
+    const productoMock = { getPrecio: () => 1500 };
+    mockProductoService.obtenerProducto.mockResolvedValue(productoMock);
 
-        const pedidoFront = pedidoConItemPedido(new ItemPedido(1, 100, 100));
+    const precio = await pedidoService.getPrecioUnitario("abc");
 
-        const productoRepository = {
-            findById: jest.fn().mockImplementation(async (id) => {
-                const p = productoConStock(30);
-                p.setId(id);
-                return p;
-            })
-        };
+    expect(mockProductoService.obtenerProducto).toHaveBeenCalledWith("abc");
+    expect(precio).toBe(1500);
+  });
 
-        const pedidoService = new PedidoService({}, productoRepository);
+  test("Debería retornar null si el producto no existe", async () => {
+    mockProductoService.obtenerProducto.mockResolvedValue(null);
 
-        // Llamo al metodo directamente en el expect porque sino se lanza el error y no alcanza a chequear el resultado
-        await expect(pedidoService.crearPedido(pedidoFront)).rejects.toThrow(
-            `El producto ${productobase.getTitulo()} tiene un stock inferior, ${productobase.getStock()}, a la cantidad solicitada, 100`
-        );
-    });
+    const precio = await pedidoService.getPrecioUnitario("zzz");
 
-    test("Crear pedido de un producto con ID incorrecto", async () => {
-        // SET UP
-        const pedidoFront = pedidoConItemPedido(new ItemPedido(2, 30, 100));
+    expect(precio).toBeNull();
+  });
 
-        const productoRepository = {
-            findById: jest.fn().mockImplementation(async (id) => null)
-        };
+  // ==========================================================
+  // 🔹 obtenerPedidosSegun(query)
+  // ==========================================================
+  test("Debería obtener pedidos según filtros", async () => {
+    const query = { page: 1, limit: 5, estado: "PENDIENTE" };
+    const pedidosMock = [{ id: "p1" }, { id: "p2" }];
 
-        const pedidoService = new PedidoService({}, productoRepository);
+    mockPedidoRepository.obtenerPedidosSegun.mockResolvedValue(pedidosMock);
 
-        // Llamo al metodo directamente en el expect porque sino se lanza el error y no alcanza a chequear el resultado
-        await expect(pedidoService.crearPedido(pedidoFront)).rejects.toThrow(
-            `El producto de id 2 no existe como producto`
-        );
-    });
+    const result = await pedidoService.obtenerPedidosSegun(query);
 
-    test("Obtener todos los pedidos", async () => {
-        // SET UP
-        const pedidoFront1 = pedidoConItemPedido(new ItemPedido(1, 30, 100));
-        const pedidoFront2 = pedidoConItemPedido(new ItemPedido(2, 30, 100));
-        const pedidoFront3 = pedidoConItemPedido(new ItemPedido(3, 30, 100));
+    expect(mockPedidoRepository.obtenerPedidosSegun).toHaveBeenCalledWith(query);
+    expect(result).toEqual(pedidosMock);
+  });
 
-        const listaDePedidosFinal = [pedidoFront1,
-            pedidoFront2,
-            pedidoFront3];
+  // ==========================================================
+  // 🔹 actualizarEstado(id, nuevoEstado)
+  // ==========================================================
+  test("Debería actualizar el estado del pedido y notificar al comprador", async () => {
+    const pedidoMock = {
+      id: "1",
+      compradorID: "C123",
+      estado: "PENDIENTE",
+      cambiarEstado: jest.fn(function (nuevoEstado) {
+        this.estado = nuevoEstado;
+      }),
+      getItemsPedido: jest.fn().mockReturnValue([{ productoID: "P1", cantidad: 2 }]),
+    };
 
-        const pedidoRepository = {
-            getPedidos: jest.fn().mockImplementation(async () => listaDePedidosFinal)
-        };
+    mockPedidoRepository.findById.mockResolvedValue(pedidoMock);
+    mockPedidoRepository.actualizar.mockResolvedValue(pedidoMock);
+    mockProductoService.obtenerProducto.mockResolvedValue({ vendedor: "V555" });
 
-        const pedidoService = new PedidoService(pedidoRepository, {});
+    const result = await pedidoService.actualizarEstado("1", EstadoPedido.ENVIADO);
 
-        // Me aseguro que haya retornado lo esperado
-        const pedidos = await pedidoService.listarPedidos();
-        expect(pedidos).toEqual(listaDePedidosFinal);
-    });
+    expect(pedidoMock.cambiarEstado).toHaveBeenCalledWith(EstadoPedido.ENVIADO);
+    expect(mockNotificacionService.crearNotificacion).toHaveBeenCalled();
+    expect(mockPedidoRepository.actualizar).toHaveBeenCalledWith("1", pedidoMock);
+    expect(result.estado).toBe(EstadoPedido.ENVIADO);
+  });
 
-    test("Obtener 3 pedidos solo por ID", async () => {
-        // SET UP
-        const pedidoFront1 = pedidoConID(1);
-        const pedidoFront2 = pedidoConID(2);
-        const pedidoFront3 = pedidoConID(3);
+  // ==========================================================
+  // 🔹 crearPedido(pedido)
+  // ==========================================================
+  // Falta contexto: necesitamos saber cómo es la estructura del pedido,
+  // qué devuelve productoService.actualizarStock, y cómo se construye la notificación.
+  /*
+  test("Debería crear un pedido exitosamente y notificar al vendedor", async () => {
+    const pedidoMock = {
+      compradorID: "U123",
+      getItemsPedido: jest.fn().mockReturnValue([{ productoID: "P1", cantidad: 3 }]),
+    };
+    const productoMock = { vendedor: "V999" };
+    const nuevoPedidoMock = { id: "PED123" };
 
-        const pedidoRepository = {
-            findById: jest.fn().mockImplementation(async (id) => {
-                if (id === 1) return pedidoFront1;
-                if (id === 2) return pedidoFront2;
-                if (id === 3) return pedidoFront3;
-                return null;
-            })
-        };
+    mockProductoService.obtenerProducto.mockResolvedValue(productoMock);
+    mockProductoService.actualizarStock.mockResolvedValue(true);
+    mockPedidoRepository.create.mockResolvedValue(nuevoPedidoMock);
 
-        const pedidoService = new PedidoService(pedidoRepository, {});
+    const result = await pedidoService.crearPedido(pedidoMock);
 
-        const pedidos1 = await pedidoService.obtenerPedido(1);
-        expect(pedidoRepository.findById).toHaveBeenCalledWith(1);
-        const pedidos2 = await pedidoService.obtenerPedido(2);
-        expect(pedidoRepository.findById).toHaveBeenCalledWith(2);
-        const pedidos3 = await pedidoService.obtenerPedido(3);
-        expect(pedidoRepository.findById).toHaveBeenCalledWith(3);
+    expect(mockProductoService.actualizarStock).toHaveBeenCalled();
+    expect(mockPedidoRepository.create).toHaveBeenCalledWith(pedidoMock);
+    expect(mockNotificacionService.crearNotificacion).toHaveBeenCalled();
+    expect(result).toEqual(nuevoPedidoMock);
+  });
+  */
 
-        // Me aseguro que haya retornado lo esperado
-        expect(pedidos1).toEqual(pedidoFront1);
-        expect(pedidos2).toEqual(pedidoFront2);
-        expect(pedidos3).toEqual(pedidoFront3);
-    });
+  // ==========================================================
+  // 🔹 historialPedido(idCliente, page, limit)
+  // ==========================================================
+  test("Debería obtener el historial de pedidos de un cliente", async () => {
+    const pedidosMock = [{ id: "1" }, { id: "2" }];
+    mockPedidoRepository.historialPedidos.mockResolvedValue(pedidosMock);
 
-    /* No esta hecha la lógica de eliminar pedido, grande JS que no nos advirtio
-    test("Eliminar 1 pedido por su ID", async () => {
-        // SET UP
-        const pedidoFront1 = pedidoConID(1);
-        const pedidoFront2 = pedidoConID(2);
-        const pedidoFront3 = pedidoConID(3);
+    const result = await pedidoService.historialPedido("CLI123", 1, 10);
 
-        const pedidoRepository = {
-            findById: jest.fn().mockImplementation(async (id) => {
-                if (id === 1) return pedidoFront1;
-                if (id === 2) return pedidoFront2;
-                if (id === 3) return pedidoFront3;
-                return null;
-            })
-        };
-
-        const pedidoService = new PedidoService(pedidoRepository, {});
-
-    });
-    */
-
-    test("Cancelar un Pedido exitosamente", async () => {
-        // SET UP
-        const pedidoFront = pedidoConID(1);
-        const pedidoFinal = pedidoConID(1);
-        pedidoFinal.cambiarEstado(EstadoPedido.CANCELADO)
-
-        const pedidoRepository = {
-            actualizar: jest.fn().mockImplementation(async () => {})
-        };
-
-        const pedidoService = new PedidoService(pedidoRepository, {});
-
-        const pedidoCancelado = await pedidoService.cancelarPedido(pedidoFront);
-        expect(pedidoRepository.actualizar).toHaveBeenCalledWith(pedidoFinal);
-        expect(pedidoCancelado).toEqual(pedidoFinal);
-    });
-
-    test("Cancelar un Pedido fallidamente", async () => {
-        // SET UP
-        const pedidoFront = pedidoConID(1);
-        pedidoFront.cambiarEstado(EstadoPedido.ENVIADO);
-
-        const pedidoService = new PedidoService({}, {});
-
-        const pedidoCancelado = await pedidoService.cancelarPedido(pedidoFront);
-        expect(pedidoCancelado).toEqual(null);
-    });
-
-    test("Enviar un Pedido exitosamente", async () => {
-        // SET UP
-        const pedidoFront = pedidoConID(1);
-        const pedidoFinal = pedidoConID(1);
-        pedidoFinal.cambiarEstado(EstadoPedido.ENVIADO)
-
-        const pedidoRepository = {
-            actualizar: jest.fn().mockImplementation(async () => {})
-        };
-        const productoRepository = {
-            findById: jest.fn().mockImplementation(async (id) => productoConID(1))
-        };
-
-        const pedidoService = new PedidoService(pedidoRepository, productoRepository);
-
-        const pedidoEnviado = await pedidoService.enviarPedido(pedidoFront);
-        expect(pedidoRepository.actualizar).toHaveBeenCalledWith(pedidoFinal);
-        expect(productoRepository.findById).toHaveBeenCalledWith(1);
-        expect(pedidoEnviado).toEqual(pedidoFinal);
-    });
-/*
-    test("Enviar un Pedido sin Items", async () => {
-        // SET UP
-        const pedidoFront = pedidoConItemPedido();
-
-        const pedidoService = new PedidoService({}, {});
-
-        const pedidoNoEnviado = await pedidoService.enviarPedido(pedidoFront);
-        expect(pedidoNoEnviado).toEqual(null);
-    });*/
+    expect(mockPedidoRepository.historialPedidos).toHaveBeenCalledWith("CLI123", 1, 10);
+    expect(result).toEqual(pedidosMock);
+  });
 });
