@@ -13,7 +13,6 @@ export default function Login() {
   const handleLogin = async (email, password) => {
     setError(null);
     setLoading(true);
-    console.log("Datos recibidos:", { email, password });
 
     try {
       const response = await fetch(
@@ -36,7 +35,6 @@ export default function Login() {
         throw new Error(data.message || "Error en el login");
       }
 
-      console.log("Respuesta del servidor:", data);
 
       if (data.token) {
         localStorage.setItem("token", data.token);

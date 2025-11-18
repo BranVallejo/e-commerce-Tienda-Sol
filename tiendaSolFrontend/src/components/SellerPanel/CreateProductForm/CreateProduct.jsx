@@ -6,6 +6,7 @@ import { FotosInput } from "./Inputs/FotosInput";
 import { FormMessage } from "./Inputs/FormMessage";
 import { DollarSign, Package, Tag } from "lucide-react";
 import { toast } from 'react-toastify';
+import LoadingIndicator from "../../LoadingIndicator";
 
 
 const CATEGORIAS = ["PANTALON", "CAMPERA", "ZAPATOS", "REMERA"];
@@ -63,7 +64,6 @@ export default function CreateProduct({ sellerId }) {
       toast.error('¡Error al crear el producto!');
     } finally {
       setLoading(false);
-      setTimeout(() => setMensaje(""), 3000);
     }
   };
 
@@ -84,8 +84,20 @@ export default function CreateProduct({ sellerId }) {
         <CheckBoxGroup label={<><Tag className="inline w-4 h-4 mr-1 mb-1 text-indigo-500" /> Categorías</>} options={CATEGORIAS} selected={form.categorias} onChange={handleChange} />
         <FotosInput fotos={form.fotos} setFotos={(nuevasFotos) => setForm((prev) => ({ ...prev, fotos: nuevasFotos }))} />
 
-        <button type="submit" disabled={loading} className={`w-full py-3 text-white rounded-xl font-bold text-lg mt-6 transition ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-500"}`}>
-          {loading ? "Creando..." : "Crear Producto"}
+        <button 
+          type="submit" 
+          disabled={loading} 
+          className={`w-full py-3 text-white rounded-xl font-bold text-lg mt-6 transition ${
+            loading 
+              ? "bg-gray-400 cursor-not-allowed" 
+              : "bg-green-600 hover:bg-green-500" 
+          }`}
+        >
+          {loading ? (
+            <LoadingIndicator message="Creando..." color="#fff" size={10} />
+          ) : (
+            "Crear Producto"
+          )}
         </button>
       </form>
     </div>

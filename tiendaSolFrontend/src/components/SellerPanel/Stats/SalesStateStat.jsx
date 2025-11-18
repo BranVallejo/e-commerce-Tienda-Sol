@@ -1,18 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import LoadingIndicator from "../../LoadingIndicator";
 
 const COLORS = ["#4f46e5", "#16a34a", "#f59e0b", "#ef4444", "#8b5cf6", "#10b981"];
 
 export default function SalesStateStat({ sellerId }) {
   const [pedidos, setPedidos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
 
   useEffect(() => {
     if (!sellerId) return;
+
+    setIsLoading(true); 
+
     fetch(`${import.meta.env.VITE_API_URL_INICIAL}/pedidos/?vendedorID=${sellerId}`)
       .then(res => res.json())
-      .then(data => setPedidos(data))
-      .catch(err => console.error(err));
-  }, [sellerId]);
+      .then(data => {
+        setPedidos(data);
+        setIsLoading(false); 
+      })
+      .catch(err => {
+        console.error(err);
+        setIsLoading(false);
+      });
+
+  }, [sellerId]); 
+
 
   const data = Object.values(
     pedidos.reduce((acc, pedido) => {
@@ -22,6 +36,18 @@ export default function SalesStateStat({ sellerId }) {
       return acc;
     }, {})
   );
+
+  if (isLoading) {
+    return (
+      <div className="p-6 bg-white dark:bg-neutral-800 rounded-xl shadow-2xl border border-gray-200 dark:border-neutral-700 h-80 flex items-center justify-center">
+        <LoadingIndicator 
+          message="Cargando estadísticas..." 
+          size={15} 
+          color="#4f46e5" 
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 bg-white dark:bg-neutral-800 rounded-xl -2xl border border-gray-200 dark:border-neutral-700">

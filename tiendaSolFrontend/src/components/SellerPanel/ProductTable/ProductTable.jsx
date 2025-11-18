@@ -2,6 +2,7 @@ import ProductTableHeader from "./ProductTableHeader";
 import ProductRow from "./ProductRow";
 import ProductEditRow from "./ProductEditRow";
 import { useProductos } from "./useProductos";
+import LoadingIndicator from "../../LoadingIndicator";
 
 export default function ProductTable({ sellerId }) {
   const {
@@ -16,16 +17,21 @@ export default function ProductTable({ sellerId }) {
     handleDelete,
   } = useProductos(sellerId);
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="text-center py-12 text-lg font-medium text-indigo-500 dark:text-indigo-400">
-        Cargando productos...
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingIndicator 
+          message="Cargando producto..." 
+          size={15} 
+          color="#4f46e5"
+        />
       </div>
     );
+  }
 
   if (productos.length === 0)
     return (
-      <div className="text-center p-8 bg-white dark:bg-neutral-800 rounded-3xl -2xl border">
+      <div className="text-center p-8 bg-white dark:bg-neutral-800 border-neutral-700 rounded-3xl -2xl border">
         <h2 className="text-3xl font-bold mb-2">Gestión de Productos</h2>
         <p className="text-neutral-500">No se encontraron productos.</p>
       </div>

@@ -15,6 +15,7 @@ import AllProducts from "./pages/AllProducts";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RegisterForm from "./pages/Register";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -25,7 +26,6 @@ function App() {
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
     localStorage.setItem("darkMode", darkMode);
-    console.log("Dark mode:", darkMode ? "ON" : "OFF");
   }, [darkMode]);
 
   return (
@@ -44,6 +44,7 @@ function App() {
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/panel-vendedor" element={<SellerPanelPage />} />
         <Route path="/orders" element={<OrderPage />} />
+        <Route path="*" element={<NotFoundPage/>}/>
       </Routes>
 
       <Footer />

@@ -4,6 +4,7 @@ import Filtros from "../components/Filtros/Filtros";
 
 function Home() {
   const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true)
   const [filtros, setFiltros] = useState({
     terminoBusqueda: "",
     precioMin: "",
@@ -35,34 +36,30 @@ function Home() {
     return params.toString();
   };
 
-  // Función para buscar productos con filtros
   const buscarProductos = (filtrosAplicados = filtros) => {
     const queryParams = construirQueryParams(filtrosAplicados);
     const url = queryParams
       ? `${import.meta.env.VITE_API_URL_INICIAL}/productos?${queryParams}`
       : `${import.meta.env.VITE_API_URL_INICIAL}/productos`;
 
-    console.log("url enviada: " + url);
-
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
+        setLoading(false)
         setProductos(data);
       })
       .catch((error) => console.error("Error:", error));
   };
 
-  // Cargar productos iniciales
   useEffect(() => {
+    setLoading(true)
     buscarProductos();
   }, []);
 
-  // Función para manejar cambios en filtros
   const manejarCambioFiltros = (nuevosFiltros) => {
     setFiltros(nuevosFiltros);
   };
 
-  // Función para aplicar filtros
   const aplicarFiltros = () => {
     buscarProductos();
   };
@@ -77,7 +74,7 @@ function Home() {
         onBuscar={aplicarFiltros}
       />
 
-      <ProductList products={productos} />
+      <ProductList products={productos} loading={loading}/>
     </>
   );
 }

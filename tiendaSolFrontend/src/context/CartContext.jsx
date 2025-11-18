@@ -122,7 +122,6 @@ export const CartProvider = ({ children }) => {
     }
 
     const data = await response.json();
-    console.log("✅ Pedido creado:", data);
 
     setCarrito((prev) => prev.filter((p) => p.vendedorId !== vendedorId));
 

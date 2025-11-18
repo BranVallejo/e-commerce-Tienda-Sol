@@ -8,6 +8,7 @@ import {
   Line,
   CartesianGrid
 } from "recharts";
+import LoadingIndicator from "../../LoadingIndicator";
 
 const useCurrencyFormatter = () => {
   return new Intl.NumberFormat('en-US', {
@@ -85,12 +86,15 @@ export default function SalesEarningStat({ sellerId }) {
 
   if (isLoading) {
     return (
-      <div className="p-6 bg-white dark:bg-neutral-800 rounded-xl -2xl border border-gray-200 dark:border-neutral-700 h-[450px] flex items-center justify-center">
-        <p className="text-lg text-gray-500 dark:text-gray-400">Cargando estadísticas...</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingIndicator 
+          message="Cargando Estadistica..." 
+          size={15} 
+          color="#4f46e5" 
+        />
       </div>
     );
   }
-
   if (error || pedidosCompletados.length === 0) {
     return (
       <div className="p-6 bg-white dark:bg-neutral-800 rounded-xl -2xl border border-gray-200 dark:border-neutral-700 h-[450px] flex items-center justify-center">

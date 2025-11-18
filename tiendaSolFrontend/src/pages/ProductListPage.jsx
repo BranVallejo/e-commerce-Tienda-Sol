@@ -36,9 +36,10 @@ const construirQueryParams = (filtros, sellerId) => {
     return params.toString();
 };
 
-function ProductListPage({sellerId}) {
+function ProductListPage({sellerId,loading}) {
     const [productos, setProductos] = useState([]);
     const [filtros, setFiltros] = useState(FILTROS_INICIALES);
+
 
     const buscarProductos = (filtrosAplicados = filtros) => {
         const queryParams = construirQueryParams(filtrosAplicados, sellerId);
@@ -47,8 +48,6 @@ function ProductListPage({sellerId}) {
         const url = queryParams
         ? `${import.meta.env.VITE_API_URL_INICIAL}/productos?${queryParams}`
         : `${import.meta.env.VITE_API_URL_INICIAL}/productos`;
-
-        console.log("url enviada: " + url);
 
         fetch(url)
         .then((response) => {
@@ -82,7 +81,7 @@ function ProductListPage({sellerId}) {
         onBuscar={aplicarFiltros}
       />
 
-      <ProductList products={productos} />
+      <ProductList products={productos} loading={loading}/>
     </>
   );
 }

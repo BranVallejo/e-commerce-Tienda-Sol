@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 
 export default function RegisterForm() {
@@ -135,10 +136,11 @@ export default function RegisterForm() {
               className="w-full flex justify-center items-center gap-2 py-2.5 px-4 rounded-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 disabled:opacity-60 transition-all"
             >
               {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Registrando...
-                </>
+                <LoadingIndicator
+                  size={15} 
+                  color="#4f46e5" 
+                  message="Registrando..."
+                />
               ) : (
                 "Registrarse"
               )}

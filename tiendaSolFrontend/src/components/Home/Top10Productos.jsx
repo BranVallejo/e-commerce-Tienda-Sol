@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 
 export default function Top10Productos() {
     const [productos, setProductos] = useState([]);
+    const [loading,setLoading] = useState(true)
 
     const masVendidos = () => {
 
         fetch(`${import.meta.env.VITE_API_URL_INICIAL}/productos/?sortOrder=masVendido`)
         .then((response) => {
+            setLoading(false)
             if (!response.ok) {
             throw new Error(`Error HTTP: ${response.status}`);
             }
@@ -19,13 +21,14 @@ export default function Top10Productos() {
   };
 
   useEffect(() => {
+    setLoading(true)
     masVendidos(); 
   }, []);
 
 
   return (
     <>
-      <ProductList products={productos} />
+      <ProductList products={productos} loading={loading} />
     </>
   );
 

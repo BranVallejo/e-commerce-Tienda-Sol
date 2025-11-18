@@ -1,12 +1,22 @@
 import React from "react";
 import FilaPedido from "./FilaPedido";
 import useSales from "./useSales";
+import LoadingIndicator from "../../LoadingIndicator";
 
 export default function SalesPanel({ sellerId }) {
   const { pedidos, estados, loading, error, actualizarEstado } = useSales(sellerId);
 
-  if (loading)
-    return <div className="p-10 text-center text-neutral-500 dark:text-neutral-300">Cargando pedidos...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingIndicator 
+          message="Cargando producto..." 
+          size={15} 
+          color="#4f46e5" 
+        />
+      </div>
+    );
+  }
 
 
   if (!pedidos.length)
